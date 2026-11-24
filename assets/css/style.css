@@ -29,7 +29,7 @@ body {
 }
 
 .container {
-    width: min(90%, 1200px);
+    width: min(100%, 1700px);
     margin: 0 auto;
 }
 
@@ -43,15 +43,16 @@ body {
     left: 0;
     z-index: 10;
     width: 100%;
-    padding: 28px 0;
     background: transparent;
+    height: 30px;
 }
 
 .site-header .container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 30px;
+    justify-content: space-around;
+    background-color: var(--color-background);
+    gap: 180px;
 }
 
 .logo {
@@ -64,6 +65,11 @@ body {
     white-space: nowrap;
 }
 
+.logo-image {
+    max-width: 100px;
+    height: 70px;
+}
+
 .main-nav {
     display: flex;
     align-items: center;
@@ -72,7 +78,7 @@ body {
 
 .main-nav a {
     position: relative;
-    color: var(--color-cream);
+    color: var(--color-text);
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
@@ -108,7 +114,6 @@ body {
 .hero {
     position: relative;
     display: flex;
-    min-height: 700px;
     align-items: center;
     justify-content: center;
     padding: 170px 0 110px;

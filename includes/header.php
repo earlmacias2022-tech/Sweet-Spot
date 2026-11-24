@@ -22,7 +22,7 @@ $pageTitle = $pageTitle ?? SITE_NAME;
         <div class="container">
 
             <a href="<?= BASE_URL ?>/index.php" class="logo">
-                Sweet Spot
+                <img src="<?= BASE_URL ?>/assets/images/sweet-spot-logo.png" alt="Sweet Spot Logo" class="logo-image">
             </a>
 
             <nav class="main-nav">
@@ -30,6 +30,7 @@ $pageTitle = $pageTitle ?? SITE_NAME;
                 <a href="<?= BASE_URL ?>/index.php#products">Our Products</a>
                 <a href="<?= BASE_URL ?>/index.php#about">About Us</a>
                 <a href="<?= BASE_URL ?>/index.php#contact">Contact</a>
+                <a href="<?= BASE_URL ?>/index.php#products" class="btn">Login Portal</a>
             </nav>
 
         </div>
