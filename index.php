@@ -6,16 +6,18 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="hero">
     <div class="container">
-        <p>WELCOME TO SWEET SPOT</p>
+        <div class="hero-content">
+            <p class="hero-eyebrow">A LITTLE SOMETHING FRESHLY BAKED</p>
 
-        <h1>Freshly Baked, Made with Love.</h1>
+            <h1>Freshly Baked,<br>Made with Love.</h1>
 
-        <p>
-            Discover delicious treats and freshly baked
-            favorites made to bring sweetness to your day.
-        </p>
+            <p class="hero-description">
+                Discover delicious treats and freshly baked favorites
+                made to bring a little more sweetness to your day.
+            </p>
 
-        <a href="#products" class="btn">Explore Our Products</a>
+            <a href="#products" class="btn">Explore Our Menu</a>
+        </div>
     </div>
 </section>
 
