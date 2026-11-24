@@ -66,7 +66,7 @@ $sampleProducts = [
         <div class="admin-content">
             <section class="admin-view active" id="view-overview">
                 <div class="page-heading">
-                    <div><p class="admin-kicker">TUESDAY, NOVEMBER 25, 2026</p><h1>Good morning, <em>Sweet Spot.</em></h1><p>Here's what's happening with your bakery today.</p></div>
+                    <div><p class="admin-kicker"><?= strtoupper(date('l, F j, Y')) ?></p><h1>Good morning, <em>Sweet Spot.</em></h1><p>Here's what's happening with your bakery today.</p></div>
                     <a href="#products" class="admin-primary-btn" data-view-link="products">Manage products <span>↗</span></a>
                 </div>
                 <div class="preview-banner"><span>✦</span><p><strong>You're viewing sample dashboard data.</strong> The numbers and records are for UI demonstration and are not connected to your database yet.</p><button type="button" class="banner-close" aria-label="Dismiss notice">×</button></div>
