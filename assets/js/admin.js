@@ -95,8 +95,3 @@ function filterDatabaseProducts() {
 productSearch?.addEventListener("input", filterDatabaseProducts);
 categoryFilter?.addEventListener("change", filterDatabaseProducts);
 
-// Restore the selected dashboard section when a dashboard hash is present.
-const requestedView = window.location.hash.slice(1);
-if (requestedView) {
-    document.querySelector('[data-view="' + requestedView + '"]')?.click();
-}
