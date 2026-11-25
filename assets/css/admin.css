@@ -343,3 +343,16 @@ img{display:block;max-width:100%}
 .edit-image-preview img{width:88px;height:78px;object-fit:cover;background:#F7EBDD}
 .edit-image-preview span{color:#806E5F;font-size:9px;font-weight:600}
 .edit-no-image{padding:13px;border:1px dashed #DCCBBB;background:#FCF9F4}
+
+
+/* PRODUCT TABLE ACTIONS */
+.table-actions{display:flex;align-items:center;gap:7px}
+.table-action-btn{display:inline-flex;min-height:31px;align-items:center;justify-content:center;gap:6px;padding:0 10px;border:1px solid transparent;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:.1px;cursor:pointer;text-decoration:none;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
+.table-action-btn:hover{transform:translateY(-1px)}
+.table-action-btn span{font-size:13px;line-height:1}
+.table-edit-btn{border-color:#E7D9CA;background:#FCF8F2;color:#805B3E}
+.table-edit-btn:hover{border-color:#CDA77F;background:#F5EBDD;color:var(--cocoa)}
+.table-delete-btn{border-color:#EBD7D2;background:#FFF9F7;color:#A65B50}
+.table-delete-btn:hover{border-color:#D6A49B;background:#F8E9E5;color:#8F4037}
+.delete-product-form{display:inline-flex;margin:0}
+@media(max-width:760px){.table-actions{gap:5px}.table-action-btn{padding:0 8px}}
