@@ -267,3 +267,46 @@ img{display:block;max-width:100%}
 .auth-toast.toast-success .auth-toast-icon{background:#EAF1E7;color:#587B52}
 .image-upload-box{cursor:pointer}
 .image-upload-box:hover{border-color:var(--caramel);background:#FAF4EC}
+
+
+/* CATEGORY MANAGEMENT */
+.categories-page-heading .admin-primary-btn:disabled{cursor:not-allowed;opacity:.55;transform:none}
+.category-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.category-stat-card{display:flex;align-items:center;gap:13px;padding:17px 19px;border:1px solid #ECE4DB;background:var(--white)}
+.category-stat-icon{display:grid;width:37px;height:37px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:16px}
+.category-stat-icon.category-stat-active{background:#EDF2E9;color:#64835E}
+.category-stat-icon.category-stat-inactive{background:#F3ECE5;color:#947A65}
+.category-stat-card small,.category-stat-card strong{display:block}
+.category-stat-card small{color:#8F8075;font-size:9px}
+.category-stat-card strong{margin-top:3px;color:var(--ink);font:500 25px/1.1 var(--display)}
+.category-manager-card{overflow:hidden;border:1px solid #ECE4DB;background:var(--white)}
+.category-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #EEE7DF}
+.category-toolbar h2{margin-top:4px;font:500 21px var(--display)}
+.category-toolbar h2 span{color:#9A8A7E;font:400 11px var(--body)}
+.category-search{width:220px}
+.category-table th{height:43px}
+.category-table td{height:76px}
+.category-name-cell{display:flex;min-width:220px;align-items:center;gap:11px}
+.category-row-icon{display:grid;width:36px;height:36px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:15px}
+.category-name-cell strong,.category-name-cell small{display:block}
+.category-name-cell strong{color:var(--ink);font-size:10px}
+.category-name-cell small{max-width:260px;margin-top:4px;overflow:hidden;color:#9A8A7E;font-size:8px;text-overflow:ellipsis;white-space:nowrap}
+.category-slug{padding:5px 7px;background:#FAF7F2;color:#8B7563;font-size:9px}
+.category-product-count{display:inline-grid;min-width:25px;height:25px;place-items:center;border-radius:50%;background:#F5EBDD;color:#81664F;font-size:9px;font-weight:700}
+.category-status{display:inline-flex;align-items:center;gap:6px;font-size:9px}
+.category-status i{width:6px;height:6px;border-radius:50%;background:#6C946C}
+.category-status.is-inactive i{background:#B69A83}
+.category-date{color:#8F8075;font-size:9px}
+.category-table-footer{display:flex;justify-content:space-between;gap:15px;padding:13px 20px;border-top:1px solid #EEE7DF;color:#9A8C81;font-size:8px}
+.category-empty-state{display:flex;min-height:320px;align-items:center;justify-content:center;flex-direction:column;padding:35px;text-align:center}
+.category-empty-icon{display:grid;width:58px;height:58px;place-items:center;margin-bottom:16px;border:1px solid #E7D6C4;border-radius:50%;background:#FCF9F4;color:var(--caramel);font-size:24px}
+.category-empty-state h2{font:500 24px var(--display);color:var(--ink)}
+.category-empty-state p{max-width:430px;margin:9px 0 16px;color:var(--muted);font-size:10px;line-height:1.8}
+.category-next-step{padding:6px 9px;background:#F2E7D9;color:#916B4B;font-size:8px;font-weight:700;letter-spacing:1px}
+.category-message{display:flex;flex-direction:column;gap:5px;margin-bottom:18px;padding:15px 17px;border:1px solid #EADBC8;background:#F7EBDD;color:#806E5F;font-size:10px}
+.category-message strong{color:#584333}
+.category-message-error{border-color:#E8D8D0;background:#FBF0ED;color:#8B5A50}
+.category-message-error strong{color:#A64D42}
+.category-no-results{padding:24px;text-align:center;color:#8F8075;font-size:10px}
+@media(max-width:760px){.category-stat-grid{gap:9px}.category-stat-card{padding:13px;gap:9px}.category-stat-icon{width:31px;height:31px}.category-stat-card strong{font-size:22px}.category-toolbar{align-items:flex-start;flex-direction:column}.category-search{width:100%}.category-table-footer{flex-direction:column;gap:4px}}
+@media(max-width:460px){.category-stat-grid{grid-template-columns:1fr}.category-stat-card{padding:12px 14px}.category-empty-state{min-height:280px;padding:25px 18px}}
