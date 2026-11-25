@@ -59,6 +59,7 @@ function dashboard_product_image(?string $image): string
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="dashboard-page">
+<div class="toast-message" id="admin-toast" role="status" aria-live="polite"></div>
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="sidebar-brand">
@@ -146,7 +147,7 @@ function dashboard_product_image(?string $image): string
                 <?php if ($databaseError): ?><div class="form-preview-banner"><span>!</span><p><strong>Product data is unavailable.</strong> Check your database connection and refresh the page.</p></div><?php endif; ?>
                 <div class="product-manager-card">
                     <div class="manager-toolbar"><div class="manager-title"><span class="card-overline">MENU INVENTORY</span><h2>All products <span id="product-count">(<?= $productCount ?>)</span></h2></div><div class="manager-controls"><div class="admin-search"><span>⌕</span><input id="product-search" type="search" placeholder="Search products..." aria-label="Search products"></div><select id="category-filter" aria-label="Filter by category"><option value="all">All categories</option><?php foreach ($categories as $category): ?><option value="<?= (int) $category['id'] ?>"><?= dashboard_escape($category['name']) ?></option><?php endforeach; ?></select></div></div>
-                    <?php if (!$products): ?><div class="category-empty-state"><span class="category-empty-icon">▧</span><h2>No products yet</h2><p>Products you add will appear here automatically.</p><a href="<?= BASE_URL ?>/admin/products/add.php" class="admin-primary-btn">＋ Add your first product</a></div><?php else: ?><div class="table-scroll"><table class="product-table"><thead><tr><th>PRODUCT</th><th>CATEGORY</th><th>PRICE</th><th>PUBLICATION / AVAILABILITY</th></tr></thead><tbody id="product-table-body">
+                    <?php if (!$products): ?><div class="category-empty-state"><span class="category-empty-icon">▧</span><h2>No products yet</h2><p>Products you add will appear here automatically.</p><a href="<?= BASE_URL ?>/admin/products/add.php" class="admin-primary-btn">＋ Add your first product</a></div><?php else: ?><div class="table-scroll"><table class="product-table"><thead><tr><th>PRODUCT</th><th>CATEGORY</th><th>PRICE</th><th>PUBLICATION / AVAILABILITY</th><th>ACTION</th></tr></thead><tbody id="product-table-body">
                     <?php foreach ($products as $product): ?>
                     <?php
                         $isPublished = $product['status'] === 'published';
@@ -159,6 +160,7 @@ function dashboard_product_image(?string $image): string
                         <td><span class="category-pill"><?= dashboard_escape($product['category_name'] ?? 'Uncategorized') ?></span></td>
                         <td class="table-price">₱<?= number_format((float) $product['price'], 2) ?></td>
                         <td><span class="product-status <?= $statusClass ?>"><i></i><?= dashboard_escape($statusText) ?></span></td>
+                        <td><a class="table-action-link" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>">Edit <span>↗</span></a></td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody></table></div>
@@ -177,6 +179,22 @@ function dashboard_product_image(?string $image): string
     </main>
 </div>
 
+
+
+<?php
+$productToast = $_SESSION['product_toast'] ?? null;
+unset($_SESSION['product_toast']);
+?>
+<?php if ($productToast): ?>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const toast = document.querySelector("#admin-toast");
+    toast.textContent = <?= json_encode($productToast['message'] ?? 'Product updated.', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    toast.classList.add("show", <?= json_encode(($productToast['type'] ?? '') === 'success' ? 'toast-success' : '') ?>);
+    window.setTimeout(() => toast.classList.remove("show"), 3500);
+});
+</script>
+<?php endif; ?>
 
 <?php if ($loginSuccess !== ''): ?>
 <script>
