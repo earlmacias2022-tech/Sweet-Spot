@@ -229,7 +229,7 @@ unset($_SESSION['announcement_toast']);
                                             <td class="announcement-date"><?= announcement_escape(date('M j, Y', strtotime($announcement['created_at']))) ?></td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/announcements/edit.php?id=<?= (int) $announcement['id'] ?>"><span>✎</span> Edit</a>
+                                                    <button class="table-action-btn table-edit-btn" type="button" disabled title="Edit will be connected in the next step"><span>✎</span> Edit</button>
                                                     <button class="table-action-btn table-delete-btn" type="button" disabled title="Delete action will be connected in the next step"><span>×</span> Delete</button>
                                                 </div>
                                             </td>
