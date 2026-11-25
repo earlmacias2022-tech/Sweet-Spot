@@ -187,13 +187,7 @@ $csrfToken = admin_csrf_token();
                                             <td>
                                                 <div class="table-actions">
                                                     <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/categories/edit.php?id=<?= (int) $category['id'] ?>"><span>✎</span> Edit</a>
-                                                    <form class="delete-category-form" action="<?= BASE_URL ?>/admin/categories/delete.php" method="POST" data-category-name="<?= category_escape($category['name']) ?>" data-product-count="<?= (int) $category['product_count'] ?>">
-                                                        <input type="hidden" name="csrf_token" value="<?= category_escape($csrfToken) ?>">
-                                                        <input type="hidden" name="id" value="<?= (int) $category['id'] ?>">
-                                                        <input type="hidden" name="expected_product_count" value="<?= (int) $category['product_count'] ?>">
-                                                        <input type="hidden" name="confirm_delete" value="1">
-                                                        <button class="table-action-btn table-delete-btn" type="submit"><span>×</span> Delete</button>
-                                                    </form>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-category-delete data-category-id="<?= (int) $category['id'] ?>" data-category-name="<?= category_escape($category['name']) ?>" data-product-count="<?= (int) $category['product_count'] ?>"><span>×</span> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -214,6 +208,29 @@ $csrfToken = admin_csrf_token();
         <footer class="admin-footer"><span>© <?= date('Y') ?> Sweet Spot Management</span><span>ADMIN WORKSPACE <i></i> CATEGORY MANAGEMENT</span></footer>
     </main>
 </div>
+<div class="delete-modal-backdrop" id="category-delete-modal" hidden>
+    <section class="delete-modal delete-modal-category" role="dialog" aria-modal="true" aria-labelledby="category-delete-title" aria-describedby="category-delete-description">
+        <div class="delete-modal-icon" aria-hidden="true">!</div>
+        <span class="delete-modal-eyebrow">PLEASE CONFIRM</span>
+        <h2 id="category-delete-title">Delete this category?</h2>
+        <p id="category-delete-description">You're about to permanently remove <strong id="delete-category-name">this category</strong>.</p>
+        <div class="delete-modal-warning" id="delete-category-impact" hidden>
+            <div class="delete-warning-heading"><span>!</span> Products will also be deleted</div>
+            <p>This category currently contains <strong id="delete-category-product-count">0</strong> product(s). Deleting this category will also permanently delete every associated product and its uploaded image.</p>
+        </div>
+        <div class="delete-modal-note" id="delete-category-empty-note" hidden><span>✓</span><p>This category has no associated products.</p></div>
+        <div class="delete-modal-note"><span>↳</span><p>This action cannot be undone.</p></div>
+        <form id="category-delete-confirm-form" action="<?= BASE_URL ?>/admin/categories/delete.php" method="POST" class="delete-modal-actions">
+            <input type="hidden" name="csrf_token" value="<?= category_escape($csrfToken) ?>">
+            <input type="hidden" name="id" id="delete-category-id" value="">
+            <input type="hidden" name="expected_product_count" id="delete-category-count" value="">
+            <input type="hidden" name="confirm_delete" value="1">
+            <button type="button" class="delete-modal-cancel" data-close-category-delete>Cancel</button>
+            <button type="submit" class="delete-modal-confirm" id="delete-category-confirm-label">Yes, delete category</button>
+        </form>
+    </section>
+</div>
+
 <script>
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
@@ -225,21 +242,42 @@ document.querySelectorAll('.auth-toast').forEach((toast) => {
     window.setTimeout(() => toast.remove(), 5000);
 });
 
-document.querySelectorAll('.delete-category-form').forEach((form) => {
-    form.addEventListener('submit', (event) => {
-        const categoryName = form.dataset.categoryName || 'this category';
-        const productCount = Number(form.dataset.productCount || 0);
-        let message = 'Are you sure you want to permanently delete "' + categoryName + '"?';
+const categoryDeleteModal = document.querySelector('#category-delete-modal');
+let categoryDeleteTrigger = null;
 
-        if (productCount > 0) {
-            message += '\\n\\nWARNING: This category currently contains ' + productCount + ' product' + (productCount === 1 ? '' : 's') + '. Deleting it will also permanently delete all ' + productCount + ' associated product' + (productCount === 1 ? '' : 's') + '.';
-        } else {
-            message += '\\n\\nThis category has no associated products.';
-        }
+const closeCategoryDeleteModal = () => {
+    categoryDeleteModal.hidden = true;
+    document.body.classList.remove('delete-modal-open');
+    categoryDeleteTrigger?.focus();
+};
 
-        message += '\\n\\nThis action cannot be undone.';
-        if (!window.confirm(message)) event.preventDefault();
+document.querySelectorAll('[data-open-category-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        categoryDeleteTrigger = button;
+        const productCount = Number(button.dataset.productCount || 0);
+        document.querySelector('#delete-category-name').textContent = button.dataset.categoryName || 'this category';
+        document.querySelector('#delete-category-id').value = button.dataset.categoryId || '';
+        document.querySelector('#delete-category-count').value = String(productCount);
+        document.querySelector('#delete-category-product-count').textContent = String(productCount);
+        document.querySelector('#delete-category-impact').hidden = productCount === 0;
+        document.querySelector('#delete-category-empty-note').hidden = productCount !== 0;
+        document.querySelector('#delete-category-confirm-label').textContent =
+            productCount > 0 ? 'Yes, delete everything' : 'Yes, delete category';
+
+        categoryDeleteModal.hidden = false;
+        document.body.classList.add('delete-modal-open');
+        categoryDeleteModal.querySelector('[data-close-category-delete]').focus();
     });
+});
+
+categoryDeleteModal.querySelectorAll('[data-close-category-delete]').forEach((button) => {
+    button.addEventListener('click', closeCategoryDeleteModal);
+});
+categoryDeleteModal.addEventListener('click', (event) => {
+    if (event.target === categoryDeleteModal) closeCategoryDeleteModal();
+});
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !categoryDeleteModal.hidden) closeCategoryDeleteModal();
 });
 
 const categorySearch = document.querySelector('#category-search');
