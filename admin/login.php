@@ -116,9 +116,6 @@ $csrfToken = admin_csrf_token();
                         </div>
                     </div>
                     <button class="admin-primary-btn login-submit" type="submit">Sign in <span>↗</span></button>
-                    <?php if ($loginError !== ''): ?>
-                        <p class="login-feedback login-error" role="alert"><?= htmlspecialchars($loginError, ENT_QUOTES, 'UTF-8') ?></p>
-                    <?php endif; ?>
                 </form>
                 <div class="preview-notice"><span>i</span><p><strong>Authorized staff only</strong>Your sign-in is checked securely against the Sweet Spot admin database.</p></div>
             </div>
