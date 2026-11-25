@@ -112,8 +112,8 @@ function dashboard_product_image(?string $image): string
                 <div class="stat-grid">
                     <article class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon">▧</span></div><strong id="stat-products"><?= $productCount ?></strong><small><span class="stat-neutral">↗</span> Items in your menu</small></article>
                     <article class="stat-card"><div class="stat-top"><span>Categories</span><span class="stat-icon">▦</span></div><strong><?= $categoryCount ?></strong><small><?= $activeCategoryCount ?> active categories</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong>24</strong><small><span class="stat-positive">+4</span> Sample this month</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong>03</strong><small><span class="stat-attention">Needs attention</span></small></article>
+                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong>—</strong><small>Review module not connected</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong>—</strong><small>Feedback module not connected</small></article>
                 </div>
 
                 <div class="dashboard-grid">
@@ -136,7 +136,7 @@ function dashboard_product_image(?string $image): string
                 </div>
 
                 <section class="admin-card activity-card">
-                    <div class="card-heading"><div><span class="card-overline">AT A GLANCE</span><h2>Workspace overview</h2></div><span class="status-label">ALL SYSTEMS PREVIEW</span></div>
+                    <div class="card-heading"><div><span class="card-overline">AT A GLANCE</span><h2>Workspace overview</h2></div><span class="status-label">DATABASE STATUS</span></div>
                     <div class="overview-tiles"><div><span class="overview-dot dot-green"></span><strong>Product catalog</strong><small><?= $databaseError ? 'Connection needs attention' : 'Connected to database' ?></small></div><div><span class="overview-dot dot-gold"></span><strong>Content management</strong><small>Modules being developed</small></div><div><span class="overview-dot dot-green"></span><strong>Database connection</strong><small><?= $databaseError ? 'Check connection' : 'Connected' ?></small></div></div>
                 </section>
             </section>
