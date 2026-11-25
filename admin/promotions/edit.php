@@ -1,2 +1,2 @@
 <?php
-// Edit promotion.
+// Edit promotion page placeholder.
