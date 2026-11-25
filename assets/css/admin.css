@@ -57,7 +57,7 @@ img{display:block;max-width:100%}
 .sidebar-brand{padding:0 13px 23px;border-bottom:1px solid rgba(251,244,234,.12)}
 .sidebar-brand img{width:128px;height:62px;object-fit:contain;filter:brightness(0) invert(1)}
 .sidebar-label{display:block;margin-top:5px;color:#C7A98E;font-size:8px;font-weight:700;letter-spacing:1.5px}
-.sidebar-menu{flex:1;overflow-y:auto;padding-top:23px}
+.sidebar-menu{flex:1;overflow-y:auto;padding-top:23px;scrollbar-width:none;-ms-overflow-style:none}.sidebar-menu::-webkit-scrollbar{display:none}
 .sidebar-section-label{display:block;padding:0 13px 10px;color:#A78C78;font-size:8px;font-weight:700;letter-spacing:1.5px}
 .sidebar-spaced{margin-top:25px}
 .sidebar-link{display:flex;min-height:43px;align-items:center;gap:12px;margin:3px 0;padding:0 13px;border-radius:3px;color:rgba(251,244,234,.69);font-size:11px;font-weight:500;transition:.2s}
