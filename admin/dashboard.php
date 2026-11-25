@@ -163,12 +163,7 @@ function dashboard_product_image(?string $image): string
                         <td>
                             <div class="table-actions">
                                 <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>"><span>✎</span> Edit</a>
-                                <form class="delete-product-form" action="<?= BASE_URL ?>/admin/products/delete.php" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this product? This action cannot be undone.');">
-                                    <input type="hidden" name="csrf_token" value="<?= dashboard_escape(admin_csrf_token()) ?>">
-                                    <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
-                                    <input type="hidden" name="confirm_delete" value="1">
-                                    <button class="table-action-btn table-delete-btn" type="submit"><span>×</span> Delete</button>
-                                </form>
+                                <button class="table-action-btn table-delete-btn" type="button" data-open-delete-modal data-product-id="<?= (int) $product['id'] ?>" data-product-name="<?= dashboard_escape($product['name']) ?>"><span>×</span> Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -216,6 +211,54 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <?php endif; ?>
+
+<div class="delete-modal-backdrop" id="product-delete-modal" hidden>
+    <section class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="product-delete-title" aria-describedby="product-delete-description">
+        <div class="delete-modal-icon" aria-hidden="true">!</div>
+        <span class="delete-modal-eyebrow">PLEASE CONFIRM</span>
+        <h2 id="product-delete-title">Delete this product?</h2>
+        <p id="product-delete-description">You're about to permanently remove <strong id="delete-product-name">this product</strong> from your bakery catalog.</p>
+        <div class="delete-modal-note"><span>↳</span><p>This action cannot be undone. The product's uploaded image will also be removed.</p></div>
+        <form id="product-delete-confirm-form" action="<?= BASE_URL ?>/admin/products/delete.php" method="POST" class="delete-modal-actions">
+            <input type="hidden" name="csrf_token" value="<?= dashboard_escape(admin_csrf_token()) ?>">
+            <input type="hidden" name="id" id="delete-product-id" value="">
+            <input type="hidden" name="confirm_delete" value="1">
+            <button type="button" class="delete-modal-cancel" data-close-delete-modal>Keep product</button>
+            <button type="submit" class="delete-modal-confirm">Yes, delete product</button>
+        </form>
+    </section>
+</div>
+<script>
+(() => {
+    const modal = document.querySelector('#product-delete-modal');
+    const name = document.querySelector('#delete-product-name');
+    const id = document.querySelector('#delete-product-id');
+    let previousFocus = null;
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.classList.remove('delete-modal-open');
+        previousFocus?.focus();
+    };
+
+    document.querySelectorAll('[data-open-delete-modal]').forEach((button) => {
+        button.addEventListener('click', () => {
+            previousFocus = button;
+            name.textContent = button.dataset.productName || 'this product';
+            id.value = button.dataset.productId || '';
+            modal.hidden = false;
+            document.body.classList.add('delete-modal-open');
+            modal.querySelector('[data-close-delete-modal]').focus();
+        });
+    });
+
+    modal.querySelectorAll('[data-close-delete-modal]').forEach((button) => button.addEventListener('click', closeModal));
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+})();
+</script>
 
 <script src="<?= BASE_URL ?>/assets/js/admin.js"></script>
 </body>
