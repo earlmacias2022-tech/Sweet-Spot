@@ -260,3 +260,10 @@ img{display:block;max-width:100%}
 .editor-form-actions .admin-primary-btn:disabled{cursor:not-allowed;opacity:.55;transform:none}
 @media(max-width:900px){.product-editor-form{grid-template-columns:1fr}.product-editor-side{grid-template-columns:1fr 1fr}.editor-form-actions{grid-column:1}}
 @media(max-width:600px){.add-product-heading{align-items:flex-start}.product-editor-side{grid-template-columns:1fr}.editor-section{padding:18px}.editor-form-actions{grid-column:auto}.form-preview-banner{align-items:flex-start}}
+
+
+/* PRODUCT FORM FEEDBACK AND UPLOAD */
+.auth-toast.toast-success{border-left-color:#83A27A}
+.auth-toast.toast-success .auth-toast-icon{background:#EAF1E7;color:#587B52}
+.image-upload-box{cursor:pointer}
+.image-upload-box:hover{border-color:var(--caramel);background:#FAF4EC}
