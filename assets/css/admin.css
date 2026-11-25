@@ -214,3 +214,49 @@ img{display:block;max-width:100%}
 .auth-toast-close{margin-left:auto;padding:0 2px;border:0;background:none;color:#8B786C;font-size:18px;cursor:pointer}
 .toast-message.toast-success{border-left:3px solid #83A27A}
 @media(max-width:520px){.auth-toast{top:12px;right:12px;left:12px;max-width:none}}
+
+
+/* ADD PRODUCT FORM */
+.add-product-heading{align-items:center}
+.add-back-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none}
+.form-preview-banner{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding:13px 16px;border:1px solid #EADBC8;background:#F7EBDD}
+.form-preview-banner>span{color:var(--caramel);font-size:17px}
+.form-preview-banner p{color:#806E5F;font-size:9px;line-height:1.6}
+.form-preview-banner strong{color:#584333}
+.product-editor-form{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.8fr);gap:17px;align-items:start}
+.product-editor-main,.product-editor-side{display:grid;gap:17px}
+.editor-section{padding:23px}
+.editor-section-heading{display:flex;align-items:flex-start;gap:12px;margin-bottom:23px;padding-bottom:17px;border-bottom:1px solid #F0EAE3}
+.editor-step{display:grid;width:29px;height:29px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font:600 11px var(--display)}
+.editor-section-heading h2{font:500 20px var(--display);color:var(--ink)}
+.editor-section-heading p{margin-top:4px;color:var(--muted);font-size:9px;line-height:1.5}
+.editor-section .admin-field{margin-bottom:19px}
+.editor-section .admin-field:last-child{margin-bottom:0}
+.editor-section .admin-field label:not(.image-upload-box){font-size:10px}
+.editor-section .admin-field label span{color:#B66C55}
+.field-hint{color:#9A8A7E;font-size:8px;line-height:1.5}
+.price-input-wrap{display:flex;min-height:45px;align-items:center;border:1px solid #E5DACE;background:#FFFEFC}
+.price-input-wrap>span{padding:0 13px;color:#8B7563;font-size:12px}
+.price-input-wrap input{border:0!important;box-shadow:none!important}
+.image-upload-box{display:flex;min-height:145px;align-items:center;justify-content:center;flex-direction:column;gap:7px;border:1px dashed #DCCBBB;background:#FCF9F4;text-align:center;cursor:not-allowed}
+.upload-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:50%;background:#F1E5D8;color:var(--caramel);font-size:17px}
+.image-upload-box strong{color:#665346;font-size:10px}
+.image-upload-box small{color:#A09388;font-size:8px}
+.visually-hidden-file{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #F0EAE3}
+.setting-row>div{flex:1}
+.setting-row strong,.setting-row small{display:block}
+.setting-row strong{color:var(--ink);font-size:9px}
+.setting-row small{margin-top:4px;color:#9A8A7E;font-size:8px;line-height:1.5}
+.switch-control{position:relative;width:34px;height:19px;flex:0 0 auto}
+.switch-control input{position:absolute;width:1px;height:1px;opacity:0}
+.switch-control span{position:absolute;inset:0;border-radius:20px;background:#D9D0C7;opacity:.65}
+.switch-control span:before{position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:#fff;content:""}
+.status-field{margin-top:18px}
+.editor-tip-card{padding:17px;background:#F5EBDD}
+.editor-tip-card>span{color:#9B704B;font-size:9px;font-weight:700;letter-spacing:.5px}
+.editor-tip-card p{margin-top:8px;color:#806E5F;font-size:9px;line-height:1.75}
+.editor-form-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:9px;padding-top:5px}
+.editor-form-actions .admin-primary-btn:disabled{cursor:not-allowed;opacity:.55;transform:none}
+@media(max-width:900px){.product-editor-form{grid-template-columns:1fr}.product-editor-side{grid-template-columns:1fr 1fr}.editor-form-actions{grid-column:1}}
+@media(max-width:600px){.add-product-heading{align-items:flex-start}.product-editor-side{grid-template-columns:1fr}.editor-section{padding:18px}.editor-form-actions{grid-column:auto}.form-preview-banner{align-items:flex-start}}
