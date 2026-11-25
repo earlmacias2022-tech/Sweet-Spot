@@ -53,6 +53,14 @@ $csrfToken = admin_csrf_token();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="dashboard-page">
+<?php if (!empty($_SESSION['category_toast'])): ?>
+    <div class="auth-toast toast-success is-visible" role="status" aria-live="polite">
+        <span class="auth-toast-icon">✓</span>
+        <span><?= category_escape($_SESSION['category_toast']['message'] ?? 'Category saved successfully.') ?></span>
+        <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
+    </div>
+    <?php unset($_SESSION['category_toast']); ?>
+<?php endif; ?>
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="sidebar-brand">
@@ -101,7 +109,7 @@ $csrfToken = admin_csrf_token();
                     <h1>Product <em>categories.</em></h1>
                     <p>Keep your bakery menu organized into clear collections.</p>
                 </div>
-                <button type="button" class="admin-primary-btn" disabled title="Category creation is the next development step">＋ Add category <span>↗</span></button>
+                <a href="<?= BASE_URL ?>/admin/categories/add.php" class="admin-primary-btn">＋ Add category <span>↗</span></a>
             </div>
 
             <div class="category-stat-grid">
@@ -143,8 +151,8 @@ $csrfToken = admin_csrf_token();
                         <div class="category-empty-state">
                             <span class="category-empty-icon">▦</span>
                             <h2>No categories yet</h2>
-                            <p>Your category list is currently empty. In the next step, we'll add the form that lets you create your first bakery category.</p>
-                            <span class="category-next-step">NEXT: ADD CATEGORY</span>
+                            <p>Your category list is currently empty. Create your first category to start organizing your bakery products.</p>
+                            <a href="<?= BASE_URL ?>/admin/categories/add.php" class="admin-primary-btn">＋ Create first category <span>↗</span></a>
                         </div>
                     <?php else: ?>
                         <div class="table-scroll">
@@ -196,6 +204,11 @@ $csrfToken = admin_csrf_token();
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
     document.querySelector('#admin-sidebar').classList.toggle('is-open');
+});
+
+document.querySelectorAll('.auth-toast').forEach((toast) => {
+    toast.querySelector('.auth-toast-close')?.addEventListener('click', () => toast.remove());
+    window.setTimeout(() => toast.remove(), 5000);
 });
 
 const categorySearch = document.querySelector('#category-search');
