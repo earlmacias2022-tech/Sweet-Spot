@@ -235,7 +235,7 @@ function product_escape($value): string
             <span class="sidebar-section-label">WORKSPACE</span>
             <a href="<?= BASE_URL ?>/admin/dashboard.php" class="sidebar-link"><span class="side-icon">⌂</span> Overview</a>
             <a href="<?= BASE_URL ?>/admin/dashboard.php#products" class="sidebar-link active"><span class="side-icon">▧</span> Products</a>
-            <a href="<?= BASE_URL ?>/admin/dashboard.php#categories" class="sidebar-link"><span class="side-icon">▦</span> Categories</a>
+            <a href="<?= BASE_URL ?>/admin/categories/index.php" class="sidebar-link"><span class="side-icon">▦</span> Categories</a>
             <span class="sidebar-section-label sidebar-spaced">CONTENT</span>
             <a href="<?= BASE_URL ?>/admin/dashboard.php#announcements" class="sidebar-link"><span class="side-icon">◉</span> Announcements</a>
             <a href="<?= BASE_URL ?>/admin/dashboard.php#promotions" class="sidebar-link"><span class="side-icon">✳</span> Promotions</a>
