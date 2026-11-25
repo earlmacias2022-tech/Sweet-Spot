@@ -329,3 +329,13 @@ img{display:block;max-width:100%}
 .category-form-actions{grid-column:1/-1}
 @media(max-width:900px){.category-editor-form{grid-template-columns:1fr}.category-editor-note{grid-row:2}.category-form-actions{grid-column:1}}
 @media(max-width:600px){.add-category-heading{align-items:flex-start}.category-editor-card{padding:18px}.category-form-actions{grid-column:auto}}
+
+
+/* PRODUCT EDIT ACTION AND CURRENT IMAGE */
+.table-action-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid #E7D9CA;background:#FCF8F2;color:#805B3E;font-size:9px;font-weight:700;text-decoration:none;transition:background .2s ease,border-color .2s ease,color .2s ease}
+.table-action-link:hover{border-color:var(--caramel);background:#F5EBDD;color:var(--cocoa)}
+.table-action-link span{font-size:12px}
+.edit-image-preview{display:flex;align-items:center;gap:13px;padding:12px;border:1px solid #EAE2D9;background:#FCF9F4}
+.edit-image-preview img{width:88px;height:78px;object-fit:cover;background:#F7EBDD}
+.edit-image-preview span{color:#806E5F;font-size:9px;font-weight:600}
+.edit-no-image{padding:13px;border:1px dashed #DCCBBB;background:#FCF9F4}
