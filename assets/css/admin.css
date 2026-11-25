@@ -443,3 +443,42 @@ body.delete-modal-open{overflow:hidden}
 .announcement-form-actions{grid-column:1/-1}
 @media(max-width:900px){.announcement-editor-form{grid-template-columns:1fr}.announcement-editor-side{grid-row:2}.announcement-form-actions{grid-column:1}}
 @media(max-width:600px){.add-announcement-heading{align-items:flex-start}.announcement-editor-card,.announcement-settings-card{padding:18px}.announcement-form-actions{grid-column:auto}}
+
+
+/* PROMOTIONS MANAGEMENT */
+.promotion-next-step{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border:1px solid #E8D8C6;background:#F7EBDD;color:#916B4B;font-size:8px;font-weight:800;letter-spacing:.8px}
+.promotion-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:19px}
+.promotion-stat-card{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #ECE4DB;background:var(--white)}
+.promotion-stat-icon{display:grid;width:36px;height:36px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:15px}
+.promotion-stat-live{background:#EDF2E9;color:#64835E}
+.promotion-stat-scheduled{background:#F8F0E3;color:#A87537}
+.promotion-stat-draft{background:#F1ECE7;color:#8C7868}
+.promotion-stat-card small,.promotion-stat-card strong{display:block}
+.promotion-stat-card small{color:#8F8075;font-size:9px}
+.promotion-stat-card strong{margin-top:3px;color:var(--ink);font:500 24px/1.1 var(--display)}
+.promotion-manager-card{overflow:hidden;border:1px solid #ECE4DB;background:var(--white)}
+.promotion-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #EEE7DF}
+.promotion-toolbar h2{margin-top:4px;font:500 21px var(--display)}
+.promotion-toolbar h2 span{color:#9A8A7E;font:400 11px var(--body)}
+.promotion-controls{display:flex;align-items:center;gap:9px}
+.promotion-search{width:220px}
+.promotion-controls select{height:37px;max-width:155px;padding:0 10px;border:1px solid #E8E0D7;background:#FFFEFC;color:#6D5C50;font-size:9px}
+.promotion-table th{height:43px}
+.promotion-table td{height:76px}
+.promotion-title-cell{display:flex;min-width:235px;align-items:center;gap:11px}
+.promotion-row-icon{display:grid;width:36px;height:36px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:15px}
+.promotion-title-cell strong,.promotion-title-cell small{display:block}
+.promotion-title-cell strong{max-width:300px;overflow:hidden;color:var(--ink);font-size:10px;text-overflow:ellipsis}
+.promotion-title-cell small{max-width:320px;margin-top:4px;overflow:hidden;color:#9A8A7E;font-size:8px;text-overflow:ellipsis;white-space:nowrap}
+.promotion-discount{color:#916B4B;font-size:11px;font-weight:800;white-space:nowrap}
+.promotion-status{display:inline-flex;align-items:center;gap:6px;font-size:9px}
+.promotion-status i{width:6px;height:6px;border-radius:50%;background:#6C946C}
+.promotion-status-scheduled i{background:#C38A4C}
+.promotion-status-draft i,.promotion-status-archived i{background:#A99D92}
+.promotion-status-expired i{background:#B97878}
+.promotion-date{color:#8F8075;font-size:9px;white-space:nowrap}
+.promotion-controls select:focus,.promotion-search:focus-within{border-color:var(--caramel);outline:0;box-shadow:0 0 0 3px rgba(185,120,69,.08)}
+.promotion-table tr[hidden]{display:none}
+@media(max-width:1050px){.promotion-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.promotion-toolbar{align-items:flex-start;flex-direction:column}.promotion-controls{width:100%}.promotion-search{flex:1;width:auto}}
+@media(max-width:760px){.promotion-stat-grid{gap:9px}.promotion-stat-card{padding:13px;gap:9px}.promotion-stat-icon{width:31px;height:31px}.promotion-stat-card strong{font-size:22px}}
+@media(max-width:460px){.promotion-stat-grid{grid-template-columns:1fr 1fr}.promotion-stat-card{padding:11px 9px}.promotion-stat-card small{font-size:8px}.promotion-stat-card strong{font-size:20px}.promotion-controls{align-items:stretch;flex-direction:column}.promotion-controls select{max-width:none;width:100%}.promotion-title-cell{min-width:205px}.promotion-next-step{font-size:7px}}
