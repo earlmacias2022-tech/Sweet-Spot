@@ -42,6 +42,17 @@ try {
     $findProducts->execute(['category_id' => $categoryId]);
     $products = $findProducts->fetchAll();
 
+    $expectedProductCount = filter_input(INPUT_POST, 'expected_product_count', FILTER_VALIDATE_INT);
+    if ($expectedProductCount === false || $expectedProductCount === null || $expectedProductCount !== count($products)) {
+        $pdo->rollBack();
+        $_SESSION['category_toast'] = [
+            'type' => 'error',
+            'message' => 'The number of products in this category has changed. Please review the category and try again.',
+        ];
+        header('Location: ' . BASE_URL . '/admin/categories/index.php');
+        exit;
+    }
+
     $deleteProducts = $pdo->prepare('DELETE FROM products WHERE category_id = :category_id');
     $deleteProducts->execute(['category_id' => $categoryId]);
 
