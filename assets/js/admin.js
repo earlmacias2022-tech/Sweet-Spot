@@ -83,7 +83,7 @@ function filterDatabaseProducts() {
         if (!noResults) {
             noResults = document.createElement("tr");
             noResults.id = "product-filter-empty";
-            noResults.innerHTML = '<td colspan="4" class="category-no-results">No products match your search.</td>';
+            noResults.innerHTML = '<td colspan="5" class="category-no-results">No products match your search.</td>';
             productTableBody.appendChild(noResults);
         }
         noResults.hidden = false;
