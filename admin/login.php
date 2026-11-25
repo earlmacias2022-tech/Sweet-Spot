@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_username'] = $admin['username'];
             $_SESSION['admin_email'] = $admin['email'];
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            $_SESSION['login_success'] = 'You have successfully signed in. Welcome back, ' . $admin['username'] . '!';
 
             if (password_needs_rehash($admin['password'], PASSWORD_DEFAULT)) {
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
@@ -124,7 +125,21 @@ $csrfToken = admin_csrf_token();
             <div class="login-panel-footer"><span>NEED ACCESS?</span><span>Contact your system administrator.</span></div>
         </section>
     </main>
+    <?php if ($loginError !== ''): ?>
+    <div class="auth-toast auth-toast-error" id="auth-toast" role="alert" aria-live="assertive">
+        <span class="auth-toast-icon">!</span>
+        <span><?= htmlspecialchars($loginError, ENT_QUOTES, 'UTF-8') ?></span>
+        <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
+    </div>
+    <?php endif; ?>
     <script>
+    const authToast = document.querySelector('#auth-toast');
+    if (authToast) {
+        requestAnimationFrame(() => authToast.classList.add('is-visible'));
+        authToast.querySelector('.auth-toast-close').addEventListener('click', () => authToast.classList.remove('is-visible'));
+        window.setTimeout(() => authToast.classList.remove('is-visible'), 4500);
+    }
+
     const passwordInput = document.querySelector('#password');
     const passwordToggle = document.querySelector('#password-toggle');
     passwordToggle.addEventListener('click', () => {
