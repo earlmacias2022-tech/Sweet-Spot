@@ -207,6 +207,7 @@ unset($_SESSION['promotion_toast']);
                                         <th>STARTS</th>
                                         <th>ENDS</th>
                                         <th>DATE CREATED</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody id="promotion-table-body">
