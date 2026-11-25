@@ -38,7 +38,7 @@ $sampleProducts = [
             <span class="sidebar-section-label">WORKSPACE</span>
             <a href="#overview" class="sidebar-link active" data-view="overview"><span class="side-icon">⌂</span> Overview</a>
             <a href="#products" class="sidebar-link" data-view="products"><span class="side-icon">▧</span> Products <span class="side-count">06</span></a>
-            <a href="#categories" class="sidebar-link" data-view="categories"><span class="side-icon">▦</span> Categories</a>
+            <a href="<?= BASE_URL ?>/admin/categories/index.php" class="sidebar-link"><span class="side-icon">▦</span> Categories</a>
             <span class="sidebar-section-label sidebar-spaced">CONTENT</span>
             <a href="#announcements" class="sidebar-link" data-view="announcements"><span class="side-icon">◉</span> Announcements</a>
             <a href="#promotions" class="sidebar-link" data-view="promotions"><span class="side-icon">✳</span> Promotions</a>
@@ -97,7 +97,7 @@ $sampleProducts = [
                     <section class="admin-card quick-actions">
                         <div class="card-heading"><div><span class="card-overline">SHORTCUTS</span><h2>Quick actions</h2></div></div>
                         <a class="quick-action" href="<?= BASE_URL ?>/admin/products/add.php"><span class="quick-icon">＋</span><span><strong>Add a product</strong><small>Create a new menu entry</small></span><b>→</b></a>
-                        <button class="quick-action" type="button" data-view-link="categories"><span class="quick-icon">▦</span><span><strong>Manage categories</strong><small>Keep your menu organized</small></span><b>→</b></button>
+                        <a class="quick-action" href="<?= BASE_URL ?>/admin/categories/index.php"><span class="quick-icon">▦</span><span><strong>Manage categories</strong><small>Keep your menu organized</small></span><b>→</b></a>
                         <button class="quick-action" type="button" data-view-link="announcements"><span class="quick-icon">◉</span><span><strong>Post an announcement</strong><small>Share a bakery update</small></span><b>→</b></button>
                     </section>
                 </div>
