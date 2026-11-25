@@ -11,42 +11,46 @@ function escapeHTML(value) {
 }
 
 // Dashboard section navigation
-document.querySelectorAll("[data-view]").forEach(link => {
-    link.addEventListener("click", event => {
+function activateDashboardView(view, updateHash = true) {
+    const targetSection = document.getElementById('view-' + view);
+    if (!targetSection) return;
+    document.querySelectorAll('.sidebar-link[data-view]').forEach(link => {
+        const isActive = link.dataset.view === view;
+        link.classList.toggle('active', isActive);
+        if (isActive) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.admin-view').forEach(section => {
+        section.classList.toggle('active', section === targetSection);
+    });
+    const activeLink = document.querySelector('.sidebar-link[data-view="' + view + '"]');
+    const breadcrumb = document.querySelector('#breadcrumb-current');
+    if (breadcrumb && activeLink) breadcrumb.textContent = activeLink.textContent.trim();
+    document.querySelector('#admin-sidebar')?.classList.remove('is-open');
+    if (updateHash && window.location.hash !== '#' + view) window.location.hash = view;
+}
+
+document.querySelectorAll('.sidebar-link[data-view]').forEach(link => {
+    link.addEventListener('click', event => {
         event.preventDefault();
-
-        const view = link.dataset.view;
-        document.querySelectorAll(".sidebar-link[data-view]").forEach(item => {
-            item.classList.toggle("active", item.dataset.view === view);
-        });
-
-        document.querySelectorAll(".admin-view").forEach(section => {
-            section.classList.toggle("active", section.id === "view-" + view);
-        });
-
-        const breadcrumb = document.querySelector("#breadcrumb-current");
-        if (breadcrumb) {
-            breadcrumb.textContent = link.textContent.trim().replace(/\d+/g, "").trim();
-        }
-
-        document.querySelector("#admin-sidebar")?.classList.remove("is-open");
-        window.location.hash = view;
+        activateDashboardView(link.dataset.view);
     });
 });
 
-// Links and shortcuts that open a dashboard section
-document.querySelectorAll("[data-view-link]").forEach(link => {
-    link.addEventListener("click", event => {
+document.querySelectorAll('[data-view-link]').forEach(link => {
+    link.addEventListener('click', event => {
         event.preventDefault();
-        const view = link.dataset.viewLink;
-        document.querySelector('[data-view="' + view + '"]')?.click();
+        activateDashboardView(link.dataset.viewLink);
     });
 });
 
-// Mobile sidebar
-document.querySelector("#sidebar-toggle")?.addEventListener("click", () => {
-    document.querySelector("#admin-sidebar")?.classList.toggle("is-open");
-});
+function restoreDashboardViewFromHash() {
+    const requestedView = window.location.hash.slice(1);
+    activateDashboardView(requestedView || 'overview', false);
+}
+window.addEventListener('hashchange', restoreDashboardViewFromHash);
+window.addEventListener('pageshow', restoreDashboardViewFromHash);
+restoreDashboardViewFromHash();
 
 // Product list filtering uses the products already rendered from MySQL by PHP.
 // It does not create, edit, or delete records.
