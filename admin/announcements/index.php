@@ -229,8 +229,8 @@ unset($_SESSION['announcement_toast']);
                                             <td class="announcement-date"><?= announcement_escape(date('M j, Y', strtotime($announcement['created_at']))) ?></td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <button class="table-action-btn table-edit-btn" type="button" disabled title="Edit will be connected in the next step"><span>✎</span> Edit</button>
-                                                    <button class="table-action-btn table-delete-btn" type="button" disabled title="Delete action will be connected in the next step"><span>×</span> Delete</button>
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/announcements/edit.php?id=<?= (int) $announcement['id'] ?>"><span>✎</span> Edit</a>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-announcement-delete data-announcement-id="<?= (int) $announcement['id'] ?>" data-announcement-title="<?= announcement_escape($announcement['title']) ?>"><span>×</span> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -252,6 +252,23 @@ unset($_SESSION['announcement_toast']);
     </main>
 </div>
 
+<div class="delete-modal-backdrop" id="announcement-delete-modal" hidden>
+    <section class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="announcement-delete-title" aria-describedby="announcement-delete-description">
+        <div class="delete-modal-icon" aria-hidden="true">!</div>
+        <span class="delete-modal-eyebrow">PLEASE CONFIRM</span>
+        <h2 id="announcement-delete-title">Delete this announcement?</h2>
+        <p id="announcement-delete-description">You're about to permanently remove <strong id="delete-announcement-title">this announcement</strong>.</p>
+        <div class="delete-modal-note"><span>↳</span><p>This announcement will be permanently deleted from your records. This action cannot be undone.</p></div>
+        <form id="announcement-delete-confirm-form" action="<?= BASE_URL ?>/admin/announcements/delete.php" method="POST" class="delete-modal-actions">
+            <input type="hidden" name="csrf_token" value="<?= announcement_escape($csrfToken) ?>">
+            <input type="hidden" name="id" id="delete-announcement-id" value="">
+            <input type="hidden" name="confirm_delete" value="1">
+            <button type="button" class="delete-modal-cancel" data-close-announcement-delete>Cancel</button>
+            <button type="submit" class="delete-modal-confirm">Yes, delete announcement</button>
+        </form>
+    </section>
+</div>
+
 <script>
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
@@ -261,6 +278,41 @@ sidebarToggle?.addEventListener('click', () => {
 document.querySelectorAll('.auth-toast').forEach((toast) => {
     toast.querySelector('.auth-toast-close')?.addEventListener('click', () => toast.remove());
     window.setTimeout(() => toast.remove(), 5000);
+});
+
+const announcementDeleteModal = document.querySelector('#announcement-delete-modal');
+let announcementDeleteTrigger = null;
+
+const closeAnnouncementDeleteModal = () => {
+    if (!announcementDeleteModal) return;
+    announcementDeleteModal.hidden = true;
+    document.body.classList.remove('delete-modal-open');
+    announcementDeleteTrigger?.focus();
+};
+
+document.querySelectorAll('[data-open-announcement-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        announcementDeleteTrigger = button;
+        document.querySelector('#delete-announcement-id').value = button.dataset.announcementId || '';
+        document.querySelector('#delete-announcement-title').textContent = button.dataset.announcementTitle || 'this announcement';
+        announcementDeleteModal.hidden = false;
+        document.body.classList.add('delete-modal-open');
+        announcementDeleteModal.querySelector('[data-close-announcement-delete]')?.focus();
+    });
+});
+
+document.querySelectorAll('[data-close-announcement-delete]').forEach((button) => {
+    button.addEventListener('click', closeAnnouncementDeleteModal);
+});
+
+announcementDeleteModal?.addEventListener('click', (event) => {
+    if (event.target === announcementDeleteModal) closeAnnouncementDeleteModal();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && announcementDeleteModal && !announcementDeleteModal.hidden) {
+        closeAnnouncementDeleteModal();
+    }
 });
 
 const announcementSearch = document.querySelector('#announcement-search');
