@@ -96,7 +96,7 @@ $sampleProducts = [
                     </section>
                     <section class="admin-card quick-actions">
                         <div class="card-heading"><div><span class="card-overline">SHORTCUTS</span><h2>Quick actions</h2></div></div>
-                        <button class="quick-action" type="button" data-open-product><span class="quick-icon">＋</span><span><strong>Add a product</strong><small>Create a new menu entry</small></span><b>→</b></button>
+                        <a class="quick-action" href="<?= BASE_URL ?>/admin/products/add.php"><span class="quick-icon">＋</span><span><strong>Add a product</strong><small>Create a new menu entry</small></span><b>→</b></a>
                         <button class="quick-action" type="button" data-view-link="categories"><span class="quick-icon">▦</span><span><strong>Manage categories</strong><small>Keep your menu organized</small></span><b>→</b></button>
                         <button class="quick-action" type="button" data-view-link="announcements"><span class="quick-icon">◉</span><span><strong>Post an announcement</strong><small>Share a bakery update</small></span><b>→</b></button>
                     </section>
@@ -109,7 +109,7 @@ $sampleProducts = [
             </section>
 
             <section class="admin-view" id="view-products">
-                <div class="page-heading products-page-heading"><div><p class="admin-kicker">YOUR BAKERY CATALOG</p><h1>Products <em>& menu.</em></h1><p>Add, update, and organize the treats shown on your website.</p></div><button class="admin-primary-btn" type="button" data-open-product>＋ Add product</button></div>
+                <div class="page-heading products-page-heading"><div><p class="admin-kicker">YOUR BAKERY CATALOG</p><h1>Products <em>& menu.</em></h1><p>Add, update, and organize the treats shown on your website.</p></div><a href="<?= BASE_URL ?>/admin/products/add.php" class="admin-primary-btn">＋ Add product</a></div>
                 <div class="preview-banner"><span>✦</span><p><strong>Product manager preview.</strong> Changes work in this browser session only. They will not be saved to MySQL until backend integration.</p><button type="button" class="banner-close" aria-label="Dismiss notice">×</button></div>
                 <div class="product-manager-card">
                     <div class="manager-toolbar"><div class="manager-title"><span class="card-overline">MENU INVENTORY</span><h2>All products <span id="product-count">(6)</span></h2></div><div class="manager-controls"><div class="admin-search"><span>⌕</span><input id="product-search" type="search" placeholder="Search products..." aria-label="Search products"></div><select id="category-filter" aria-label="Filter by category"><option value="all">All categories</option><option>Pastries</option><option>Bread & Buns</option><option>Cakes</option></select></div></div>
