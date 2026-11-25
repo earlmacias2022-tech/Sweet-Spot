@@ -230,6 +230,7 @@ unset($_SESSION['promotion_toast']);
                                             <td class="promotion-date"><?= $promotion['start_date'] ? promotion_escape(date('M j, Y · g:i A', strtotime($promotion['start_date']))) : 'Immediately' ?></td>
                                             <td class="promotion-date"><?= $promotion['end_date'] ? promotion_escape(date('M j, Y · g:i A', strtotime($promotion['end_date']))) : 'No end date' ?></td>
                                             <td class="promotion-date"><?= promotion_escape(date('M j, Y', strtotime($promotion['created_at']))) ?></td>
+<td><a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/promotions/edit.php?id=<?= (int) $promotion['id'] ?>">Edit</a> <button class="table-action-btn table-delete-btn" type="button" data-open-promotion-delete data-promotion-id="<?= (int) $promotion['id'] ?>" data-promotion-title="<?= promotion_escape($promotion['title']) ?>">Delete</button></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
