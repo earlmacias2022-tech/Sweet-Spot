@@ -160,7 +160,17 @@ function dashboard_product_image(?string $image): string
                         <td><span class="category-pill"><?= dashboard_escape($product['category_name'] ?? 'Uncategorized') ?></span></td>
                         <td class="table-price">₱<?= number_format((float) $product['price'], 2) ?></td>
                         <td><span class="product-status <?= $statusClass ?>"><i></i><?= dashboard_escape($statusText) ?></span></td>
-                        <td><a class="table-action-link" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>">Edit <span>↗</span></a></td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>"><span>✎</span> Edit</a>
+                                <form class="delete-product-form" action="<?= BASE_URL ?>/admin/products/delete.php" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this product? This action cannot be undone.');">
+                                    <input type="hidden" name="csrf_token" value="<?= dashboard_escape(admin_csrf_token()) ?>">
+                                    <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
+                                    <input type="hidden" name="confirm_delete" value="1">
+                                    <button class="table-action-btn table-delete-btn" type="submit"><span>×</span> Delete</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody></table></div>
