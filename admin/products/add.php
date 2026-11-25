@@ -121,6 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if ($errors && $uploadedFilePath && is_file($uploadedFilePath)) {
+        unlink($uploadedFilePath);
+        $uploadedFilePath = null;
+        $imagePath = null;
+    }
+
     if (!$errors) {
         $baseSlug = strtolower(trim($old['name']));
         $baseSlug = preg_replace('/[^a-z0-9]+/', '-', $baseSlug);
