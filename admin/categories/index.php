@@ -54,9 +54,10 @@ $csrfToken = admin_csrf_token();
 </head>
 <body class="dashboard-page">
 <?php if (!empty($_SESSION['category_toast'])): ?>
-    <div class="auth-toast toast-success is-visible" role="status" aria-live="polite">
-        <span class="auth-toast-icon">✓</span>
-        <span><?= category_escape($_SESSION['category_toast']['message'] ?? 'Category saved successfully.') ?></span>
+    <?php $categoryToast = $_SESSION['category_toast']; unset($_SESSION['category_toast']); ?>
+    <div class="auth-toast <?= ($categoryToast['type'] ?? '') === 'success' ? 'toast-success' : '' ?> is-visible" role="status" aria-live="polite">
+        <span class="auth-toast-icon"><?= ($categoryToast['type'] ?? '') === 'success' ? '✓' : '!' ?></span>
+        <span><?= category_escape($categoryToast['message'] ?? 'Category action completed.') ?></span>
         <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
     </div>
     <?php unset($_SESSION['category_toast']); ?>
@@ -164,6 +165,7 @@ $csrfToken = admin_csrf_token();
                                         <th>PRODUCTS</th>
                                         <th>STATUS</th>
                                         <th>DATE CREATED</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody id="category-table-body">
@@ -182,6 +184,18 @@ $csrfToken = admin_csrf_token();
                                             <td><span class="category-product-count"><?= (int) $category['product_count'] ?></span></td>
                                             <td><span class="category-status <?= $category['status'] === 'active' ? 'is-active' : 'is-inactive' ?>"><i></i><?= category_escape(ucfirst((string) ($category['status'] ?? 'inactive'))) ?></span></td>
                                             <td class="category-date"><?= $category['created_at'] ? category_escape(date('M j, Y', strtotime($category['created_at']))) : '—' ?></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/categories/edit.php?id=<?= (int) $category['id'] ?>"><span>✎</span> Edit</a>
+                                                    <form class="delete-category-form" action="<?= BASE_URL ?>/admin/categories/delete.php" method="POST" data-category-name="<?= category_escape($category['name']) ?>" data-product-count="<?= (int) $category['product_count'] ?>">
+                                                        <input type="hidden" name="csrf_token" value="<?= category_escape($csrfToken) ?>">
+                                                        <input type="hidden" name="id" value="<?= (int) $category['id'] ?>">
+                                                        <input type="hidden" name="expected_product_count" value="<?= (int) $category['product_count'] ?>">
+                                                        <input type="hidden" name="confirm_delete" value="1">
+                                                        <button class="table-action-btn table-delete-btn" type="submit"><span>×</span> Delete</button>
+                                                    </form>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -209,6 +223,23 @@ sidebarToggle?.addEventListener('click', () => {
 document.querySelectorAll('.auth-toast').forEach((toast) => {
     toast.querySelector('.auth-toast-close')?.addEventListener('click', () => toast.remove());
     window.setTimeout(() => toast.remove(), 5000);
+});
+
+document.querySelectorAll('.delete-category-form').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+        const categoryName = form.dataset.categoryName || 'this category';
+        const productCount = Number(form.dataset.productCount || 0);
+        let message = 'Are you sure you want to permanently delete "' + categoryName + '"?';
+
+        if (productCount > 0) {
+            message += '\\n\\nWARNING: This category currently contains ' + productCount + ' product' + (productCount === 1 ? '' : 's') + '. Deleting it will also permanently delete all ' + productCount + ' associated product' + (productCount === 1 ? '' : 's') + '.';
+        } else {
+            message += '\\n\\nThis category has no associated products.';
+        }
+
+        message += '\\n\\nThis action cannot be undone.';
+        if (!window.confirm(message)) event.preventDefault();
+    });
 });
 
 const categorySearch = document.querySelector('#category-search');
