@@ -3,6 +3,8 @@ require_once __DIR__ . '/../config/auth.php';
 admin_require_login();
 
 $pageTitle = 'Dashboard';
+$loginSuccess = $_SESSION['login_success'] ?? '';
+unset($_SESSION['login_success']);
 
 $sampleProducts = [
     ['id'=>1,'name'=>'Butter Croissant','category'=>'Pastries','price'=>85,'stock'=>'Available','image'=>'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=160&q=80'],
@@ -147,6 +149,16 @@ $sampleProducts = [
     </section>
 </div>
 <div class="toast-message" id="admin-toast" role="status" aria-live="polite"></div>
+<?php if ($loginSuccess !== ''): ?>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const toast = document.querySelector("#admin-toast");
+    toast.textContent = <?= json_encode($loginSuccess, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    toast.classList.add("show", "toast-success");
+    window.setTimeout(() => toast.classList.remove("show"), 3500);
+});
+</script>
+<?php endif; ?>
 
 <script src="<?= BASE_URL ?>/assets/js/admin.js"></script>
 </body>
