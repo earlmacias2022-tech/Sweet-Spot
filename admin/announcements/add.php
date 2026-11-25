@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($old['content'] === '') {
         $errors[] = 'Please enter the announcement content.';
+    } elseif (strlen($old['content']) > 65535) {
+        $errors[] = 'The announcement content is too long. Please keep it within the text field limit.';
     }
 
     if (!in_array($old['status'], ['draft', 'published', 'archived'], true)) {
