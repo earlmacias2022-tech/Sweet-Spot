@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . '/../config/auth.php';
+admin_require_login();
+
 $pageTitle = 'Dashboard';
-require_once __DIR__ . '/../config/app.php';
 
 $sampleProducts = [
     ['id'=>1,'name'=>'Butter Croissant','category'=>'Pastries','price'=>85,'stock'=>'Available','image'=>'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=160&q=80'],
@@ -46,7 +48,10 @@ $sampleProducts = [
         <div class="sidebar-bottom">
             <div class="sidebar-help"><span>✦</span><div><strong>Need a hand?</strong><small>Management guide</small></div><b>↗</b></div>
             <a href="<?= BASE_URL ?>/index.php" class="sidebar-website">↗ <span>View public website</span></a>
-            <a href="<?= BASE_URL ?>/admin/login.php" class="sidebar-logout">⇥ <span>Sign out</span></a>
+            <form action="<?= BASE_URL ?>/admin/logout.php" method="POST" class="sidebar-logout-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(admin_csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                <button type="submit" class="sidebar-logout">⇥ <span>Sign out</span></button>
+            </form>
         </div>
     </aside>
 
@@ -59,7 +64,7 @@ $sampleProducts = [
             <div class="topbar-right">
                 <span class="preview-chip"><i></i> PREVIEW MODE</span>
                 <button class="topbar-icon" type="button" aria-label="Notifications">♧<b></b></button>
-                <div class="admin-profile"><span class="profile-avatar">S</span><div><strong>Sweet Spot Staff</strong><small>Administrator</small></div><span class="profile-chevron">⌄</span></div>
+                <div class="admin-profile"><span class="profile-avatar"><?= htmlspecialchars(strtoupper(substr($_SESSION['admin_username'], 0, 1)), ENT_QUOTES, 'UTF-8') ?></span><div><strong><?= htmlspecialchars($_SESSION['admin_username'], ENT_QUOTES, 'UTF-8') ?></strong><small>Administrator</small></div><span class="profile-chevron">⌄</span></div>
             </div>
         </header>
 
