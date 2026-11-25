@@ -1,6 +1,68 @@
 <?php
 $pageTitle = 'Staff Sign In';
-require_once __DIR__ . '/../config/app.php';
+
+require_once __DIR__ . '/../config/auth.php';
+
+if (admin_is_logged_in()) {
+    header('Location: ' . BASE_URL . '/admin/dashboard.php');
+    exit;
+}
+
+require_once __DIR__ . '/../config/database.php';
+
+$loginError = '';
+$identifier = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $identifier = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $csrfToken = $_POST['csrf_token'] ?? '';
+
+    if (!admin_verify_csrf_token($csrfToken)) {
+        $loginError = 'Your session expired. Please refresh the page and try again.';
+    } elseif ($identifier === '' || $password === '') {
+        $loginError = 'Please enter your username or email and password.';
+    } else {
+        $stmt = $pdo->prepare(
+            'SELECT id, username, email, password
+             FROM admins
+             WHERE username = :username OR email = :email
+             LIMIT 1'
+        );
+
+        $stmt->execute([
+            'username' => $identifier,
+            'email' => $identifier,
+        ]);
+
+        $admin = $stmt->fetch();
+
+        if ($admin && password_verify($password, $admin['password'])) {
+            session_regenerate_id(true);
+
+            $_SESSION['admin_id'] = (int) $admin['id'];
+            $_SESSION['admin_username'] = $admin['username'];
+            $_SESSION['admin_email'] = $admin['email'];
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+            if (password_needs_rehash($admin['password'], PASSWORD_DEFAULT)) {
+                $newHash = password_hash($password, PASSWORD_DEFAULT);
+                $update = $pdo->prepare('UPDATE admins SET password = :password WHERE id = :id');
+                $update->execute([
+                    'password' => $newHash,
+                    'id' => $admin['id'],
+                ]);
+            }
+
+            header('Location: ' . BASE_URL . '/admin/dashboard.php');
+            exit;
+        }
+
+        $loginError = 'The username/email or password you entered is incorrect.';
+    }
+}
+
+$csrfToken = admin_csrf_token();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,22 +101,25 @@ require_once __DIR__ . '/../config/app.php';
                 <h2>Sign in to<br>your workspace.</h2>
                 <p class="login-subtitle">Enter your staff credentials to continue.</p>
 
-                <form class="admin-login-form" id="demo-login-form">
+                <form class="admin-login-form" id="admin-login-form" method="POST" action="<?= BASE_URL ?>/admin/login.php">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                     <div class="admin-field">
                         <label for="username">Username or email</label>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" value="<?= htmlspecialchars($identifier, ENT_QUOTES, 'UTF-8') ?>" required>
                     </div>
                     <div class="admin-field">
-                        <div class="field-label-row"><label for="password">Password</label><a href="#" class="quiet-link" id="forgot-link">Forgot password?</a></div>
+                        <div class="field-label-row"><label for="password">Password</label><span class="quiet-link">Staff account access</span></div>
                         <div class="password-wrap">
                             <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
                             <button type="button" class="password-toggle" id="password-toggle" aria-label="Show password">Show</button>
                         </div>
                     </div>
                     <button class="admin-primary-btn login-submit" type="submit">Sign in <span>↗</span></button>
-                    <p class="login-feedback" id="login-feedback" role="status" aria-live="polite"></p>
+                    <?php if ($loginError !== ''): ?>
+                        <p class="login-feedback login-error" role="alert"><?= htmlspecialchars($loginError, ENT_QUOTES, 'UTF-8') ?></p>
+                    <?php endif; ?>
                 </form>
-                <div class="preview-notice"><span>i</span><p><strong>Design preview</strong>This login screen is currently UI-only. Secure authentication will be connected in the backend phase.</p></div>
+                <div class="preview-notice"><span>i</span><p><strong>Authorized staff only</strong>Your sign-in is checked securely against the Sweet Spot admin database.</p></div>
             </div>
             <div class="login-panel-footer"><span>NEED ACCESS?</span><span>Contact your system administrator.</span></div>
         </section>
@@ -67,14 +132,6 @@ require_once __DIR__ . '/../config/app.php';
         passwordInput.type = reveal ? 'text' : 'password';
         passwordToggle.textContent = reveal ? 'Hide' : 'Show';
         passwordToggle.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
-    });
-    document.querySelector('#demo-login-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        document.querySelector('#login-feedback').textContent = 'Preview mode: authentication is not connected yet.';
-    });
-    document.querySelector('#forgot-link').addEventListener('click', (event) => {
-        event.preventDefault();
-        document.querySelector('#login-feedback').textContent = 'Password recovery will be available after backend setup.';
     });
     </script>
 </body>
