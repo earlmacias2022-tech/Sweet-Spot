@@ -6,6 +6,7 @@ $pageTitle = $pageTitle ?? SITE_NAME;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +37,7 @@ $pageTitle = $pageTitle ?? SITE_NAME;
                 <a href="<?= BASE_URL ?>/index.php#products" class="nav-link">Our Menu</a>
                 <a href="<?= BASE_URL ?>/index.php#about" class="nav-link">Our Story</a>
                 <a href="<?= BASE_URL ?>/index.php#contact" class="nav-link">Contact</a>
-                <a href="<?= BASE_URL ?>/index.php#products" class="btn btn-small nav-cta">Explore Menu <span aria-hidden="true">↗</span></a>
+                <a href="<?= BASE_URL ?>../admin/login.php" class="btn btn-small nav-cta">Login Portal <span aria-hidden="true">↗</span></a>
             </nav>
         </div>
     </header>
