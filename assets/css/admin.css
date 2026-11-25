@@ -43,7 +43,7 @@ img{display:block;max-width:100%}
 .password-wrap input{padding-right:60px}
 .password-toggle{position:absolute;top:50%;right:12px;border:0;background:none;color:var(--caramel-dark,var(--caramel));font-size:9px;font-weight:700;cursor:pointer;transform:translateY(-50%)}
 .login-submit{width:100%;margin-top:5px;min-height:49px}
-.login-feedback{min-height:20px;margin-top:10px;color:#8B603E;font-size:10px}
+.login-feedback{min-height:20px;margin-top:10px;color:#8B603E;font-size:10px}.login-error{color:#A64D42}
 .preview-notice{display:flex;gap:12px;margin-top:20px;padding:14px;background:#F4EBDD}
 .preview-notice>span{display:grid;width:19px;height:19px;flex:0 0 auto;place-items:center;border-radius:50%;background:#E6D1BA;color:#785437;font-size:10px;font-weight:700}
 .preview-notice p{color:var(--muted);font-size:9px;line-height:1.65}
@@ -74,7 +74,7 @@ img{display:block;max-width:100%}
 .sidebar-help strong{font-size:9px}
 .sidebar-help small{color:#BDA99A;font-size:8px}
 .sidebar-help b{color:#D5A77E;font-size:12px}
-.sidebar-website,.sidebar-logout{display:flex;align-items:center;gap:11px;padding:9px 12px;color:rgba(251,244,234,.7);font-size:10px}
+.sidebar-website,.sidebar-logout{display:flex;align-items:center;gap:11px;padding:9px 12px;color:rgba(251,244,234,.7);font-size:10px}.sidebar-logout-form{margin:0}.sidebar-logout{width:100%;border:0;background:none;text-align:left;cursor:pointer;font-family:inherit}
 .sidebar-website:hover,.sidebar-logout:hover{color:#fff}
 .admin-main{min-height:100vh;margin-left:245px}
 .admin-topbar{position:sticky;z-index:20;top:0;display:flex;height:73px;align-items:center;justify-content:space-between;gap:20px;padding:0 38px;border-bottom:1px solid #EAE2D9;background:rgba(255,252,247,.94);backdrop-filter:blur(12px)}
