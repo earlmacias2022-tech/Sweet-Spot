@@ -553,3 +553,23 @@ body.delete-modal-open{overflow:hidden}
 .review-confirm-delete{min-height:36px;padding:0 15px;border:1px solid #A65B50;background:#A65B50;color:#fff}
 .review-confirm-delete:hover{background:#914B42}
 @media(max-width:460px){.review-delete-dialog{padding:25px 19px}.review-delete-dialog-actions{flex-direction:column-reverse}.review-delete-dialog-actions button{width:100%;min-height:40px}}
+
+
+/* POLL MANAGEMENT */
+.poll-question-cell{display:flex;min-width:260px;align-items:center;gap:11px}
+.poll-row-icon{display:grid;width:36px;height:36px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:15px}
+.poll-question-cell strong,.poll-question-cell small{display:block}
+.poll-question-cell strong{max-width:330px;overflow:hidden;color:var(--ink);font-size:10px;text-overflow:ellipsis}
+.poll-question-cell small{max-width:330px;margin-top:4px;overflow:hidden;color:#9A8A7E;font-size:8px;text-overflow:ellipsis;white-space:nowrap}
+.poll-product-name{min-width:145px;color:#6F6055;font-size:9px}
+.poll-count{display:inline-grid;min-width:27px;height:25px;place-items:center;padding:0 7px;background:#F5EBDD;color:#81664F;font-size:9px;font-weight:700}
+.poll-vote-count{color:var(--ink);font-size:11px}
+.poll-status{display:inline-flex;align-items:center;gap:6px;font-size:9px}
+.poll-status i{width:6px;height:6px;border-radius:50%;background:#6C946C}
+.poll-status-scheduled i{background:#C38A4C}
+.poll-status-draft i{background:#A99D92}
+.poll-status-closed i{background:#A99D92}
+.poll-status-expired i{background:#B97878}
+.poll-stat-active{background:#EDF2E9;color:#64835E}
+.poll-table tr[hidden]{display:none}
+@media(max-width:760px){.poll-question-cell{min-width:230px}.poll-question-cell strong,.poll-question-cell small{max-width:260px}}
