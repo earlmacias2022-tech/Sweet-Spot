@@ -39,7 +39,7 @@ try {
     $savedOptions = $optionQuery->fetchAll();
 
     $productQuery = $pdo->prepare(
-        "SELECT id, name FROM products
+        "SELECT id, name, status, is_available FROM products
          WHERE (status = 'published' AND is_available = 1) OR id = :current_product
          ORDER BY name ASC"
     );
