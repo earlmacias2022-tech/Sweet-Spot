@@ -2218,3 +2218,87 @@ h2 em,
         padding: 23px 19px;
     }
 }
+
+
+/* --------------------------------
+   CUSTOMER PRODUCT POLLS
+--------------------------------- */
+
+.product-poll-section {
+    margin-top: 75px;
+    padding: 42px;
+    border: 1px solid var(--color-line);
+    background: #FFFCF7;
+}
+
+.product-poll-heading {
+    max-width: 760px;
+    margin-bottom: 25px;
+}
+
+.product-poll-heading .eyebrow {
+    margin-bottom: 13px;
+}
+
+.product-poll-heading h2 {
+    margin-bottom: 12px;
+    color: var(--color-cocoa);
+    font-family: var(--font-display);
+    font-size: clamp(27px, 3.5vw, 38px);
+    line-height: 1.2;
+}
+
+.product-poll-heading > p:last-child {
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.product-poll-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.product-poll-option {
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 17px;
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+}
+
+.product-poll-option > span {
+    flex: 0 0 auto;
+    color: var(--color-caramel);
+    font-family: var(--font-display);
+    font-size: 20px;
+}
+
+.product-poll-option p {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.product-poll-note {
+    margin: 18px 0 0;
+    color: var(--color-muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+    .product-poll-section {
+        margin-top: 55px;
+        padding: 27px 20px;
+    }
+
+    .product-poll-options {
+        grid-template-columns: 1fr;
+    }
+}
