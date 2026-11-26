@@ -215,6 +215,7 @@ $csrfToken = admin_csrf_token();
                                         <th>VOTES</th>
                                         <th>STATUS</th>
                                         <th>DATE CREATED</th>
+                                        <th>ACTIONS</th>
                                     </tr>
                                 </thead>
                                 <tbody id="poll-table-body">
@@ -238,6 +239,7 @@ $csrfToken = admin_csrf_token();
                                             <td><strong class="poll-vote-count"><?= (int) $poll['vote_count'] ?></strong></td>
                                             <td><span class="poll-status poll-status-<?= poll_escape($effectiveStatus) ?>"><i></i><?= poll_escape(ucfirst($effectiveStatus)) ?></span></td>
                                             <td class="announcement-date"><?= $poll['created_at'] ? poll_escape(date('M j, Y', strtotime($poll['created_at']))) : '—' ?></td>
+                                            <td><a href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>" class="admin-secondary-btn poll-edit-link">Edit</a></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
