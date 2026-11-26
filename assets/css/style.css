@@ -2254,6 +2254,17 @@ h2 em,
     line-height: 1.8;
 }
 
+.product-poll-form {
+    margin: 0;
+}
+
+.product-poll-fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 .product-poll-options {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2268,21 +2279,45 @@ h2 em,
     padding: 14px 17px;
     border: 1px solid var(--color-line);
     background: var(--color-card);
+    cursor: pointer;
+    transition: border-color .2s ease, background .2s ease, transform .2s ease;
 }
 
-.product-poll-option > span {
+.product-poll-option:hover {
+    border-color: var(--color-caramel);
+    transform: translateY(-1px);
+}
+
+.product-poll-option:has(input:checked) {
+    border-color: var(--color-caramel);
+    background: #F7EBDD;
+}
+
+.product-poll-option input {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    margin: 0;
+    accent-color: var(--color-cocoa);
+}
+
+.product-poll-option-mark {
     flex: 0 0 auto;
     color: var(--color-caramel);
     font-family: var(--font-display);
     font-size: 20px;
 }
 
-.product-poll-option p {
-    margin: 0;
+.product-poll-option-text {
     color: var(--color-text);
     font-size: 12px;
     line-height: 1.6;
     overflow-wrap: anywhere;
+}
+
+.product-poll-submit {
+    margin-top: 20px;
+    cursor: pointer;
 }
 
 .product-poll-note {
@@ -2290,6 +2325,66 @@ h2 em,
     color: var(--color-muted);
     font-size: 10px;
     line-height: 1.6;
+}
+
+.poll-vote-alert,
+.poll-voted-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 15px 17px;
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+    color: var(--color-text);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.poll-vote-alert-success,
+.poll-voted-message {
+    border-color: #C8D8BE;
+    background: #F0F5EB;
+    color: #45623D;
+}
+
+.poll-vote-alert-error {
+    border-color: #E5C5B9;
+    background: #FBF0EC;
+    color: #8A4030;
+}
+
+.poll-vote-alert-info {
+    border-color: #E3D6C9;
+    background: #FFFCF7;
+    color: var(--color-text);
+}
+
+.poll-voted-message > span {
+    flex: 0 0 auto;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.poll-voted-message strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.poll-voted-message p {
+    margin: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 @media (max-width: 760px) {
