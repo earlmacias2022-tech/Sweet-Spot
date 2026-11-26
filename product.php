@@ -18,6 +18,24 @@ $reviewCount = 0;
 $averageRating = 0;
 $activePoll = null;
 $pollOptions = [];
+$pollAlreadyVoted = false;
+$pollVoteFlash = $_SESSION['poll_vote_flash'] ?? null;
+unset($_SESSION['poll_vote_flash']);
+
+$voterCookieName = 'sweet_spot_voter';
+$voterToken = $_COOKIE[$voterCookieName] ?? '';
+if (!is_string($voterToken) || !preg_match('/\\A[a-f0-9]{64}\\z/', $voterToken)) {
+    $voterToken = bin2hex(random_bytes(32));
+    $isSecureCookie = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    setcookie($voterCookieName, $voterToken, [
+        'expires' => time() + (60 * 60 * 24 * 365),
+        'path' => BASE_URL . '/',
+        'secure' => $isSecureCookie,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+}
+$voterTokenHash = hash('sha256', $voterToken);
 
 if ($productId) {
     try {
@@ -51,7 +69,7 @@ function product_detail_image_url(?string $image): string
     return $image ? BASE_URL . '/' . ltrim($image, '/') : '';
 }
 
-if ($product && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($product && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'review') {
     $reviewName = trim((string) ($_POST['customer_name'] ?? ''));
     $reviewText = trim((string) ($_POST['review'] ?? ''));
     $reviewRating = filter_var($_POST['rating'] ?? null, FILTER_VALIDATE_INT);
@@ -149,6 +167,20 @@ if ($product) {
             $pollOptionsQuery->execute(['poll_id' => (int) $activePoll['id']]);
             $pollOptions = $pollOptionsQuery->fetchAll();
         }
+
+        if ($activePoll && $pollOptions) {
+            $votedQuery = $pdo->prepare(
+                "SELECT 1
+                 FROM poll_votes
+                 WHERE poll_id = :poll_id AND voter_token_hash = :token_hash
+                 LIMIT 1"
+            );
+            $votedQuery->execute([
+                'poll_id' => (int) $activePoll['id'],
+                'token_hash' => $voterTokenHash,
+            ]);
+            $pollAlreadyVoted = (bool) $votedQuery->fetchColumn();
+        }
     } catch (PDOException $exception) {
         error_log('Sweet Spot active product poll loading failed: ' . $exception->getMessage());
         $activePoll = null;
@@ -210,7 +242,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
 
             <?php if ($activePoll && $pollOptions): ?>
-                <section class="product-poll-section" aria-labelledby="product-poll-title">
+                <section class="product-poll-section" id="product-poll" aria-labelledby="product-poll-title">
                     <div class="product-poll-heading">
                         <p class="eyebrow"><span></span> YOUR OPINION MATTERS</p>
                         <h2 id="product-poll-title"><?= product_detail_escape($activePoll['question']) ?></h2>
@@ -219,15 +251,43 @@ require_once __DIR__ . '/includes/header.php';
                         <?php endif; ?>
                     </div>
 
-                    <div class="product-poll-options" aria-label="Poll answer choices">
-                        <?php foreach ($pollOptions as $pollOption): ?>
-                            <div class="product-poll-option">
-                                <span aria-hidden="true">✧</span>
-                                <p><?= product_detail_escape($pollOption['option_text']) ?></p>
+                    <?php if ($pollVoteFlash): ?>
+                        <div class="poll-vote-alert poll-vote-alert-<?= product_detail_escape($pollVoteFlash['type'] ?? 'info') ?>" role="status">
+                            <?= product_detail_escape($pollVoteFlash['message'] ?? '') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($pollAlreadyVoted): ?>
+                        <div class="poll-voted-message" role="status">
+                            <span aria-hidden="true">✓</span>
+                            <div>
+                                <strong>Thanks for participating!</strong>
+                                <p>Your vote for this poll has already been recorded from this browser.</p>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <p class="product-poll-note">A quick customer poll for this product. Voting will be available soon.</p>
+                        </div>
+                    <?php else: ?>
+                        <form class="product-poll-form" action="<?= BASE_URL ?>/poll-vote.php" method="POST">
+                            <input type="hidden" name="csrf_token" value="<?= product_detail_escape(admin_csrf_token()) ?>">
+                            <input type="hidden" name="poll_id" value="<?= (int) $activePoll['id'] ?>">
+                            <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
+
+                            <fieldset class="product-poll-fieldset">
+                                <legend class="sr-only">Choose one answer</legend>
+                                <div class="product-poll-options">
+                                    <?php foreach ($pollOptions as $pollOption): ?>
+                                        <label class="product-poll-option">
+                                            <input type="radio" name="poll_option_id" value="<?= (int) $pollOption['id'] ?>" required>
+                                            <span class="product-poll-option-mark" aria-hidden="true">✧</span>
+                                            <span class="product-poll-option-text"><?= product_detail_escape($pollOption['option_text']) ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                            </fieldset>
+
+                            <button type="submit" class="btn product-poll-submit">Submit vote <span aria-hidden="true">↗</span></button>
+                        </form>
+                        <p class="product-poll-note">Choose one answer. Each browser can submit one vote for this poll.</p>
+                    <?php endif; ?>
                 </section>
             <?php endif; ?>
 
@@ -292,6 +352,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
 
                     <form class="review-form" action="<?= BASE_URL ?>/product.php?id=<?= (int) $product['id'] ?>#reviews" method="POST">
+                        <input type="hidden" name="form_type" value="review">
                         <div class="review-form-heading">
                             <span>YOUR EXPERIENCE</span>
                             <h3>Write a review</h3>
