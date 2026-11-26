@@ -137,6 +137,7 @@ $csrfToken = admin_csrf_token();
                     <h1>Product <em>polls.</em></h1>
                     <p>Create product-related questions, collect votes, and learn what your customers prefer.</p>
                 </div>
+                <a href="<?= BASE_URL ?>/admin/polls/add.php" class="admin-primary-btn">Create poll <span>↗</span></a>
             </div>
 
             <?php if ($loadError): ?>
