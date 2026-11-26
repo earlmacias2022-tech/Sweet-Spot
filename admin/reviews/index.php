@@ -11,7 +11,7 @@ $loadError = false;
 try {
     $reviewQuery = $pdo->query(
         "SELECT r.id, r.product_id, r.customer_name, r.rating, r.review,
-                r.status, r.created_at, p.name AS product_name
+                r.status, r.created_at, p.name AS product_name, p.image AS product_image
          FROM reviews r
          LEFT JOIN products p ON p.id = r.product_id
          ORDER BY r.created_at DESC, r.id DESC"
@@ -40,6 +40,8 @@ foreach ($reviews as $review) {
 }
 
 $csrfToken = admin_csrf_token();
+$reviewToast = $_SESSION['review_toast'] ?? null;
+unset($_SESSION['review_toast']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,6 +56,13 @@ $csrfToken = admin_csrf_token();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="dashboard-page">
+<?php if ($reviewToast): ?>
+    <div class="auth-toast <?= ($reviewToast['type'] ?? '') === 'success' ? 'toast-success' : '' ?> is-visible" role="status" aria-live="polite">
+        <span class="auth-toast-icon"><?= ($reviewToast['type'] ?? '') === 'success' ? '✓' : '!' ?></span>
+        <span><?= review_escape($reviewToast['message'] ?? 'Review status updated.') ?></span>
+        <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
+    </div>
+<?php endif; ?>
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="sidebar-brand">
@@ -168,6 +177,7 @@ $csrfToken = admin_csrf_token();
                                         <th>REVIEW</th>
                                         <th>STATUS</th>
                                         <th>SUBMITTED</th>
+                                        <th>ACTIONS</th>
                                     </tr>
                                 </thead>
                                 <tbody id="review-table-body">
@@ -181,7 +191,11 @@ $csrfToken = admin_csrf_token();
                                         <tr data-review-row data-status="<?= review_escape($reviewStatus) ?>">
                                             <td>
                                                 <div class="review-product-cell">
-                                                    <span class="review-product-icon">▧</span>
+                                                    <?php if (!empty($review['product_image'])): ?>
+                                                        <img class="review-product-image" src="<?= review_escape(BASE_URL . '/' . ltrim($review['product_image'], '/')) ?>" alt="<?= review_escape($review['product_name'] ?? 'Product') ?>">
+                                                    <?php else: ?>
+                                                        <span class="review-product-icon">▧</span>
+                                                    <?php endif; ?>
                                                     <strong><?= review_escape($review['product_name'] ?? 'Product no longer available') ?></strong>
                                                 </div>
                                             </td>
@@ -194,6 +208,26 @@ $csrfToken = admin_csrf_token();
                                             <td><p class="review-message"><?= review_escape($review['review'] ?? '') ?></p></td>
                                             <td><span class="review-status review-status-<?= review_escape($reviewStatus) ?>"><?= review_escape(ucfirst($reviewStatus)) ?></span></td>
                                             <td class="review-date"><?= $review['created_at'] ? review_escape(date('M j, Y', strtotime($review['created_at']))) : '—' ?></td>
+                                            <td>
+                                                <div class="review-row-actions">
+                                                    <?php if ($reviewStatus !== 'approved'): ?>
+                                                        <form action="<?= BASE_URL ?>/admin/reviews/update-status.php" method="POST">
+                                                            <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
+                                                            <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
+                                                            <input type="hidden" name="status" value="approved">
+                                                            <button type="submit" class="review-action-btn review-approve-btn">Approve</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                    <?php if ($reviewStatus !== 'rejected'): ?>
+                                                        <form action="<?= BASE_URL ?>/admin/reviews/update-status.php" method="POST">
+                                                            <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
+                                                            <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
+                                                            <input type="hidden" name="status" value="rejected">
+                                                            <button type="submit" class="review-action-btn review-reject-btn">Reject</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
