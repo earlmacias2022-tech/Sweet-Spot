@@ -9,8 +9,10 @@ require_once __DIR__ . '/config/database.php';
 $products = [];
 $categories = [];
 $announcements = [];
+$promotions = [];
 $catalogError = false;
 $announcementError = false;
+$promotionError = false;
 
 try {
     $categoryQuery = $pdo->query(
@@ -60,6 +62,27 @@ try {
 } catch (PDOException $exception) {
     error_log('Sweet Spot public announcements loading failed: ' . $exception->getMessage());
     $announcementError = true;
+}
+
+try {
+    $promotionNow = (new DateTimeImmutable('now'))->format('Y-m-d H:i:s');
+    $promotionQuery = $pdo->prepare(
+        "SELECT id, title, description, discount_value, start_date, end_date
+         FROM promotions
+         WHERE status = 'active'
+           AND (start_date IS NULL OR start_date <= :promotion_start)
+           AND (end_date IS NULL OR end_date >= :promotion_end)
+         ORDER BY created_at DESC, id DESC
+         LIMIT 3"
+    );
+    $promotionQuery->execute([
+        'promotion_start' => $promotionNow,
+        'promotion_end' => $promotionNow,
+    ]);
+    $promotions = $promotionQuery->fetchAll();
+} catch (PDOException $exception) {
+    error_log('Sweet Spot public promotions loading failed: ' . $exception->getMessage());
+    $promotionError = true;
 }
 
 function catalog_escape($value): string
@@ -141,6 +164,50 @@ require_once __DIR__ . '/includes/header.php';
                         <h3><?= catalog_escape($announcement['title']) ?></h3>
                         <p><?= nl2br(catalog_escape($announcement['content'])) ?></p>
                         <span class="announcement-card-line" aria-hidden="true"></span>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
+
+<section class="promotions-section" id="promotions">
+    <div class="container">
+        <div class="promotions-heading">
+            <div>
+                <p class="eyebrow"><span></span> SOMETHING A LITTLE SWEETER</p>
+                <h2>Special treats<br><em>and little offers.</em></h2>
+            </div>
+            <p class="promotions-intro">Take a look at our current offers and enjoy a little extra sweetness from Sweet Spot.</p>
+        </div>
+
+        <?php if ($promotionError): ?>
+            <p class="promotion-empty">Our special offers are temporarily unavailable. Please check back soon.</p>
+        <?php elseif (!$promotions): ?>
+            <p class="promotion-empty">There are no active promotions at the moment. Keep an eye out for our next special offer.</p>
+        <?php else: ?>
+            <div class="promotion-grid">
+                <?php foreach ($promotions as $promotion): ?>
+                    <article class="customer-promotion-card">
+                        <div class="customer-promotion-top">
+                            <span class="customer-promotion-label">SPECIAL OFFER</span>
+                            <?php if ($promotion['discount_value'] !== null && (float) $promotion['discount_value'] > 0): ?>
+                                <span class="customer-promotion-discount">
+                                    <?= catalog_escape(rtrim(rtrim(number_format((float) $promotion['discount_value'], 2, '.', ''), '0'), '.') . '% OFF') ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                        <h3><?= catalog_escape($promotion['title']) ?></h3>
+                        <?php if (!empty($promotion['description'])): ?>
+                            <p><?= nl2br(catalog_escape($promotion['description'])) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($promotion['end_date'])): ?>
+                            <span class="customer-promotion-validity">
+                                Offer ends <?= catalog_escape(date('M j, Y', strtotime($promotion['end_date']))) ?>
+                            </span>
+                        <?php else: ?>
+                            <span class="customer-promotion-validity">While this offer is available</span>
+                        <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             </div>
