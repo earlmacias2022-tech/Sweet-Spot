@@ -36,7 +36,7 @@ $csrf=admin_csrf_token();function promotion_edit_escape($v){return htmlspecialch
         <a href="<?= BASE_URL ?>/admin/promotions/index.php" class="sidebar-link active" aria-current="page"><span class="side-icon">✳</span> Promotions</a>
         <span class="sidebar-section-label sidebar-spaced">COMMUNITY</span>
         <a href="<?= BASE_URL ?>/admin/dashboard.php#reviews" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
-        <a href="<?= BASE_URL ?>/admin/dashboard.php#polls" class="sidebar-link"><span class="side-icon">▤</span> Polls</a>
+        <a href="<?= BASE_URL ?>/admin/polls/index.php" class="sidebar-link"><span class="side-icon">▤</span> Polls</a>
         <a href="<?= BASE_URL ?>/admin/dashboard.php#feedback" class="sidebar-link"><span class="side-icon">✉</span> Feedback</a>
     </div>
     <div class="sidebar-bottom">
