@@ -20,7 +20,46 @@ $csrf=admin_csrf_token();function promotion_edit_escape($v){return htmlspecialch
 ?>
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Edit Promotion | Sweet Spot</title><link rel="stylesheet" href="<?=BASE_URL?>/assets/css/admin.css"></head><body class="dashboard-page">
 <?php if($errors):?><div class="auth-toast is-visible" role="alert"><?=promotion_edit_escape($errors[0])?></div><?php endif;?>
-<div class="admin-layout"><main class="admin-main"><header class="admin-topbar"><div class="breadcrumb"><a href="<?=BASE_URL?>/admin/promotions/index.php">Promotions</a> / <strong>Edit promotion</strong></div></header><div class="admin-content">
+<div class="admin-layout">
+<aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand">
+        <a href="<?= BASE_URL ?>/index.php"><img src="<?= BASE_URL ?>/assets/images/sweet-spot-logo.png" alt="Sweet Spot"></a>
+        <span class="sidebar-label">BAKERY MANAGEMENT</span>
+    </div>
+    <div class="sidebar-menu">
+        <span class="sidebar-section-label">WORKSPACE</span>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php" class="sidebar-link"><span class="side-icon">⌂</span> Overview</a>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php#products" class="sidebar-link"><span class="side-icon">▧</span> Products</a>
+        <a href="<?= BASE_URL ?>/admin/categories/index.php" class="sidebar-link"><span class="side-icon">▦</span> Categories</a>
+        <span class="sidebar-section-label sidebar-spaced">CONTENT</span>
+        <a href="<?= BASE_URL ?>/admin/announcements/index.php" class="sidebar-link"><span class="side-icon">◉</span> Announcements</a>
+        <a href="<?= BASE_URL ?>/admin/promotions/index.php" class="sidebar-link active" aria-current="page"><span class="side-icon">✳</span> Promotions</a>
+        <span class="sidebar-section-label sidebar-spaced">COMMUNITY</span>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php#reviews" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php#polls" class="sidebar-link"><span class="side-icon">▤</span> Polls</a>
+        <a href="<?= BASE_URL ?>/admin/dashboard.php#feedback" class="sidebar-link"><span class="side-icon">✉</span> Feedback</a>
+    </div>
+    <div class="sidebar-bottom">
+        <div class="sidebar-help"><span>✦</span><div><strong>Need a hand?</strong><small>Management guide</small></div><b>↗</b></div>
+        <a href="<?= BASE_URL ?>/index.php" class="sidebar-website">↗ <span>View public website</span></a>
+        <form action="<?= BASE_URL ?>/admin/logout.php" method="POST" class="sidebar-logout-form">
+            <input type="hidden" name="csrf_token" value="<?= promotion_edit_escape($csrf) ?>">
+            <button type="submit" class="sidebar-logout">⇥ <span>Sign out</span></button>
+        </form>
+    </div>
+</aside>
+<main class="admin-main">
+<header class="admin-topbar">
+    <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <a href="<?= BASE_URL ?>/admin/promotions/index.php">Promotions</a> <span>/</span> <strong>Edit promotion</strong></div>
+    </div>
+    <div class="topbar-right">
+        <span class="preview-chip"><i></i> CONTENT MANAGEMENT</span>
+        <div class="admin-profile"><span class="profile-avatar"><?= promotion_edit_escape(strtoupper(substr($_SESSION['admin_username'] ?? 'A', 0, 1))) ?></span><div><strong><?= promotion_edit_escape($_SESSION['admin_username'] ?? 'Administrator') ?></strong><small>Administrator</small></div><span class="profile-chevron">⌄</span></div>
+    </div>
+</header>
+<div class="admin-content">
 <div class="page-heading add-announcement-heading"><div><p class="admin-kicker">A LITTLE EXTRA SWEETNESS</p><h1>Edit <em>promotion.</em></h1><p>Update the offer details and schedule.</p></div><a class="admin-secondary-btn" href="<?=BASE_URL?>/admin/promotions/index.php">← Back</a></div>
 <form class="announcement-editor-form" method="POST"><input type="hidden" name="csrf_token" value="<?=promotion_edit_escape($csrf)?>"><section class="admin-card editor-section announcement-editor-card"><div class="editor-section-heading"><span class="editor-step">01</span><div><h2>Promotion details</h2><p>Update the offer information.</p></div></div>
 <div class="admin-field"><label for="title">Promotion title *</label><input id="title" name="title" maxlength="180" value="<?=promotion_edit_escape($old['title'])?>" required></div>
@@ -30,4 +69,16 @@ $csrf=admin_csrf_token();function promotion_edit_escape($v){return htmlspecialch
 <div class="admin-field"><label for="status">Status</label><select id="status" name="status"><?php foreach(['draft'=>'Draft','active'=>'Active','expired'=>'Expired','archived'=>'Archived'] as $v=>$label):?><option value="<?=$v?>" <?=$old['status']===$v?'selected':''?>><?=$label?></option><?php endforeach;?></select></div>
 <div class="admin-field"><label for="start_date">Start date and time</label><input id="start_date" type="datetime-local" name="start_date" value="<?=promotion_edit_escape($old['start_date'])?>"></div>
 <div class="admin-field"><label for="end_date">End date and time</label><input id="end_date" type="datetime-local" name="end_date" value="<?=promotion_edit_escape($old['end_date'])?>"></div></section></aside>
-<div class="editor-form-actions announcement-form-actions"><a href="<?=BASE_URL?>/admin/promotions/index.php" class="admin-secondary-btn">Cancel</a><button class="admin-primary-btn" type="submit">Save changes ↗</button></div></form></div></main></div></body></html>
+<div class="editor-form-actions announcement-form-actions"><a href="<?=BASE_URL?>/admin/promotions/index.php" class="admin-secondary-btn">Cancel</a><button class="admin-primary-btn" type="submit">Save changes ↗</button></div></form></div>
+<footer class="admin-footer"><span>© <?= date('Y') ?> Sweet Spot Management</span><span>ADMIN WORKSPACE <i></i> PROMOTION MANAGEMENT</span></footer>
+</main></div>
+<script>
+document.querySelector('#sidebar-toggle')?.addEventListener('click', () => {
+    document.querySelector('#admin-sidebar')?.classList.toggle('is-open');
+});
+document.querySelectorAll('.auth-toast').forEach((toast) => {
+    toast.querySelector('.auth-toast-close')?.addEventListener('click', () => toast.remove());
+    window.setTimeout(() => toast.remove(), 5000);
+});
+</script>
+</body></html>
