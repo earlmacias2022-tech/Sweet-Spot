@@ -146,8 +146,8 @@ require_once __DIR__ . '/includes/header.php';
                     </article>
                 <?php endforeach; ?>
             </div>
-        <?php endif; ?>
-        <p class="catalog-disclaimer">Only published and available products from our bakery catalog are shown here.</p>    </div>
+            <p class="catalog-disclaimer">Only published and available products from our bakery catalog are shown here.</p>
+        <?php endif; ?>    </div>
 </section>
 
 <section class="story-section" id="about">
