@@ -1,70 +1,53 @@
 <?php
 $pageTitle = 'Freshly Baked Happiness';
 
-require_once __DIR__ . '/includes/header.php';
 
-$sampleProducts = [
-    [
-        'name' => 'Butter Croissant',
-        'category' => 'pastries',
-        'category_label' => 'Pastries',
-        'description' => 'Golden, flaky layers with a delicate buttery finish.',
-        'price' => '₱85',
-        'tag' => 'Bestseller',
-        'image' => 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Freshly baked golden butter croissants'
-    ],
-    [
-        'name' => 'Classic Ensaymada',
-        'category' => 'bread',
-        'category_label' => 'Bread & Buns',
-        'description' => 'Soft, pillowy bread topped with butter, sugar, and cheese.',
-        'price' => '₱65',
-        'tag' => 'Local favorite',
-        'image' => 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Fresh artisan bread from the bakery'
-    ],
-    [
-        'name' => 'Chocolate Danish',
-        'category' => 'pastries',
-        'category_label' => 'Pastries',
-        'description' => 'Crisp pastry wrapped around a rich chocolate center.',
-        'price' => '₱95',
-        'tag' => '',
-        'image' => 'https://images.unsplash.com/photo-1519915028121-7d3463d5b3b7?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Chocolate filled bakery pastry'
-    ],
-    [
-        'name' => 'Cinnamon Swirl',
-        'category' => 'pastries',
-        'category_label' => 'Pastries',
-        'description' => 'A soft, fragrant swirl finished with a light sweet glaze.',
-        'price' => '₱90',
-        'tag' => 'Fresh pick',
-        'image' => 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Fresh sweet cinnamon pastry'
-    ],
-    [
-        'name' => 'Strawberry Shortcake',
-        'category' => 'cakes',
-        'category_label' => 'Cakes',
-        'description' => 'Light vanilla layers, smooth cream, and sweet strawberries.',
-        'price' => '₱180',
-        'tag' => '',
-        'image' => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Decorated strawberry celebration cake'
-    ],
-    [
-        'name' => 'Country Sourdough',
-        'category' => 'bread',
-        'category_label' => 'Bread & Buns',
-        'description' => 'A rustic loaf with a crisp crust and a tender center.',
-        'price' => '₱160',
-        'tag' => '',
-        'image' => 'https://images.unsplash.com/photo-1585478259715-876acc5be8eb?auto=format&fit=crop&w=900&q=85',
-        'alt' => 'Rustic artisan sourdough loaf'
-    ]
-];
+
+require_once __DIR__ . '/config/database.php';
+
+$products = [];
+$categories = [];
+$catalogError = false;
+
+try {
+    $categoryQuery = $pdo->query(
+        "SELECT c.id, c.name
+         FROM categories c
+         WHERE c.status = 'active'
+           AND EXISTS (
+               SELECT 1 FROM products p
+               WHERE p.category_id = c.id
+                 AND p.status = 'published'
+                 AND p.is_available = 1
+           )
+         ORDER BY c.name ASC"
+    );
+    $categories = $categoryQuery->fetchAll();
+
+    $productQuery = $pdo->query(
+        "SELECT p.id, p.name, p.description, p.price, p.image,
+                p.is_featured, c.id AS category_id, c.name AS category_name
+         FROM products p
+         INNER JOIN categories c ON c.id = p.category_id AND c.status = 'active'
+         WHERE p.status = 'published' AND p.is_available = 1
+         ORDER BY p.is_featured DESC, p.created_at DESC, p.id DESC"
+    );
+    $products = $productQuery->fetchAll();
+} catch (PDOException $exception) {
+    error_log('Sweet Spot public catalog loading failed: ' . $exception->getMessage());
+    $catalogError = true;
+}
+
+function catalog_escape($value): string
+{
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+function catalog_image_url(?string $image): string
+{
+    return $image ? BASE_URL . '/' . ltrim($image, '/') : '';
+}
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="hero" id="home">
@@ -120,44 +103,51 @@ $sampleProducts = [
         <div class="product-toolbar">
             <div class="filter-list" role="group" aria-label="Filter products">
                 <button class="filter-btn active" type="button" data-filter="all">All treats</button>
-                <button class="filter-btn" type="button" data-filter="bread">Bread & buns</button>
-                <button class="filter-btn" type="button" data-filter="pastries">Pastries</button>
-                <button class="filter-btn" type="button" data-filter="cakes">Cakes</button>
+                <?php foreach ($categories as $category): ?>
+                    <button class="filter-btn" type="button" data-filter="<?= (int) $category['id'] ?>">
+                        <?= catalog_escape($category['name']) ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
-            <span class="sample-note">Sample menu · Prices are for display</span>
+            <span class="sample-note">Our current bakery menu</span>
         </div>
 
-        <div class="product-grid">
-            <?php foreach ($sampleProducts as $product): ?>
-                <article class="product-card" data-category="<?= htmlspecialchars($product['category']) ?>">
-                    <div class="product-image-wrap">
-                        <img
-                            src="<?= htmlspecialchars($product['image']) ?>"
-                            alt="<?= htmlspecialchars($product['alt']) ?>"
-                            class="product-image"
-                            loading="lazy"
-                        >
-                        <?php if ($product['tag'] !== ''): ?>
-                            <span class="product-tag"><?= htmlspecialchars($product['tag']) ?></span>
-                        <?php endif; ?>
-                        <span class="product-category"><?= htmlspecialchars($product['category_label']) ?></span>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title-row">
-                            <h3><?= htmlspecialchars($product['name']) ?></h3>
-                            <span class="product-price"><?= htmlspecialchars($product['price']) ?></span>
+        <?php if ($catalogError): ?>
+            <p class="catalog-disclaimer">Our menu is temporarily unavailable. Please check back in a little while.</p>
+        <?php elseif (!$products): ?>
+            <p class="catalog-disclaimer">We're preparing our menu. Check back soon for freshly baked favorites.</p>
+        <?php else: ?>
+            <div class="product-grid">
+                <?php foreach ($products as $product): ?>
+                    <article class="product-card" data-category="<?= (int) $product['category_id'] ?>">
+                        <div class="product-image-wrap">
+                            <?php if (!empty($product['image'])): ?>
+                                <img src="<?= catalog_escape(catalog_image_url($product['image'])) ?>"
+                                     alt="<?= catalog_escape($product['name']) ?>"
+                                     class="product-image" loading="lazy">
+                            <?php else: ?>
+                                <div class="product-image-placeholder" aria-label="No product image available">✧</div>
+                            <?php endif; ?>
+                            <?php if ((int) $product['is_featured'] === 1): ?>
+                                <span class="product-tag">Featured</span>
+                            <?php endif; ?>
+                            <span class="product-category"><?= catalog_escape($product['category_name']) ?></span>
                         </div>
-                        <p><?= htmlspecialchars($product['description']) ?></p>
-                        <a href="#contact" class="product-link" data-product="<?= htmlspecialchars($product['name']) ?>">
-                            Ask about this treat <span aria-hidden="true">↗</span>
-                        </a>
-                    </div>
-                </article>
-            <?php endforeach; ?>
-        </div>
-
-        <p class="catalog-disclaimer">These are sample products for the website preview. The final menu, availability, photos, and prices can be managed through the future admin system.</p>
-    </div>
+                        <div class="product-info">
+                            <div class="product-title-row">
+                                <h3><?= catalog_escape($product['name']) ?></h3>
+                                <span class="product-price">₱<?= number_format((float) $product['price'], 2) ?></span>
+                            </div>
+                            <p><?= catalog_escape($product['description'] ?: 'A freshly prepared favorite from Sweet Spot.') ?></p>
+                            <a href="#contact" class="product-link" data-product="<?= catalog_escape($product['name']) ?>">
+                                Ask about this treat <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <p class="catalog-disclaimer">Only published and available products from our bakery catalog are shown here.</p>    </div>
 </section>
 
 <section class="story-section" id="about">
@@ -212,7 +202,7 @@ $sampleProducts = [
         <div class="contact-copy">
             <p class="eyebrow"><span></span> LET'S TALK ABOUT SOMETHING SWEET</p>
             <h2>Have a question<br>or a <em>special request?</em></h2>
-            <p>We'd love to hear from you. Send us a message about our sample menu, product inquiries, or anything you'd like to know.</p>
+            <p>We'd love to hear from you. Send us a message about our menu, product inquiries, or anything you'd like to know.</p>
             <div class="contact-detail">
                 <span class="contact-detail-icon">✉</span>
                 <div><small>GET IN TOUCH</small><strong>Our contact details will be added soon.</strong></div>
