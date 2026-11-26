@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/config/app.php';
+require_once __DIR__ . '/config/auth.php';
 require_once __DIR__ . '/config/database.php';
 
 $product = null;
@@ -7,6 +7,15 @@ $loadError = false;
 $productId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, [
     'options' => ['min_range' => 1],
 ]);
+
+$reviewErrors = [];
+$reviewName = '';
+$reviewText = '';
+$reviewRating = 5;
+$reviewSubmitted = isset($_GET['review']) && $_GET['review'] === 'submitted';
+$approvedReviews = [];
+$reviewCount = 0;
+$averageRating = 0;
 
 if ($productId) {
     try {
@@ -30,8 +39,6 @@ if ($productId) {
     }
 }
 
-$pageTitle = $product ? $product['name'] : 'Product not found';
-
 function product_detail_escape($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -41,6 +48,75 @@ function product_detail_image_url(?string $image): string
 {
     return $image ? BASE_URL . '/' . ltrim($image, '/') : '';
 }
+
+if ($product && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $reviewName = trim((string) ($_POST['customer_name'] ?? ''));
+    $reviewText = trim((string) ($_POST['review'] ?? ''));
+    $reviewRating = filter_var($_POST['rating'] ?? null, FILTER_VALIDATE_INT);
+    $csrfToken = $_POST['csrf_token'] ?? null;
+
+    if (!admin_verify_csrf_token(is_string($csrfToken) ? $csrfToken : null)) {
+        $reviewErrors[] = 'Your session expired. Please refresh the page and try again.';
+    }
+
+    if ($reviewName !== '' && mb_strlen($reviewName) > 100) {
+        $reviewErrors[] = 'Your name must be 100 characters or fewer.';
+    }
+
+    if (!is_int($reviewRating) || $reviewRating < 1 || $reviewRating > 5) {
+        $reviewErrors[] = 'Please choose a rating from 1 to 5 stars.';
+        $reviewRating = 5;
+    }
+
+    if ($reviewText === '') {
+        $reviewErrors[] = 'Please write a short review before submitting.';
+    } elseif (mb_strlen($reviewText) > 5000) {
+        $reviewErrors[] = 'Your review must be 5,000 characters or fewer.';
+    }
+
+    if (!$reviewErrors) {
+        try {
+            $insertReview = $pdo->prepare(
+                "INSERT INTO reviews (product_id, customer_name, rating, review, status)
+                 VALUES (:product_id, :customer_name, :rating, :review, 'pending')"
+            );
+            $insertReview->execute([
+                'product_id' => (int) $product['id'],
+                'customer_name' => $reviewName !== '' ? $reviewName : null,
+                'rating' => $reviewRating,
+                'review' => $reviewText,
+            ]);
+
+            header('Location: ' . BASE_URL . '/product.php?id=' . (int) $product['id'] . '&review=submitted#reviews');
+            exit;
+        } catch (PDOException $exception) {
+            error_log('Sweet Spot review submission failed: ' . $exception->getMessage());
+            $reviewErrors[] = 'We could not submit your review right now. Please try again.';
+        }
+    }
+}
+
+if ($product) {
+    try {
+        $reviewsQuery = $pdo->prepare(
+            "SELECT customer_name, rating, review, created_at
+             FROM reviews
+             WHERE product_id = :product_id AND status = 'approved'
+             ORDER BY created_at DESC, id DESC"
+        );
+        $reviewsQuery->execute(['product_id' => (int) $product['id']]);
+        $approvedReviews = $reviewsQuery->fetchAll();
+        $reviewCount = count($approvedReviews);
+
+        if ($reviewCount > 0) {
+            $averageRating = array_sum(array_column($approvedReviews, 'rating')) / $reviewCount;
+        }
+    } catch (PDOException $exception) {
+        error_log('Sweet Spot approved reviews loading failed: ' . $exception->getMessage());
+    }
+}
+
+$pageTitle = $product ? $product['name'] : 'Product not found';
 
 if (!$product) {
     http_response_code($loadError ? 500 : 404);
@@ -92,6 +168,115 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
             </div>
+
+            <section class="reviews-section" id="reviews">
+                <div class="reviews-heading">
+                    <div>
+                        <p class="eyebrow"><span></span> CUSTOMER NOTES</p>
+                        <h2>Reviews for <em><?= product_detail_escape($product['name']) ?>.</em></h2>
+                    </div>
+                    <div class="reviews-summary">
+                        <?php if ($reviewCount > 0): ?>
+                            <strong><?= number_format($averageRating, 1) ?> <span aria-label="out of 5 stars">★</span></strong>
+                            <small><?= $reviewCount ?> approved <?= $reviewCount === 1 ? 'review' : 'reviews' ?></small>
+                        <?php else: ?>
+                            <strong>—</strong>
+                            <small>No reviews yet</small>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php if ($reviewSubmitted): ?>
+                    <div class="review-alert review-alert-success" role="status">
+                        Thank you! Your review has been submitted and will appear after it has been approved.
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($reviewErrors): ?>
+                    <div class="review-alert review-alert-error" role="alert">
+                        <ul>
+                            <?php foreach ($reviewErrors as $error): ?>
+                                <li><?= product_detail_escape($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
+                <div class="reviews-layout">
+                    <div class="reviews-list">
+                        <?php if ($approvedReviews): ?>
+                            <?php foreach ($approvedReviews as $approvedReview): ?>
+                                <article class="review-card">
+                                    <div class="review-card-top">
+                                        <strong><?= product_detail_escape($approvedReview['customer_name'] ?: 'Guest') ?></strong>
+                                        <span class="review-stars" aria-label="<?= (int) $approvedReview['rating'] ?> out of 5 stars">
+                                            <?= str_repeat('★', (int) $approvedReview['rating']) ?><?= str_repeat('☆', 5 - (int) $approvedReview['rating']) ?>
+                                        </span>
+                                    </div>
+                                    <p><?= nl2br(product_detail_escape($approvedReview['review'])) ?></p>
+                                    <time datetime="<?= product_detail_escape(date('Y-m-d', strtotime($approvedReview['created_at']))) ?>">
+                                        <?= date('F j, Y', strtotime($approvedReview['created_at'])) ?>
+                                    </time>
+                                </article>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="reviews-empty">
+                                <span aria-hidden="true">✧</span>
+                                <h3>Be the first to share a review.</h3>
+                                <p>Have you tried this treat? Let others know what you think.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <form class="review-form" action="<?= BASE_URL ?>/product.php?id=<?= (int) $product['id'] ?>#reviews" method="POST">
+                        <div class="review-form-heading">
+                            <span>YOUR EXPERIENCE</span>
+                            <h3>Write a review</h3>
+                            <p>Your review will be checked by our team before it appears here.</p>
+                        </div>
+
+                        <input type="hidden" name="csrf_token" value="<?= product_detail_escape(admin_csrf_token()) ?>">
+
+                        <div class="review-field">
+                            <label for="review-name">Your name <span>(optional)</span></label>
+                            <input
+                                type="text"
+                                id="review-name"
+                                name="customer_name"
+                                maxlength="100"
+                                value="<?= product_detail_escape($reviewName) ?>"
+                                placeholder="How should we call you?"
+                            >
+                        </div>
+
+                        <fieldset class="review-field review-rating-field">
+                            <legend>Your rating</legend>
+                            <div class="rating-options">
+                                <?php for ($star = 5; $star >= 1; $star--): ?>
+                                    <label>
+                                        <input type="radio" name="rating" value="<?= $star ?>" <?= $reviewRating === $star ? 'checked' : '' ?>>
+                                        <span><?= $star ?> ★</span>
+                                    </label>
+                                <?php endfor; ?>
+                            </div>
+                        </fieldset>
+
+                        <div class="review-field">
+                            <label for="review-text">Your review</label>
+                            <textarea
+                                id="review-text"
+                                name="review"
+                                rows="5"
+                                maxlength="5000"
+                                required
+                                placeholder="Tell us what you liked about this product..."
+                            ><?= product_detail_escape($reviewText) ?></textarea>
+                        </div>
+
+                        <button type="submit" class="btn review-submit">Submit review <span aria-hidden="true">↗</span></button>
+                    </form>
+                </div>
+            </section>
         <?php else: ?>
             <div class="product-not-found">
                 <span aria-hidden="true">✧</span>
