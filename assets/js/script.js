@@ -41,18 +41,6 @@ filterButtons.forEach((button) => {
     });
 });
 
-// Carry the selected product into the contact form.
-const productLinks = document.querySelectorAll('.product-link');
-const subjectField = document.querySelector('#contact-subject');
-
-productLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-        if (subjectField) {
-            subjectField.value = 'Product inquiry: ' + link.dataset.product;
-        }
-    });
-});
-
 // The form is a visual preview until the backend is connected.
 const contactForm = document.querySelector('#contact-form');
 const formFeedback = document.querySelector('#form-feedback');
