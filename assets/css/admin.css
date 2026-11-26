@@ -482,3 +482,41 @@ body.delete-modal-open{overflow:hidden}
 @media(max-width:1050px){.promotion-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.promotion-toolbar{align-items:flex-start;flex-direction:column}.promotion-controls{width:100%}.promotion-search{flex:1;width:auto}}
 @media(max-width:760px){.promotion-stat-grid{gap:9px}.promotion-stat-card{padding:13px;gap:9px}.promotion-stat-icon{width:31px;height:31px}.promotion-stat-card strong{font-size:22px}}
 @media(max-width:460px){.promotion-stat-grid{grid-template-columns:1fr 1fr}.promotion-stat-card{padding:11px 9px}.promotion-stat-card small{font-size:8px}.promotion-stat-card strong{font-size:20px}.promotion-controls{align-items:stretch;flex-direction:column}.promotion-controls select{max-width:none;width:100%}.promotion-title-cell{min-width:205px}.promotion-next-step{font-size:7px}}
+
+
+/* CUSTOMER REVIEWS MANAGEMENT */
+.review-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:19px}
+.review-stat-card{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #ECE4DB;background:var(--white)}
+.review-stat-icon{display:grid;width:36px;height:36px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:16px}
+.review-stat-pending{background:#F8F0E3;color:#A87537}
+.review-stat-approved{background:#EDF2E9;color:#64835E}
+.review-stat-rejected{background:#F8EAE6;color:#A65B50}
+.review-stat-card small,.review-stat-card strong{display:block}
+.review-stat-card small{color:#8F8075;font-size:9px}
+.review-stat-card strong{margin-top:3px;color:var(--ink);font:500 24px/1.1 var(--display)}
+.review-manager-card{overflow:hidden;border:1px solid #ECE4DB;background:var(--white)}
+.review-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #EEE7DF}
+.review-toolbar h2{margin-top:4px;font:500 21px var(--display)}
+.review-toolbar h2 span{color:#9A8A7E;font:400 11px var(--body)}
+.review-controls{display:flex;align-items:center;gap:9px}
+.review-search{width:220px}
+.review-controls select{height:37px;max-width:155px;padding:0 10px;border:1px solid #E8E0D7;background:#FFFEFC;color:#6D5C50;font-size:9px}
+.review-table th{height:43px}
+.review-table td{height:76px}
+.review-product-cell{display:flex;min-width:175px;align-items:center;gap:10px}
+.review-product-icon{display:grid;width:34px;height:34px;flex:0 0 auto;place-items:center;background:#F5EBDD;color:var(--caramel);font-size:14px}
+.review-product-cell strong{max-width:160px;color:var(--ink);font-size:10px;line-height:1.5}
+.review-customer{min-width:105px;color:#6F6055;font-size:10px}
+.review-stars{color:#C28A4D;font-size:12px;letter-spacing:1px;white-space:nowrap}
+.review-stars span{color:#D9D0C6}
+.review-message{max-width:300px;min-width:190px;color:#796B60;font-size:9px;line-height:1.65;overflow-wrap:anywhere}
+.review-status{display:inline-flex;align-items:center;padding:6px 8px;border-radius:3px;font-size:9px;font-weight:700}
+.review-status-pending{background:#F8F0E3;color:#A87537}
+.review-status-approved{background:#EDF2E9;color:#64835E}
+.review-status-rejected{background:#F8EAE6;color:#A65B50}
+.review-date{color:#8F8075;font-size:9px;white-space:nowrap}
+.review-controls select:focus,.review-search:focus-within{border-color:var(--caramel);outline:0;box-shadow:0 0 0 3px rgba(185,120,69,.08)}
+.review-table tr[hidden]{display:none}
+@media(max-width:1050px){.review-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.review-toolbar{align-items:flex-start;flex-direction:column}.review-controls{width:100%}.review-search{flex:1;width:auto}}
+@media(max-width:760px){.review-stat-grid{gap:9px}.review-stat-card{padding:13px;gap:9px}.review-stat-icon{width:31px;height:31px}.review-stat-card strong{font-size:22px}}
+@media(max-width:460px){.review-stat-grid{grid-template-columns:1fr 1fr}.review-stat-card{padding:11px 9px}.review-stat-card small{font-size:8px}.review-stat-card strong{font-size:20px}.review-controls{align-items:stretch;flex-direction:column}.review-controls select{max-width:none;width:100%}}
