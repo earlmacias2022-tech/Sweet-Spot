@@ -139,8 +139,8 @@ require_once __DIR__ . '/includes/header.php';
                                 <span class="product-price">₱<?= number_format((float) $product['price'], 2) ?></span>
                             </div>
                             <p><?= catalog_escape($product['description'] ?: 'A freshly prepared favorite from Sweet Spot.') ?></p>
-                            <a href="#contact" class="product-link" data-product="<?= catalog_escape($product['name']) ?>">
-                                Ask about this treat <span aria-hidden="true">↗</span>
+                            <a href="<?= BASE_URL ?>/product.php?id=<?= (int) $product['id'] ?>" class="product-link">
+                                View product details <span aria-hidden="true">↗</span>
                             </a>
                         </div>
                     </article>
