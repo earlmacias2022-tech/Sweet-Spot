@@ -548,6 +548,113 @@ h2 em,
 }
 
 /* --------------------------------
+   CUSTOMER PROMOTIONS
+--------------------------------- */
+
+.promotions-section {
+    padding: 88px 0 92px;
+    background: var(--color-background);
+}
+
+.promotions-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 45px;
+    margin-bottom: 34px;
+}
+
+.promotions-heading .eyebrow {
+    margin-bottom: 16px;
+}
+
+.promotions-heading h2 {
+    font-size: clamp(35px, 4vw, 49px);
+}
+
+.promotions-intro {
+    max-width: 340px;
+    margin-bottom: 5px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.promotion-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.customer-promotion-card {
+    display: flex;
+    min-width: 0;
+    min-height: 245px;
+    flex-direction: column;
+    padding: 25px;
+    border: 1px solid rgba(185, 120, 69, 0.28);
+    background: #F7EBDD;
+}
+
+.customer-promotion-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 23px;
+}
+
+.customer-promotion-label {
+    color: var(--color-caramel-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.customer-promotion-discount {
+    padding: 7px 10px;
+    background: var(--color-cocoa);
+    color: #FFF9F1;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+
+.customer-promotion-card h3 {
+    margin-bottom: 10px;
+    color: var(--color-cocoa);
+    font-size: 23px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.customer-promotion-card > p {
+    margin-bottom: 22px;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.customer-promotion-validity {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(48, 37, 31, 0.12);
+    color: var(--color-caramel-dark);
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.promotion-empty {
+    padding: 30px 24px;
+    border: 1px dashed rgba(48, 37, 31, 0.2);
+    color: var(--color-muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+/* --------------------------------
    PRODUCTS
 --------------------------------- */
 
@@ -1577,6 +1684,33 @@ h2 em,
 
     .intro-item {
         justify-content: flex-start;
+    }
+
+    .promotions-section {
+        padding: 70px 0;
+    }
+
+    .promotions-heading {
+        display: block;
+        margin-bottom: 27px;
+    }
+
+    .promotions-heading h2 {
+        font-size: 40px;
+    }
+
+    .promotions-intro {
+        margin-top: 14px;
+    }
+
+    .promotion-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .customer-promotion-card {
+        min-height: 0;
+        padding: 22px;
     }
 
     .announcements-section {
