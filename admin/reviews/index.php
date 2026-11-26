@@ -226,6 +226,11 @@ unset($_SESSION['review_toast']);
                                                             <button type="submit" class="review-action-btn review-reject-btn">Reject</button>
                                                         </form>
                                                     <?php endif; ?>
+                                                    <form action="<?= BASE_URL ?>/admin/reviews/delete.php" method="POST" class="review-delete-form" data-review-delete-form>
+                                                        <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
+                                                        <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
+                                                        <button type="button" class="review-action-btn review-delete-btn" data-review-delete>Delete</button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -247,7 +252,59 @@ unset($_SESSION['review_toast']);
     </main>
 </div>
 
+ 
+<div class="review-delete-modal" id="review-delete-modal" aria-hidden="true">
+    <div class="review-delete-backdrop" data-review-delete-cancel></div>
+    <section class="review-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="review-delete-title" aria-describedby="review-delete-description">
+        <span class="review-delete-dialog-icon">!</span>
+        <p class="admin-kicker">DELETE CUSTOMER REVIEW</p>
+        <h2 id="review-delete-title">Delete this review?</h2>
+        <p id="review-delete-description">This review will be permanently removed and cannot be recovered. This will not delete the product.</p>
+        <div class="review-delete-dialog-actions">
+            <button type="button" class="review-action-btn review-cancel-delete" data-review-delete-cancel>Cancel</button>
+            <button type="button" class="review-action-btn review-confirm-delete" id="review-confirm-delete">Yes, delete review</button>
+        </div>
+    </section>
+</div>
+
 <script>
+
+// Review deletion confirmation modal
+const reviewDeleteModal = document.querySelector('#review-delete-modal');
+const reviewConfirmDelete = document.querySelector('#review-confirm-delete');
+let reviewFormToDelete = null;
+
+function closeReviewDeleteModal() {
+    reviewDeleteModal?.classList.remove('is-open');
+    reviewDeleteModal?.setAttribute('aria-hidden', 'true');
+    reviewFormToDelete = null;
+}
+
+document.querySelectorAll('[data-review-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        reviewFormToDelete = button.closest('[data-review-delete-form]');
+        if (!reviewFormToDelete || !reviewDeleteModal) return;
+        reviewDeleteModal.classList.add('is-open');
+        reviewDeleteModal.setAttribute('aria-hidden', 'false');
+        reviewConfirmDelete?.focus();
+    });
+});
+
+document.querySelectorAll('[data-review-delete-cancel]').forEach((button) => {
+    button.addEventListener('click', closeReviewDeleteModal);
+});
+
+reviewConfirmDelete?.addEventListener('click', () => {
+    if (reviewFormToDelete) reviewFormToDelete.submit();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && reviewDeleteModal?.classList.contains('is-open')) {
+        closeReviewDeleteModal();
+    }
+});
+
+
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
     document.querySelector('#admin-sidebar')?.classList.toggle('is-open');
