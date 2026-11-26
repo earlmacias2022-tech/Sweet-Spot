@@ -230,7 +230,10 @@ unset($_SESSION['promotion_toast']);
                                             <td class="promotion-date"><?= $promotion['start_date'] ? promotion_escape(date('M j, Y · g:i A', strtotime($promotion['start_date']))) : 'Immediately' ?></td>
                                             <td class="promotion-date"><?= $promotion['end_date'] ? promotion_escape(date('M j, Y · g:i A', strtotime($promotion['end_date']))) : 'No end date' ?></td>
                                             <td class="promotion-date"><?= promotion_escape(date('M j, Y', strtotime($promotion['created_at']))) ?></td>
-<td><a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/promotions/edit.php?id=<?= (int) $promotion['id'] ?>">Edit</a> <button class="table-action-btn table-delete-btn" type="button" data-open-promotion-delete data-promotion-id="<?= (int) $promotion['id'] ?>" data-promotion-title="<?= promotion_escape($promotion['title']) ?>">Delete</button></td>
+<td>
+                                                <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/promotions/edit.php?id=<?= (int) $promotion['id'] ?>">Edit</a>
+                                                <button class="table-action-btn table-delete-btn" type="button" data-open-promotion-delete data-promotion-id="<?= (int) $promotion['id'] ?>" data-promotion-title="<?= promotion_escape($promotion['title']) ?>">Delete</button>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -250,6 +253,24 @@ unset($_SESSION['promotion_toast']);
     </main>
 </div>
 
+
+<div class="delete-modal-backdrop" id="promotion-delete-modal" hidden>
+    <section class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="promotion-delete-title" aria-describedby="promotion-delete-description">
+        <div class="delete-modal-icon" aria-hidden="true">!</div>
+        <span class="delete-modal-eyebrow">PLEASE CONFIRM</span>
+        <h2 id="promotion-delete-title">Delete this promotion?</h2>
+        <p id="promotion-delete-description">You're about to permanently remove <strong id="delete-promotion-title">this promotion</strong>.</p>
+        <div class="delete-modal-note"><span>↳</span><p>This promotion will be permanently deleted from your records. This action cannot be undone.</p></div>
+        <form id="promotion-delete-confirm-form" action="<?= BASE_URL ?>/admin/promotions/delete.php" method="POST" class="delete-modal-actions">
+            <input type="hidden" name="csrf_token" value="<?= promotion_escape($csrfToken) ?>">
+            <input type="hidden" name="id" id="delete-promotion-id" value="">
+            <input type="hidden" name="confirm_delete" value="1">
+            <button type="button" class="delete-modal-cancel" data-close-promotion-delete>Cancel</button>
+            <button type="submit" class="delete-modal-confirm">Yes, delete promotion</button>
+        </form>
+    </section>
+</div>
+
 <script>
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
@@ -259,6 +280,41 @@ sidebarToggle?.addEventListener('click', () => {
 document.querySelectorAll('.auth-toast').forEach((toast) => {
     toast.querySelector('.auth-toast-close')?.addEventListener('click', () => toast.remove());
     window.setTimeout(() => toast.remove(), 5000);
+});
+
+const promotionDeleteModal = document.querySelector('#promotion-delete-modal');
+let promotionDeleteTrigger = null;
+
+const closePromotionDeleteModal = () => {
+    if (!promotionDeleteModal) return;
+    promotionDeleteModal.hidden = true;
+    document.body.classList.remove('delete-modal-open');
+    promotionDeleteTrigger?.focus();
+};
+
+document.querySelectorAll('[data-open-promotion-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        promotionDeleteTrigger = button;
+        document.querySelector('#delete-promotion-id').value = button.dataset.promotionId || '';
+        document.querySelector('#delete-promotion-title').textContent = button.dataset.promotionTitle || 'this promotion';
+        promotionDeleteModal.hidden = false;
+        document.body.classList.add('delete-modal-open');
+        promotionDeleteModal.querySelector('[data-close-promotion-delete]')?.focus();
+    });
+});
+
+document.querySelectorAll('[data-close-promotion-delete]').forEach((button) => {
+    button.addEventListener('click', closePromotionDeleteModal);
+});
+
+promotionDeleteModal?.addEventListener('click', (event) => {
+    if (event.target === promotionDeleteModal) closePromotionDeleteModal();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && promotionDeleteModal && !promotionDeleteModal.hidden) {
+        closePromotionDeleteModal();
+    }
 });
 
 const promotionSearch = document.querySelector('#promotion-search');
