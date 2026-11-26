@@ -239,7 +239,12 @@ $csrfToken = admin_csrf_token();
                                             <td><strong class="poll-vote-count"><?= (int) $poll['vote_count'] ?></strong></td>
                                             <td><span class="poll-status poll-status-<?= poll_escape($effectiveStatus) ?>"><i></i><?= poll_escape(ucfirst($effectiveStatus)) ?></span></td>
                                             <td class="announcement-date"><?= $poll['created_at'] ? poll_escape(date('M j, Y', strtotime($poll['created_at']))) : '—' ?></td>
-                                            <td><a href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>" class="admin-secondary-btn poll-edit-link">Edit</a></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>"><span>✎</span> Edit</a>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-poll-delete data-poll-id="<?= (int) $poll['id'] ?>" data-poll-question="<?= poll_escape($poll['question']) ?>" data-poll-votes="<?= (int) $poll['vote_count'] ?>"><span>×</span> Delete</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -259,10 +264,64 @@ $csrfToken = admin_csrf_token();
     </main>
 </div>
 
+<div class="review-delete-modal" id="poll-delete-modal" aria-hidden="true">
+    <div class="review-delete-backdrop" data-poll-delete-cancel></div>
+    <section class="review-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="poll-delete-title" aria-describedby="poll-delete-description">
+        <span class="review-delete-dialog-icon">!</span>
+        <p class="admin-kicker">DELETE PRODUCT POLL</p>
+        <h2 id="poll-delete-title">Delete this poll?</h2>
+        <p id="poll-delete-description">You're about to permanently delete <strong id="poll-delete-question">this poll</strong>.</p>
+        <p class="poll-delete-impact">This will also permanently remove its answer options and <strong id="poll-delete-vote-count">0</strong> recorded vote(s). This action cannot be undone.</p>
+        <form id="poll-delete-form" action="<?= BASE_URL ?>/admin/polls/delete.php" method="POST" class="review-delete-dialog-actions">
+            <input type="hidden" name="csrf_token" value="<?= poll_escape($csrfToken) ?>">
+            <input type="hidden" name="poll_id" id="poll-delete-id" value="">
+            <button type="button" class="review-action-btn review-cancel-delete" data-poll-delete-cancel>Cancel</button>
+            <button type="submit" class="review-action-btn review-confirm-delete">Yes, delete poll</button>
+        </form>
+    </section>
+</div>
+
 <script>
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
     document.querySelector('#admin-sidebar')?.classList.toggle('is-open');
+});
+
+
+ // Poll deletion confirmation
+const pollDeleteModal = document.querySelector('#poll-delete-modal');
+const pollDeleteQuestion = document.querySelector('#poll-delete-question');
+const pollDeleteId = document.querySelector('#poll-delete-id');
+const pollDeleteVoteCount = document.querySelector('#poll-delete-vote-count');
+let pollDeleteTrigger = null;
+
+function closePollDeleteModal() {
+    pollDeleteModal?.classList.remove('is-open');
+    pollDeleteModal?.setAttribute('aria-hidden', 'true');
+    pollDeleteTrigger?.focus();
+    pollDeleteTrigger = null;
+}
+
+document.querySelectorAll('[data-open-poll-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        pollDeleteTrigger = button;
+        pollDeleteQuestion.textContent = button.dataset.pollQuestion || 'this poll';
+        pollDeleteId.value = button.dataset.pollId || '';
+        pollDeleteVoteCount.textContent = button.dataset.pollVotes || '0';
+        pollDeleteModal?.classList.add('is-open');
+        pollDeleteModal?.setAttribute('aria-hidden', 'false');
+        pollDeleteModal?.querySelector('[data-poll-delete-cancel]')?.focus();
+    });
+});
+
+document.querySelectorAll('[data-poll-delete-cancel]').forEach((button) => {
+    button.addEventListener('click', closePollDeleteModal);
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && pollDeleteModal?.classList.contains('is-open')) {
+        closePollDeleteModal();
+    }
 });
 
 const pollSearch = document.querySelector('#poll-search');
