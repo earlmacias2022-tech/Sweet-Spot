@@ -7,7 +7,9 @@ require_once __DIR__ . '/config/database.php';
 
 $products = [];
 $categories = [];
+$announcements = [];
 $catalogError = false;
+$announcementError = false;
 
 try {
     $categoryQuery = $pdo->query(
@@ -36,6 +38,27 @@ try {
 } catch (PDOException $exception) {
     error_log('Sweet Spot public catalog loading failed: ' . $exception->getMessage());
     $catalogError = true;
+}
+
+try {
+    $announcementNow = (new DateTimeImmutable('now'))->format('Y-m-d H:i:s');
+    $announcementQuery = $pdo->prepare(
+        "SELECT id, title, content, created_at
+         FROM announcements
+         WHERE status = 'published'
+           AND (start_date IS NULL OR start_date <= :announcement_start)
+           AND (end_date IS NULL OR end_date >= :announcement_end)
+         ORDER BY created_at DESC, id DESC
+         LIMIT 3"
+    );
+    $announcementQuery->execute([
+        'announcement_start' => $announcementNow,
+        'announcement_end' => $announcementNow,
+    ]);
+    $announcements = $announcementQuery->fetchAll();
+} catch (PDOException $exception) {
+    error_log('Sweet Spot public announcements loading failed: ' . $exception->getMessage());
+    $announcementError = true;
 }
 
 function catalog_escape($value): string
@@ -87,6 +110,40 @@ require_once __DIR__ . '/includes/header.php';
             <span class="intro-icon">✧</span>
             <div><strong>Little moments</strong><small>A treat for every kind of day</small></div>
         </div>
+    </div>
+</section>
+
+<section class="announcements-section" id="announcements">
+    <div class="container">
+        <div class="announcements-heading">
+            <div>
+                <p class="eyebrow"><span></span> FRESH FROM SWEET SPOT</p>
+                <h2>A little news<br><em>from our bakery.</em></h2>
+            </div>
+            <p class="announcements-intro">Stay up to date with the latest bakery news, reminders, and important updates.</p>
+        </div>
+
+        <?php if ($announcementError): ?>
+            <p class="announcement-empty">Our latest updates are temporarily unavailable. Please check back soon.</p>
+        <?php elseif (!$announcements): ?>
+            <p class="announcement-empty">There are no new announcements right now. Check back soon for updates from Sweet Spot.</p>
+        <?php else: ?>
+            <div class="announcement-grid">
+                <?php foreach ($announcements as $announcement): ?>
+                    <article class="announcement-card">
+                        <div class="announcement-card-meta">
+                            <span class="announcement-card-icon" aria-hidden="true">◉</span>
+                            <time datetime="<?= catalog_escape(date('Y-m-d', strtotime($announcement['created_at']))) ?>">
+                                <?= catalog_escape(date('M j, Y', strtotime($announcement['created_at']))) ?>
+                            </time>
+                        </div>
+                        <h3><?= catalog_escape($announcement['title']) ?></h3>
+                        <p><?= nl2br(catalog_escape($announcement['content'])) ?></p>
+                        <span class="announcement-card-line" aria-hidden="true"></span>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 
