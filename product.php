@@ -16,6 +16,8 @@ $reviewSubmitted = isset($_GET['review']) && $_GET['review'] === 'submitted';
 $approvedReviews = [];
 $reviewCount = 0;
 $averageRating = 0;
+$activePoll = null;
+$pollOptions = [];
 
 if ($productId) {
     try {
@@ -116,6 +118,44 @@ if ($product) {
     }
 }
 
+
+if ($product) {
+    try {
+        $pollNow = (new DateTimeImmutable('now'))->format('Y-m-d H:i:s');
+        $pollQuery = $pdo->prepare(
+            "SELECT id, question, description
+             FROM polls
+             WHERE product_id = :product_id
+               AND status = 'active'
+               AND (start_date IS NULL OR start_date <= :poll_start)
+               AND (end_date IS NULL OR end_date >= :poll_end)
+             ORDER BY created_at DESC, id DESC
+             LIMIT 1"
+        );
+        $pollQuery->execute([
+            'product_id' => (int) $product['id'],
+            'poll_start' => $pollNow,
+            'poll_end' => $pollNow,
+        ]);
+        $activePoll = $pollQuery->fetch() ?: null;
+
+        if ($activePoll) {
+            $pollOptionsQuery = $pdo->prepare(
+                "SELECT id, option_text
+                 FROM poll_options
+                 WHERE poll_id = :poll_id
+                 ORDER BY id ASC"
+            );
+            $pollOptionsQuery->execute(['poll_id' => (int) $activePoll['id']]);
+            $pollOptions = $pollOptionsQuery->fetchAll();
+        }
+    } catch (PDOException $exception) {
+        error_log('Sweet Spot active product poll loading failed: ' . $exception->getMessage());
+        $activePoll = null;
+        $pollOptions = [];
+    }
+}
+
 $pageTitle = $product ? $product['name'] : 'Product not found';
 
 if (!$product) {
@@ -168,6 +208,29 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
             </div>
+
+            <?php if ($activePoll && $pollOptions): ?>
+                <section class="product-poll-section" aria-labelledby="product-poll-title">
+                    <div class="product-poll-heading">
+                        <p class="eyebrow"><span></span> YOUR OPINION MATTERS</p>
+                        <h2 id="product-poll-title"><?= product_detail_escape($activePoll['question']) ?></h2>
+                        <?php if (!empty($activePoll['description'])): ?>
+                            <p><?= nl2br(product_detail_escape($activePoll['description'])) ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="product-poll-options" aria-label="Poll answer choices">
+                        <?php foreach ($pollOptions as $pollOption): ?>
+                            <div class="product-poll-option">
+                                <span aria-hidden="true">✧</span>
+                                <p><?= product_detail_escape($pollOption['option_text']) ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <p class="product-poll-note">A quick customer poll for this product. Voting will be available soon.</p>
+                </section>
+            <?php endif; ?>
+
 
             <section class="reviews-section" id="reviews">
                 <div class="reviews-heading">
