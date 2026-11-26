@@ -23,7 +23,7 @@ if (menuToggle && mainNavigation) {
     });
 }
 
-// Filter the sample products by category.
+// Filter the live products by category.
 const filterButtons = document.querySelectorAll('.filter-btn');
 const productCards = document.querySelectorAll('.product-card');
 
@@ -41,7 +41,7 @@ filterButtons.forEach((button) => {
     });
 });
 
-// Carry the selected sample product into the contact form.
+// Carry the selected product into the contact form.
 const productLinks = document.querySelectorAll('.product-link');
 const subjectField = document.querySelector('#contact-subject');
 
