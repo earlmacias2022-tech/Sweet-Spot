@@ -4,6 +4,8 @@ admin_require_login();
 require_once __DIR__ . '/../../config/database.php';
 
 $pageTitle = 'Polls';
+$toast = $_SESSION['poll_toast'] ?? null;
+unset($_SESSION['poll_toast']);
 $adminName = $_SESSION['admin_username'] ?? 'Administrator';
 $polls = [];
 $loadError = false;
@@ -89,6 +91,13 @@ $csrfToken = admin_csrf_token();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="dashboard-page">
+<?php if ($toast): ?>
+    <div class="auth-toast is-visible <?= ($toast['type'] ?? '') === 'success' ? 'auth-toast-success' : '' ?>" role="status" aria-live="polite">
+        <span class="auth-toast-icon"><?= ($toast['type'] ?? '') === 'success' ? '✓' : '!' ?></span>
+        <span><?= poll_escape($toast['message'] ?? '') ?></span>
+        <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
+    </div>
+<?php endif; ?>
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="sidebar-brand">
