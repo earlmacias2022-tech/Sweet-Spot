@@ -75,7 +75,7 @@ function dashboard_product_image(?string $image): string
             <a href="<?= BASE_URL ?>/admin/announcements/index.php" class="sidebar-link"><span class="side-icon">◉</span> Announcements</a>
             <a href="<?= BASE_URL ?>/admin/promotions/index.php" class="sidebar-link"><span class="side-icon">✳</span> Promotions</a>
             <span class="sidebar-section-label sidebar-spaced">COMMUNITY</span>
-            <a href="#reviews" class="sidebar-link" data-view="reviews"><span class="side-icon">☆</span> Reviews</a>
+            <a href="<?= BASE_URL ?>/admin/reviews/index.php" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
             <a href="#polls" class="sidebar-link" data-view="polls"><span class="side-icon">▤</span> Polls</a>
             <a href="#feedback" class="sidebar-link" data-view="feedback"><span class="side-icon">✉</span> Feedback <span class="side-count side-count-warm">3</span></a>
         </div>
