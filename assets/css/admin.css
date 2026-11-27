@@ -653,3 +653,12 @@ body.delete-modal-open{overflow:hidden}
 .feedback-stat-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media(max-width:1050px){.feedback-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.feedback-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* SIGN-OUT CONFIRMATION */
+.signout-modal-icon{border-color:#E8D8C5;background:#F7EBDD;color:#9B633A;font-family:inherit;font-size:20px}
+.signout-modal-confirm{min-height:39px;padding:0 15px;border:1px solid #9B633A;border-radius:6px;background:#9B633A;color:#fff;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.signout-modal-confirm:hover{transform:translateY(-1px);border-color:#7F4D2D;background:#7F4D2D}
+.signout-modal-confirm:disabled{cursor:wait;opacity:.7}
+@media(max-width:480px){.signout-modal .delete-modal-actions{flex-direction:column-reverse}.signout-modal .delete-modal-actions button{width:100%;min-height:42px}}
+@media(prefers-reduced-motion:reduce){.signout-modal-confirm{transition:none}}
