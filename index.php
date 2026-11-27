@@ -302,15 +302,15 @@ require_once __DIR__ . '/includes/header.php';
     <div class="container">
         <div class="announcements-heading">
             <div>
-                <h2>A little news<br><span class="accent-text">from our bakery.</span></h2>
+                <h2>Bakery news<br><span class="accent-text">and updates.</span></h2>
             </div>
-            <p class="announcements-intro">Stay up to date with the latest bakery news, reminders, and important updates.</p>
+            <p class="announcements-intro">Find useful notices, reminders, and updates shared by the bakery.</p>
         </div>
 
         <?php if ($announcementError): ?>
             <p class="announcement-empty">Our latest updates are temporarily unavailable. Please check back soon.</p>
         <?php elseif (!$announcements): ?>
-            <p class="announcement-empty">There are no new announcements right now. Check back soon for updates from Sweet Spot.</p>
+            <p class="announcement-empty">There are no announcements to share right now. Please check back for future updates.</p>
         <?php else: ?>
             <div class="announcement-grid">
                 <?php foreach ($announcements as $announcement): ?>
