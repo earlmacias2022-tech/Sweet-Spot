@@ -149,15 +149,15 @@ unset($_SESSION['promotion_toast']);
             <?php else: ?>
                 <div class="promotion-stat-grid">
                     <article class="promotion-stat-card">
-                        <span class="promotion-stat-icon">✳</span>
+                        <span class="promotion-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#tag"></use></svg></span>
                         <div><small>Total promotions</small><strong><?= count($promotions) ?></strong></div>
                     </article>
                     <article class="promotion-stat-card">
-                        <span class="promotion-stat-icon promotion-stat-live">✓</span>
+                        <span class="promotion-stat-icon promotion-stat-live"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span>
                         <div><small>Active offers</small><strong><?= $statusCounts['active'] ?></strong></div>
                     </article>
                     <article class="promotion-stat-card">
-                        <span class="promotion-stat-icon promotion-stat-scheduled">◷</span>
+                        <span class="promotion-stat-icon promotion-stat-scheduled"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#clock"></use></svg></span>
                         <div><small>Scheduled</small><strong><?= $statusCounts['scheduled'] ?></strong></div>
                     </article>
                     <article class="promotion-stat-card">
