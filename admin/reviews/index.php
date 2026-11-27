@@ -215,7 +215,7 @@ unset($_SESSION['review_toast']);
                                                             <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
                                                             <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
                                                             <input type="hidden" name="status" value="approved">
-                                                            <button type="submit" class="review-action-btn review-approve-btn">Approve</button>
+                                                            <button type="submit" class="review-action-btn review-approve-btn"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg> Approve</button>
                                                         </form>
                                                     <?php endif; ?>
                                                     <?php if ($reviewStatus !== 'rejected'): ?>
@@ -223,7 +223,7 @@ unset($_SESSION['review_toast']);
                                                             <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
                                                             <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
                                                             <input type="hidden" name="status" value="rejected">
-                                                            <button type="submit" class="review-action-btn review-reject-btn">Reject</button>
+                                                            <button type="submit" class="review-action-btn review-reject-btn"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Reject</button>
                                                         </form>
                                                     <?php endif; ?>
                                                     <form action="<?= BASE_URL ?>/admin/reviews/delete.php" method="POST" class="review-delete-form" data-review-delete-form>
