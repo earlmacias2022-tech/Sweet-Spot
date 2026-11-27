@@ -208,7 +208,7 @@ window.addEventListener("DOMContentLoaded", () => {
     <?php if (($productToast['type'] ?? '') === 'success'): ?>
     toast.classList.add("toast-success");
     <?php endif; ?>
-    window.setTimeout(() => toast.classList.remove("show"), 3500);
+    window.setTimeout(() => toast.classList.remove("show"), 5000);
 });
 </script>
 <?php endif; ?>
@@ -219,7 +219,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const toast = document.querySelector("#admin-toast");
     toast.querySelector('#admin-toast-text').textContent = <?= json_encode($loginSuccess, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
     toast.classList.add("show", "toast-success");
-    window.setTimeout(() => toast.classList.remove("show"), 3500);
+    window.setTimeout(() => toast.classList.remove("show"), 5000);
 });
 </script>
 <?php endif; ?>
