@@ -162,7 +162,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="hero-content">
             <h1>Find your next<br><span class="accent-text">favorite treat.</span></h1>
             <p class="hero-description">
-                Explore bakery menus, discover treats, and keep up with offers and updates—all in one place.
+                Explore bakery products, discover treats, and keep up with offers and updates—all in one place.
             </p>
             <div class="hero-actions">
                 <a href="#products" class="btn">Explore Our Menu <span aria-hidden="true">↗</span></a>
@@ -339,8 +339,8 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <div class="story-content">
             <h2>A simpler way<br><span class="accent-text">to explore bakeries.</span></h2>
-            <p class="story-lead">Sweet Spot brings bakery offerings together in one convenient place.</p>
-            <p>Explore available products, discover bakery updates, and find offers from participating bakery businesses—all through one customer-friendly platform.</p>
+            <p class="story-lead">Sweet Spot helps bakery owners manage their business while giving customers a simple way to explore available products and updates.</p>
+            <p>Browse available products, discover bakery updates, and keep track of current offers—all in one convenient place.</p>
             <a href="#contact" class="btn btn-dark">Say hello <span aria-hidden="true">↗</span></a>
             <div class="story-signature">A better way to discover local treats <span>♡</span></div>
         </div>
