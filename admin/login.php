@@ -97,7 +97,6 @@ $csrfToken = admin_csrf_token();
         <section class="login-panel">
             <div class="login-panel-top"><a href="<?= BASE_URL ?>/index.php">← Back to website</a><span>STAFF ACCESS</span></div>
             <div class="login-form-wrap">
-                <div class="login-mark">✳</div>
                 <p class="admin-kicker">WELCOME BACK</p>
                 <h2>Sign in to<br>your workspace.</h2>
                 <p class="login-subtitle">Enter your staff credentials to continue.</p>
