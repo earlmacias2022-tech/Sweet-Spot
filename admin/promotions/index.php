@@ -138,7 +138,7 @@ unset($_SESSION['promotion_toast']);
                     <h1>Promotions<em>.</em></h1>
                     <p>Share special offers and limited-time discounts with your customers.</p>
                 </div>
-                <a href="<?= BASE_URL ?>/admin/promotions/add.php" class="admin-primary-btn">＋ Add promotion</a>
+                <a href="<?= BASE_URL ?>/admin/promotions/add.php" class="admin-primary-btn"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#plus"></use></svg> Add promotion</a>
             </div>
 
             <?php if ($loadError): ?>
