@@ -2526,15 +2526,6 @@ h2 .accent-text,
     }
 }
 
-@keyframes hero-background-drift {
-    from { background-position: center 51%; }
-    to { background-position: center 54%; }
-}
-
-.hero {
-    animation: hero-background-drift 1.8s ease-out both;
-}
-
 .motion-ready .reveal-on-scroll {
     opacity: 0;
     transform: translateY(22px);
@@ -2583,10 +2574,6 @@ h2 .accent-text,
 
 @media (prefers-reduced-motion: reduce) {
     .hero {
-        animation: none;
-    }
-
-    .hero-content {
         animation: none;
     }
 
