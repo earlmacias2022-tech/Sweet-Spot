@@ -132,9 +132,9 @@ function announcement_add_escape($value): string
             <a href="<?= BASE_URL ?>/admin/categories/index.php" class="sidebar-link"><span class="side-icon">▦</span> Categories</a>
             <span class="sidebar-section-label sidebar-spaced">CONTENT</span>
             <a href="<?= BASE_URL ?>/admin/announcements/index.php" class="sidebar-link active" aria-current="page"><span class="side-icon">◉</span> Announcements</a>
-            <a href="<?= BASE_URL ?>/admin/dashboard.php#promotions" class="sidebar-link"><span class="side-icon">✳</span> Promotions</a>
+            <a href="<?= BASE_URL ?>/admin/promotions/index.php" class="sidebar-link"><span class="side-icon">✳</span> Promotions</a>
             <span class="sidebar-section-label sidebar-spaced">COMMUNITY</span>
-            <a href="<?= BASE_URL ?>/admin/dashboard.php#reviews" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
+            <a href="<?= BASE_URL ?>/admin/reviews/index.php" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
             <a href="<?= BASE_URL ?>/admin/polls/index.php" class="sidebar-link"><span class="side-icon">▤</span> Polls</a>
             <a href="<?= BASE_URL ?>/admin/feedback/index.php" class="sidebar-link"><span class="side-icon">✉</span> Feedback</a>
         </div>
