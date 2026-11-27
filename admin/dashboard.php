@@ -36,11 +36,18 @@ try {
     $databaseError = true;
 }
 
-\n$newFeedbackCount = 0;
+$newFeedbackCount = 0;
 try {
     $newFeedbackCount = (int) $pdo->query("SELECT COUNT(*) FROM feedback WHERE status = 'new'")->fetchColumn();
 } catch (PDOException $exception) {
     error_log('Sweet Spot dashboard feedback count failed: ' . $exception->getMessage());
+}
+
+$publishedReviewCount = 0;
+try {
+    $publishedReviewCount = (int) $pdo->query("SELECT COUNT(*) FROM reviews WHERE status = 'approved'")->fetchColumn();
+} catch (PDOException $exception) {
+    error_log('Sweet Spot dashboard published review count failed: ' . $exception->getMessage());
 }
 
 function dashboard_escape($value): string
@@ -123,7 +130,7 @@ function dashboard_product_image(?string $image): string
                 <div class="stat-grid">
                     <article class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon">▧</span></div><strong id="stat-products"><?= $productCount ?></strong><small><span class="stat-neutral">↗</span> Items in your menu</small></article>
                     <article class="stat-card"><div class="stat-top"><span>Categories</span><span class="stat-icon">▦</span></div><strong><?= $categoryCount ?></strong><small><?= $activeCategoryCount ?> active categories</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong>—</strong><small>Review module not connected</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong><?= $publishedReviewCount ?></strong><small>Approved customer reviews</small></article>
                     <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong><?= $newFeedbackCount ?></strong><small><a href="<?= BASE_URL ?>/admin/feedback/index.php">Open customer inbox ↗</a></small></article>
                 </div>
 
@@ -146,10 +153,6 @@ function dashboard_product_image(?string $image): string
                     </section>
                 </div>
 
-                <section class="admin-card activity-card">
-                    <div class="card-heading"><div><span class="card-overline">AT A GLANCE</span><h2>Workspace overview</h2></div><span class="status-label">DATABASE STATUS</span></div>
-                    <div class="overview-tiles"><div><span class="overview-dot dot-green"></span><strong>Product catalog</strong><small><?= $databaseError ? 'Connection needs attention' : 'Connected to database' ?></small></div><div><span class="overview-dot dot-gold"></span><strong>Content management</strong><small>Modules being developed</small></div><div><span class="overview-dot dot-green"></span><strong>Database connection</strong><small><?= $databaseError ? 'Check connection' : 'Connected' ?></small></div></div>
-                </section>
             </section>
 
             <section class="admin-view" id="view-products">
