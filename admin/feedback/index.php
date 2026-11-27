@@ -39,6 +39,8 @@ foreach ($feedbackItems as $item) {
 }
 
 $csrfToken = admin_csrf_token();
+$feedbackFlash = $_SESSION['feedback_toast'] ?? null;
+unset($_SESSION['feedback_toast']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +104,13 @@ $csrfToken = admin_csrf_token();
                     <p>Read questions, suggestions, and messages sent through your website.</p>
                 </div>
             </div>
+
+            <?php if ($feedbackFlash && is_array($feedbackFlash)): ?>
+                <div class="category-message <?= ($feedbackFlash['type'] ?? '') === 'error' ? 'category-message-error' : '' ?>" role="status">
+                    <strong><?= feedback_escape(($feedbackFlash['type'] ?? '') === 'error' ? 'Action not completed.' : 'Feedback updated.') ?></strong>
+                    <span><?= feedback_escape($feedbackFlash['message'] ?? '') ?></span>
+                </div>
+            <?php endif; ?>
 
             <div class="review-stat-grid feedback-stat-grid">
                 <article class="review-stat-card"><span class="review-stat-icon">✉</span><div><small>Total messages</small><strong><?= count($feedbackItems) ?></strong></div></article>
@@ -190,6 +199,18 @@ $csrfToken = admin_csrf_token();
                                                     data-message="<?= feedback_escape($item['message']) ?>"
                                                     data-date="<?= feedback_escape($item['created_at'] ?? '') ?>"
                                                 >View message</button>
+                                                <form class="feedback-status-form" action="<?= BASE_URL ?>/admin/feedback/update-status.php" method="POST">
+                                                    <input type="hidden" name="csrf_token" value="<?= feedback_escape($csrfToken) ?>">
+                                                    <input type="hidden" name="feedback_id" value="<?= (int) $item['id'] ?>">
+                                                    <label class="visually-hidden" for="feedback-status-<?= (int) $item['id'] ?>">Change status</label>
+                                                    <select id="feedback-status-<?= (int) $item['id'] ?>" name="status" aria-label="Change status for feedback #<?= (int) $item['id'] ?>">
+                                                        <?php foreach (['new' => 'New', 'read' => 'Read', 'replied' => 'Replied', 'archived' => 'Archived'] as $statusValue => $statusLabel): ?>
+                                                            <option value="<?= feedback_escape($statusValue) ?>" <?= $feedbackStatus === $statusValue ? 'selected' : '' ?>><?= feedback_escape($statusLabel) ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                    <button type="submit" class="feedback-update-btn">Save</button>
+                                                </form>
+                                                <button type="button" class="feedback-delete-btn" data-feedback-delete data-id="<?= (int) $item['id'] ?>" data-name="<?= feedback_escape($customerName !== '' ? $customerName : 'Anonymous') ?>">Delete</button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -208,6 +229,22 @@ $csrfToken = admin_csrf_token();
 
         <footer class="admin-footer"><span>© <?= date('Y') ?> Sweet Spot Management</span><span>ADMIN WORKSPACE <i></i> FEEDBACK INBOX</span></footer>
     </main>
+</div>
+
+<div class="feedback-delete-modal" id="feedback-delete-modal" aria-hidden="true">
+    <div class="feedback-modal-backdrop" data-feedback-delete-close></div>
+    <section class="feedback-modal-dialog feedback-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="feedback-delete-title">
+        <button type="button" class="feedback-modal-close" data-feedback-delete-close aria-label="Close confirmation">×</button>
+        <p class="admin-kicker">CONFIRM DELETION</p>
+        <h2 id="feedback-delete-title">Delete this message?</h2>
+        <p class="feedback-delete-copy">This will permanently remove the feedback message from <strong id="feedback-delete-name">this customer</strong>. This action cannot be undone.</p>
+        <form action="<?= BASE_URL ?>/admin/feedback/delete.php" method="POST" class="feedback-delete-form">
+            <input type="hidden" name="csrf_token" value="<?= feedback_escape($csrfToken) ?>">
+            <input type="hidden" name="feedback_id" id="feedback-delete-id" value="">
+            <button type="button" class="feedback-cancel-btn" data-feedback-delete-close>Cancel</button>
+            <button type="submit" class="feedback-confirm-delete-btn">Delete message</button>
+        </form>
+    </section>
 </div>
 
 <div class="feedback-message-modal" id="feedback-message-modal" aria-hidden="true">
@@ -292,6 +329,39 @@ document.querySelectorAll('[data-feedback-close]').forEach((button) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && feedbackModal?.classList.contains('is-open')) {
         closeFeedbackModal();
+    }
+});
+
+const feedbackDeleteModal = document.querySelector('#feedback-delete-modal');
+const feedbackDeleteId = document.querySelector('#feedback-delete-id');
+const feedbackDeleteName = document.querySelector('#feedback-delete-name');
+let feedbackDeletePreviousFocus = null;
+
+function closeFeedbackDeleteModal() {
+    feedbackDeleteModal?.classList.remove('is-open');
+    feedbackDeleteModal?.setAttribute('aria-hidden', 'true');
+    feedbackDeletePreviousFocus?.focus();
+}
+
+document.querySelectorAll('[data-feedback-delete]').forEach((button) => {
+    button.addEventListener('click', () => {
+        if (!feedbackDeleteModal) return;
+        feedbackDeletePreviousFocus = button;
+        feedbackDeleteId.value = button.dataset.id || '';
+        feedbackDeleteName.textContent = button.dataset.name || 'this customer';
+        feedbackDeleteModal.classList.add('is-open');
+        feedbackDeleteModal.setAttribute('aria-hidden', 'false');
+        feedbackDeleteModal.querySelector('.feedback-modal-close')?.focus();
+    });
+});
+
+document.querySelectorAll('[data-feedback-delete-close]').forEach((button) => {
+    button.addEventListener('click', closeFeedbackDeleteModal);
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && feedbackDeleteModal?.classList.contains('is-open')) {
+        closeFeedbackDeleteModal();
     }
 });
 
