@@ -160,11 +160,9 @@ require_once __DIR__ . '/includes/header.php';
     <div class="hero-shade"></div>
     <div class="container hero-inner">
         <div class="hero-content">
-            <p class="eyebrow hero-eyebrow"><span></span> A LITTLE SOMETHING FRESHLY BAKED</p>
-            <h1>Made with care.<br><em>Served with love.</em></h1>
+            <h1>Find your next<br><span class="accent-text">favorite treat.</span></h1>
             <p class="hero-description">
-                From warm, flaky pastries to comforting everyday favorites,
-                find something delicious waiting for you at Sweet Spot.
+                Explore bakery menus, discover treats, and keep up with offers and updates—all in one place.
             </p>
             <div class="hero-actions">
                 <a href="#products" class="btn">Explore Our Menu <span aria-hidden="true">↗</span></a>
@@ -196,46 +194,71 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="announcements-section" id="announcements">
+<section class="section products-section" id="products">
     <div class="container">
-        <div class="announcements-heading">
+        <div class="section-heading">
             <div>
-                <p class="eyebrow"><span></span> FRESH FROM SWEET SPOT</p>
-                <h2>A little news<br><em>from our bakery.</em></h2>
+                <h2>Explore the menu<br><span class="accent-text">and find a favorite.</span></h2>
             </div>
-            <p class="announcements-intro">Stay up to date with the latest bakery news, reminders, and important updates.</p>
+            <p class="section-intro">Browse the available products and find something that suits your taste.</p>
         </div>
 
-        <?php if ($announcementError): ?>
-            <p class="announcement-empty">Our latest updates are temporarily unavailable. Please check back soon.</p>
-        <?php elseif (!$announcements): ?>
-            <p class="announcement-empty">There are no new announcements right now. Check back soon for updates from Sweet Spot.</p>
+        <div class="product-toolbar">
+            <div class="filter-list" role="group" aria-label="Filter products">
+                <button class="filter-btn active" type="button" data-filter="all">All treats</button>
+                <?php foreach ($categories as $category): ?>
+                    <button class="filter-btn" type="button" data-filter="<?= (int) $category['id'] ?>">
+                        <?= catalog_escape($category['name']) ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+            <span class="sample-note">Browse by category</span>
+        </div>
+
+        <?php if ($catalogError): ?>
+            <p class="catalog-disclaimer">Our menu is temporarily unavailable. Please check back in a little while.</p>
+        <?php elseif (!$products): ?>
+            <p class="catalog-disclaimer">We're preparing our menu. Check back soon for freshly baked favorites.</p>
         <?php else: ?>
-            <div class="announcement-grid">
-                <?php foreach ($announcements as $announcement): ?>
-                    <article class="announcement-card">
-                        <div class="announcement-card-meta">
-                            <span class="announcement-card-icon" aria-hidden="true">◉</span>
-                            <time datetime="<?= catalog_escape(date('Y-m-d', strtotime($announcement['created_at']))) ?>">
-                                <?= catalog_escape(date('M j, Y', strtotime($announcement['created_at']))) ?>
-                            </time>
+            <div class="product-grid">
+                <?php foreach ($products as $product): ?>
+                    <article class="product-card" data-category="<?= (int) $product['category_id'] ?>">
+                        <div class="product-image-wrap">
+                            <?php if (!empty($product['image'])): ?>
+                                <img src="<?= catalog_escape(catalog_image_url($product['image'])) ?>"
+                                     alt="<?= catalog_escape($product['name']) ?>"
+                                     class="product-image" loading="lazy">
+                            <?php else: ?>
+                                <div class="product-image-placeholder" aria-label="No product image available">✧</div>
+                            <?php endif; ?>
+                            <?php if ((int) $product['is_featured'] === 1): ?>
+                                <span class="product-tag">Featured</span>
+                            <?php endif; ?>
+                            <span class="product-category"><?= catalog_escape($product['category_name']) ?></span>
                         </div>
-                        <h3><?= catalog_escape($announcement['title']) ?></h3>
-                        <p><?= nl2br(catalog_escape($announcement['content'])) ?></p>
-                        <span class="announcement-card-line" aria-hidden="true"></span>
+                        <div class="product-info">
+                            <div class="product-title-row">
+                                <h3><?= catalog_escape($product['name']) ?></h3>
+                                <span class="product-price">₱<?= number_format((float) $product['price'], 2) ?></span>
+                            </div>
+                            <p><?= catalog_escape($product['description'] ?: 'A delicious option from this bakery.') ?></p>
+                            <a href="<?= BASE_URL ?>/product.php?id=<?= (int) $product['id'] ?>" class="product-link">
+                                View product details <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             </div>
-        <?php endif; ?>
-    </div>
+            <p class="catalog-disclaimer">Only currently available products are shown here.</p>
+        <?php endif; ?>    </div>
 </section>
+
 
 <section class="promotions-section" id="promotions">
     <div class="container">
         <div class="promotions-heading">
             <div>
-                <p class="eyebrow"><span></span> SOMETHING A LITTLE SWEETER</p>
-                <h2>Special treats<br><em>and little offers.</em></h2>
+                <h2>Special treats<br><span class="accent-text">and little offers.</span></h2>
             </div>
             <p class="promotions-intro">Take a look at our current offers and enjoy a little extra sweetness from Sweet Spot.</p>
         </div>
@@ -274,64 +297,38 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="section products-section" id="products">
+
+<section class="announcements-section" id="announcements">
     <div class="container">
-        <div class="section-heading">
+        <div class="announcements-heading">
             <div>
-                <p class="eyebrow"><span></span> THE GOOD STUFF</p>
-                <h2>A little something<br><em>for every craving.</em></h2>
+                <h2>A little news<br><span class="accent-text">from our bakery.</span></h2>
             </div>
-            <p class="section-intro">Discover a few of the treats that make an ordinary day feel a little more special.</p>
+            <p class="announcements-intro">Stay up to date with the latest bakery news, reminders, and important updates.</p>
         </div>
 
-        <div class="product-toolbar">
-            <div class="filter-list" role="group" aria-label="Filter products">
-                <button class="filter-btn active" type="button" data-filter="all">All treats</button>
-                <?php foreach ($categories as $category): ?>
-                    <button class="filter-btn" type="button" data-filter="<?= (int) $category['id'] ?>">
-                        <?= catalog_escape($category['name']) ?>
-                    </button>
-                <?php endforeach; ?>
-            </div>
-            <span class="sample-note">Our current bakery menu</span>
-        </div>
-
-        <?php if ($catalogError): ?>
-            <p class="catalog-disclaimer">Our menu is temporarily unavailable. Please check back in a little while.</p>
-        <?php elseif (!$products): ?>
-            <p class="catalog-disclaimer">We're preparing our menu. Check back soon for freshly baked favorites.</p>
+        <?php if ($announcementError): ?>
+            <p class="announcement-empty">Our latest updates are temporarily unavailable. Please check back soon.</p>
+        <?php elseif (!$announcements): ?>
+            <p class="announcement-empty">There are no new announcements right now. Check back soon for updates from Sweet Spot.</p>
         <?php else: ?>
-            <div class="product-grid">
-                <?php foreach ($products as $product): ?>
-                    <article class="product-card" data-category="<?= (int) $product['category_id'] ?>">
-                        <div class="product-image-wrap">
-                            <?php if (!empty($product['image'])): ?>
-                                <img src="<?= catalog_escape(catalog_image_url($product['image'])) ?>"
-                                     alt="<?= catalog_escape($product['name']) ?>"
-                                     class="product-image" loading="lazy">
-                            <?php else: ?>
-                                <div class="product-image-placeholder" aria-label="No product image available">✧</div>
-                            <?php endif; ?>
-                            <?php if ((int) $product['is_featured'] === 1): ?>
-                                <span class="product-tag">Featured</span>
-                            <?php endif; ?>
-                            <span class="product-category"><?= catalog_escape($product['category_name']) ?></span>
+            <div class="announcement-grid">
+                <?php foreach ($announcements as $announcement): ?>
+                    <article class="announcement-card">
+                        <div class="announcement-card-meta">
+                            <span class="announcement-card-icon" aria-hidden="true">◉</span>
+                            <time datetime="<?= catalog_escape(date('Y-m-d', strtotime($announcement['created_at']))) ?>">
+                                <?= catalog_escape(date('M j, Y', strtotime($announcement['created_at']))) ?>
+                            </time>
                         </div>
-                        <div class="product-info">
-                            <div class="product-title-row">
-                                <h3><?= catalog_escape($product['name']) ?></h3>
-                                <span class="product-price">₱<?= number_format((float) $product['price'], 2) ?></span>
-                            </div>
-                            <p><?= catalog_escape($product['description'] ?: 'A freshly prepared favorite from Sweet Spot.') ?></p>
-                            <a href="<?= BASE_URL ?>/product.php?id=<?= (int) $product['id'] ?>" class="product-link">
-                                View product details <span aria-hidden="true">↗</span>
-                            </a>
-                        </div>
+                        <h3><?= catalog_escape($announcement['title']) ?></h3>
+                        <p><?= nl2br(catalog_escape($announcement['content'])) ?></p>
+                        <span class="announcement-card-line" aria-hidden="true"></span>
                     </article>
                 <?php endforeach; ?>
             </div>
-            <p class="catalog-disclaimer">Only published and available products from our bakery catalog are shown here.</p>
-        <?php endif; ?>    </div>
+        <?php endif; ?>
+    </div>
 </section>
 
 <section class="story-section" id="about">
@@ -341,12 +338,11 @@ require_once __DIR__ . '/includes/header.php';
             <div class="story-image-caption"><span>THE SWEET SPOT WAY</span><strong>Simple joys, baked daily.</strong></div>
         </div>
         <div class="story-content">
-            <p class="eyebrow"><span></span> A LITTLE ABOUT US</p>
-            <h2>More than a bakery.<br><em>A place for life's sweet moments.</em></h2>
-            <p class="story-lead">At Sweet Spot, we believe the best moments are often the simplest ones.</p>
-            <p>It's the first bite of a warm pastry, a loaf shared around the table, or a little treat picked up just because. Our goal is to make those everyday moments feel special with baked favorites made with care.</p>
+            <h2>A simpler way<br><span class="accent-text">to explore bakeries.</span></h2>
+            <p class="story-lead">Sweet Spot brings bakery offerings together in one convenient place.</p>
+            <p>Explore available products, discover bakery updates, and find offers from participating bakery businesses—all through one customer-friendly platform.</p>
             <a href="#contact" class="btn btn-dark">Say hello <span aria-hidden="true">↗</span></a>
-            <div class="story-signature">Baked with a little extra love <span>♡</span></div>
+            <div class="story-signature">A better way to discover local treats <span>♡</span></div>
         </div>
     </div>
 </section>
@@ -354,28 +350,27 @@ require_once __DIR__ . '/includes/header.php';
 <section class="values-section">
     <div class="container">
         <div class="center-heading">
-            <p class="eyebrow"><span></span> THE SWEET SPOT DIFFERENCE <span></span></p>
-            <h2>Good things take <em>a little care.</em></h2>
-            <p>It's the little details that make every visit feel worth it.</p>
+            <h2>Good things take <span class="accent-text">a little care.</span></h2>
+            <p>A simple way to browse bakery offerings and stay up to date.</p>
         </div>
         <div class="values-grid">
             <article class="value-card">
                 <span class="value-number">01</span>
                 <span class="value-icon">✳</span>
-                <h3>Made thoughtfully</h3>
-                <p>We keep the experience simple, welcoming, and focused on the things that matter.</p>
+                <h3>Easy to explore</h3>
+                <p>Browse available bakery products in one convenient place.</p>
             </article>
             <article class="value-card">
                 <span class="value-number">02</span>
                 <span class="value-icon">♡</span>
-                <h3>For sharing</h3>
-                <p>From a quick afternoon treat to something for the whole table, there's joy in sharing.</p>
+                <h3>Discover new favorites</h3>
+                <p>Explore different treats and find something for any occasion.</p>
             </article>
             <article class="value-card">
                 <span class="value-number">03</span>
                 <span class="value-icon">✧</span>
-                <h3>Made for your day</h3>
-                <p>Everyday favorites and little indulgences to make an ordinary day feel brighter.</p>
+                <h3>Offers and updates</h3>
+                <p>Keep up with bakery announcements and current promotions.</p>
             </article>
         </div>
     </div>
@@ -384,8 +379,7 @@ require_once __DIR__ . '/includes/header.php';
 <section class="contact-section" id="contact">
     <div class="container contact-grid">
         <div class="contact-copy">
-            <p class="eyebrow"><span></span> LET'S TALK ABOUT SOMETHING SWEET</p>
-            <h2>Have a question<br>or a <em>special request?</em></h2>
+            <h2>Have a question<br>or a <span class="accent-text">special request?</span></h2>
             <p>We'd love to hear from you. Send us a message about our menu, product inquiries, or anything you'd like to know.</p>
             <div class="contact-detail">
                 <span class="contact-detail-icon">✉</span>
@@ -438,7 +432,7 @@ require_once __DIR__ . '/includes/header.php';
 <section class="closing-banner">
     <div class="container closing-inner">
         <p>MADE FOR THE LITTLE MOMENTS</p>
-        <h2>Make today a little <em>sweeter.</em></h2>
+        <h2>Make today a little <span class="accent-text">sweeter.</span></h2>
         <a href="#products" class="btn btn-light">Find your favorite <span aria-hidden="true">↗</span></a>
     </div>
 </section>
