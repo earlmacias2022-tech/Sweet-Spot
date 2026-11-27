@@ -175,8 +175,8 @@ function dashboard_product_image(?string $image): string
                         <td><span class="product-status <?= $statusClass ?>"><i></i><?= dashboard_escape($statusText) ?></span></td>
                         <td>
                             <div class="table-actions">
-                                <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>"><span>✎</span> Edit</a>
-                                <button class="table-action-btn table-delete-btn" type="button" data-open-delete-modal data-product-id="<?= (int) $product['id'] ?>" data-product-name="<?= dashboard_escape($product['name']) ?>"><span>×</span> Delete</button>
+                                <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/products/edit.php?id=<?= (int) $product['id'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#edit"></use></svg> Edit</a>
+                                <button class="table-action-btn table-delete-btn" type="button" data-open-delete-modal data-product-id="<?= (int) $product['id'] ?>" data-product-name="<?= dashboard_escape($product['name']) ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Delete</button>
                             </div>
                         </td>
                     </tr>
