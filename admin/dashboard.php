@@ -36,6 +36,13 @@ try {
     $databaseError = true;
 }
 
+\n$newFeedbackCount = 0;
+try {
+    $newFeedbackCount = (int) $pdo->query("SELECT COUNT(*) FROM feedback WHERE status = 'new'")->fetchColumn();
+} catch (PDOException $exception) {
+    error_log('Sweet Spot dashboard feedback count failed: ' . $exception->getMessage());
+}
+
 function dashboard_escape($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -80,7 +87,7 @@ function dashboard_product_image(?string $image): string
             <span class="sidebar-section-label sidebar-spaced">COMMUNITY</span>
             <a href="<?= BASE_URL ?>/admin/reviews/index.php" class="sidebar-link"><span class="side-icon">☆</span> Reviews</a>
             <a href="<?= BASE_URL ?>/admin/polls/index.php" class="sidebar-link"><span class="side-icon">▤</span> Polls</a>
-            <a href="#feedback" class="sidebar-link" data-view="feedback"><span class="side-icon">✉</span> Feedback <span class="side-count side-count-warm">3</span></a>
+            <a href="<?= BASE_URL ?>/admin/feedback/index.php" class="sidebar-link"><span class="side-icon">✉</span> Feedback <span class="side-count side-count-warm"><?= $newFeedbackCount ?></span></a>
         </div>
         <div class="sidebar-bottom">
             <div class="sidebar-help"><span>✦</span><div><strong>Need a hand?</strong><small>Management guide</small></div><b>↗</b></div>
@@ -117,7 +124,7 @@ function dashboard_product_image(?string $image): string
                     <article class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon">▧</span></div><strong id="stat-products"><?= $productCount ?></strong><small><span class="stat-neutral">↗</span> Items in your menu</small></article>
                     <article class="stat-card"><div class="stat-top"><span>Categories</span><span class="stat-icon">▦</span></div><strong><?= $categoryCount ?></strong><small><?= $activeCategoryCount ?> active categories</small></article>
                     <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong>—</strong><small>Review module not connected</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong>—</strong><small>Feedback module not connected</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong><?= $newFeedbackCount ?></strong><small><a href="<?= BASE_URL ?>/admin/feedback/index.php">Open customer inbox ↗</a></small></article>
                 </div>
 
                 <div class="dashboard-grid">
@@ -181,7 +188,7 @@ function dashboard_product_image(?string $image): string
             <section class="admin-view" id="view-promotions"><div class="page-heading"><div><p class="admin-kicker">A LITTLE EXTRA SWEETNESS</p><h1>Promotions.</h1><p>Manage special offers and limited-time campaigns.</p></div></div><div class="module-placeholder"><span>✳</span><h2>Promotion management</h2><p>Set up discounts, define campaign dates, and control whether a promotion is active, expired, or archived.</p><span class="module-status">PLANNED MODULE</span></div></section>
             <section class="admin-view" id="view-reviews"><div class="page-heading"><div><p class="admin-kicker">CUSTOMER LOVE</p><h1>Ratings <em>& reviews.</em></h1><p>Review customer comments before they appear on the website.</p></div></div><div class="module-placeholder"><span>☆</span><h2>Review moderation</h2><p>Staff will be able to approve, reject, and manage customer ratings and written reviews.</p><span class="module-status">PLANNED MODULE</span></div></section>
             <section class="admin-view" id="view-polls"><div class="page-heading"><div><p class="admin-kicker">HEAR WHAT PEOPLE THINK</p><h1>Customer <em>polls.</em></h1><p>Create simple polls and see what your customers prefer.</p></div></div><div class="module-placeholder"><span>▤</span><h2>Poll management</h2><p>Create questions, manage answer options, open or close polls, and review voting results.</p><span class="module-status">PLANNED MODULE</span></div></section>
-            <section class="admin-view" id="view-feedback"><div class="page-heading"><div><p class="admin-kicker">MESSAGES FROM YOUR CUSTOMERS</p><h1>Customer <em>feedback.</em></h1><p>Keep track of questions, suggestions, and customer messages.</p></div></div><div class="module-placeholder"><span>✉</span><h2>Feedback inbox</h2><p>Review incoming messages and update their status as new, read, replied, or archived.</p><span class="module-status">PLANNED MODULE</span></div></section>
+            <section class="admin-view" id="view-feedback"><div class="page-heading"><div><p class="admin-kicker">MESSAGES FROM YOUR CUSTOMERS</p><h1>Customer <em>feedback.</em></h1><p>Read and organize messages sent through your website.</p></div><a href="<?= BASE_URL ?>/admin/feedback/index.php" class="admin-primary-btn">Open feedback inbox <span>↗</span></a></div></section>
         </div>
         <footer class="admin-footer"><span>© <?= date('Y') ?> Sweet Spot Management</span><span>ADMIN WORKSPACE <i></i> DATABASE CONNECTED</span></footer>
     </main>
