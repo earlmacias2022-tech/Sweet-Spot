@@ -186,8 +186,8 @@ $csrfToken = admin_csrf_token();
                                             <td class="category-date"><?= $category['created_at'] ? category_escape(date('M j, Y', strtotime($category['created_at']))) : '—' ?></td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/categories/edit.php?id=<?= (int) $category['id'] ?>"><span>✎</span> Edit</a>
-                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-category-delete data-category-id="<?= (int) $category['id'] ?>" data-category-name="<?= category_escape($category['name']) ?>" data-product-count="<?= (int) $category['product_count'] ?>"><span>×</span> Delete</button>
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/categories/edit.php?id=<?= (int) $category['id'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#edit"></use></svg> Edit</a>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-category-delete data-category-id="<?= (int) $category['id'] ?>" data-category-name="<?= category_escape($category['name']) ?>" data-product-count="<?= (int) $category['product_count'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
