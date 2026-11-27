@@ -149,15 +149,15 @@ unset($_SESSION['announcement_toast']);
             <?php else: ?>
                 <div class="announcement-stat-grid">
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon">◉</span>
+                        <span class="announcement-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#megaphone"></use></svg></span>
                         <div><small>Total announcements</small><strong><?= count($announcements) ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon announcement-stat-live">✓</span>
+                        <span class="announcement-stat-icon announcement-stat-live"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span>
                         <div><small>Published</small><strong><?= $statusCounts['published'] ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon announcement-stat-scheduled">◷</span>
+                        <span class="announcement-stat-icon announcement-stat-scheduled"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#clock"></use></svg></span>
                         <div><small>Scheduled</small><strong><?= $statusCounts['scheduled'] ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
