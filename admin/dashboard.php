@@ -204,7 +204,10 @@ document.querySelector('#admin-toast-close')?.addEventListener('click', () => {
 window.addEventListener("DOMContentLoaded", () => {
     const toast = document.querySelector("#admin-toast");
     toast.querySelector('#admin-toast-text').textContent = <?= json_encode($productToast['message'] ?? 'Product updated.', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
-    toast.classList.add("show", <?= json_encode(($productToast['type'] ?? '') === 'success' ? 'toast-success' : '') ?>);
+    toast.classList.add("show");
+    <?php if (($productToast['type'] ?? '') === 'success'): ?>
+    toast.classList.add("toast-success");
+    <?php endif; ?>
     window.setTimeout(() => toast.classList.remove("show"), 3500);
 });
 </script>
