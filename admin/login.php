@@ -134,7 +134,7 @@ $csrfToken = admin_csrf_token();
     if (authToast) {
         requestAnimationFrame(() => authToast.classList.add('is-visible'));
         authToast.querySelector('.auth-toast-close').addEventListener('click', () => authToast.classList.remove('is-visible'));
-        window.setTimeout(() => authToast.classList.remove('is-visible'), 4500);
+        window.setTimeout(() => authToast.classList.remove('is-visible'), 5000);
     }
 
     const passwordInput = document.querySelector('#password');
