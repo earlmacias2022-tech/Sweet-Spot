@@ -169,30 +169,11 @@ require_once __DIR__ . '/includes/header.php';
                 <a href="#about" class="text-link light-link">Get to know us <span aria-hidden="true">→</span></a>
             </div>
         </div>
-        <div class="hero-note">
-            <span class="hero-note-line"></span>
-            <span>GOOD DAYS START WITH<br>SOMETHING FRESHLY BAKED</span>
-        </div>
     </div>
     <a href="#intro" class="scroll-cue" aria-label="Scroll to discover"><span></span> SCROLL TO DISCOVER</a>
 </section>
 
-<section class="intro-strip" id="intro">
-    <div class="container intro-grid">
-        <div class="intro-item">
-            <span class="intro-icon">✳</span>
-            <div><strong>Freshly prepared</strong><small>Made with care every day</small></div>
-        </div>
-        <div class="intro-item">
-            <span class="intro-icon">♡</span>
-            <div><strong>Made with love</strong><small>Thoughtful from start to finish</small></div>
-        </div>
-        <div class="intro-item">
-            <span class="intro-icon">✧</span>
-            <div><strong>Little moments</strong><small>A treat for every kind of day</small></div>
-        </div>
-    </div>
-</section>
+
 
 <section class="section products-section" id="products">
     <div class="container">
