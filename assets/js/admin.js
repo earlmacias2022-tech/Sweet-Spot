@@ -10,6 +10,14 @@ function escapeHTML(value) {
     }[character]));
 }
 
+// Shared mobile sidebar toggle for the dashboard.
+const dashboardSidebarToggle = document.querySelector('#sidebar-toggle');
+const dashboardSidebar = document.querySelector('#admin-sidebar');
+dashboardSidebarToggle?.addEventListener('click', () => {
+    const isOpen = dashboardSidebar?.classList.toggle('is-open') ?? false;
+    dashboardSidebarToggle.setAttribute('aria-expanded', String(isOpen));
+});
+
 // Dashboard section navigation
 function activateDashboardView(view, updateHash = true) {
     const targetSection = document.getElementById('view-' + view);
