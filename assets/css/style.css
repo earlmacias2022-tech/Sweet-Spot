@@ -1373,6 +1373,18 @@ h2 em,
     font-weight: 600;
 }
 
+.form-feedback.is-error {
+    color: #A64D42;
+}
+
+.form-feedback p {
+    margin: 0 0 5px;
+}
+
+.form-feedback p:last-child {
+    margin-bottom: 0;
+}
+
 /* --------------------------------
    CLOSING BANNER
 --------------------------------- */
