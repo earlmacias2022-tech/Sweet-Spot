@@ -18,6 +18,8 @@ $reviewCount = 0;
 $averageRating = 0;
 $activePoll = null;
 $pollOptions = [];
+$pollResults = [];
+$pollTotalVotes = 0;
 $pollAlreadyVoted = false;
 $pollVoteFlash = $_SESSION['poll_vote_flash'] ?? null;
 unset($_SESSION['poll_vote_flash']);
@@ -181,6 +183,25 @@ if ($product) {
             ]);
             $pollAlreadyVoted = (bool) $votedQuery->fetchColumn();
         }
+
+        if ($activePoll && $pollOptions) {
+            $pollResultsQuery = $pdo->prepare(
+                "SELECT po.id, po.option_text, COUNT(pv.id) AS vote_count
+                 FROM poll_options po
+                 LEFT JOIN poll_votes pv
+                    ON pv.poll_option_id = po.id
+                   AND pv.poll_id = po.poll_id
+                 WHERE po.poll_id = :poll_id
+                 GROUP BY po.id, po.option_text
+                 ORDER BY po.id ASC"
+            );
+            $pollResultsQuery->execute(['poll_id' => (int) $activePoll['id']]);
+            $pollResults = $pollResultsQuery->fetchAll();
+            $pollTotalVotes = array_sum(array_map(
+                static fn(array $result): int => (int) $result['vote_count'],
+                $pollResults
+            ));
+        }
     } catch (PDOException $exception) {
         error_log('Sweet Spot active product poll loading failed: ' . $exception->getMessage());
         $activePoll = null;
@@ -264,6 +285,28 @@ require_once __DIR__ . '/includes/header.php';
                                 <strong>Thanks for participating!</strong>
                                 <p>Your vote for this poll has already been recorded from this browser.</p>
                             </div>
+                        </div>
+                        <div class="product-poll-results">
+                            <div class="product-poll-results-heading">
+                                <strong>Poll results</strong>
+                                <span><?= number_format($pollTotalVotes) ?> <?= $pollTotalVotes === 1 ? 'vote' : 'votes' ?></span>
+                            </div>
+                            <?php foreach ($pollResults as $pollResult): ?>
+                                <?php
+                                    $resultVotes = (int) $pollResult['vote_count'];
+                                    $resultPercentage = $pollTotalVotes > 0 ? (int) round(($resultVotes / $pollTotalVotes) * 100) : 0;
+                                ?>
+                                <div class="product-poll-result">
+                                    <div class="product-poll-result-label">
+                                        <span><?= product_detail_escape($pollResult['option_text']) ?></span>
+                                        <strong><?= $resultPercentage ?>%</strong>
+                                    </div>
+                                    <div class="product-poll-result-track" role="progressbar" aria-label="<?= product_detail_escape($pollResult['option_text']) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?= $resultPercentage ?>">
+                                        <span style="width: <?= $resultPercentage ?>%"></span>
+                                    </div>
+                                    <small><?= number_format($resultVotes) ?> <?= $resultVotes === 1 ? 'vote' : 'votes' ?></small>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <form class="product-poll-form" action="<?= BASE_URL ?>/poll-vote.php" method="POST">
