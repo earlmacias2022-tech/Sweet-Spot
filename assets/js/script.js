@@ -47,7 +47,7 @@ filterButtons.forEach((button) => {
 // Reveal customer-side content gently as it enters the viewport.
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const revealTargets = document.querySelectorAll(
-    '.hero-content, .section-heading, .product-card, .promotions-heading, ' +
+    '.section-heading, .product-card, .promotions-heading, ' +
     '.customer-promotion-card, .announcements-heading, .announcement-card, ' +
     '.story-image, .story-content, .center-heading, .value-card, ' +
     '.contact-copy, .contact-form, .product-detail-grid, .product-poll-section, ' +
