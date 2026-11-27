@@ -110,7 +110,7 @@ $csrfToken = admin_csrf_token();
                     <h1>Product <em>categories.</em></h1>
                     <p>Keep your bakery menu organized into clear collections.</p>
                 </div>
-                <a href="<?= BASE_URL ?>/admin/categories/add.php" class="admin-primary-btn">＋ Add category <span>↗</span></a>
+                <a href="<?= BASE_URL ?>/admin/categories/add.php" class="admin-primary-btn"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#plus"></use></svg> Add category <span>↗</span></a>
             </div>
 
             <div class="category-stat-grid">
