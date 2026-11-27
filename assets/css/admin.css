@@ -653,3 +653,27 @@ body.delete-modal-open{overflow:hidden}
 .feedback-stat-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media(max-width:1050px){.feedback-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.feedback-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* FEEDBACK MODERATION ACTIONS */
+.feedback-table td:last-child{min-width:245px}
+.feedback-status-form{display:flex;align-items:center;gap:5px;margin:6px 0}
+.feedback-status-form select{width:105px;height:29px;padding:0 7px;border:1px solid #E8E0D7;background:#FFFEFC;color:#6D5C50;font-size:9px}
+.feedback-update-btn,.feedback-delete-btn,.feedback-cancel-btn,.feedback-confirm-delete-btn{min-height:29px;padding:0 9px;border:1px solid transparent;border-radius:4px;font-family:var(--body);font-size:8px;font-weight:700;cursor:pointer;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.feedback-update-btn{border-color:#D5E4D0;background:#EDF2E9;color:#64835E}
+.feedback-update-btn:hover{background:#E2EBDD;border-color:#B8CFAF}
+.feedback-delete-btn{border-color:#E8D4CE;background:#FBF0ED;color:#A65B50}
+.feedback-delete-btn:hover{background:#F7E5E0;border-color:#DDBCB2}
+.feedback-status-form select:focus{outline:0;border-color:var(--caramel);box-shadow:0 0 0 3px rgba(185,120,69,.08)}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.feedback-delete-modal{position:fixed;z-index:125;inset:0;display:none;align-items:center;justify-content:center;padding:20px}
+.feedback-delete-modal.is-open{display:flex}
+.feedback-delete-dialog{width:min(470px,100%)}
+.feedback-delete-copy{margin:0;color:#796B60;font-size:11px;line-height:1.8}
+.feedback-delete-copy strong{color:#49352E}
+.feedback-delete-form{display:flex;justify-content:flex-end;gap:9px;margin-top:24px}
+.feedback-cancel-btn{border-color:#E5DCD2;background:#FFFCF7;color:#796B60}
+.feedback-cancel-btn:hover{background:#F5EEE6}
+.feedback-confirm-delete-btn{border-color:#A65B50;background:#A65B50;color:#fff}
+.feedback-confirm-delete-btn:hover{background:#8F4B42;border-color:#8F4B42}
+@media(max-width:760px){.feedback-table td:last-child{min-width:230px}.feedback-status-form select{width:100px}}
