@@ -247,7 +247,6 @@ require_once __DIR__ . '/includes/header.php';
             <?php if ($activePoll && $pollOptions): ?>
                 <section class="product-poll-section" id="product-poll" aria-labelledby="product-poll-title">
                     <div class="product-poll-heading">
-                        <p class="eyebrow"><span></span> YOUR OPINION MATTERS</p>
                         <h2 id="product-poll-title"><?= product_detail_escape($activePoll['question']) ?></h2>
                         <?php if (!empty($activePoll['description'])): ?>
                             <p><?= nl2br(product_detail_escape($activePoll['description'])) ?></p>
@@ -298,8 +297,7 @@ require_once __DIR__ . '/includes/header.php';
             <section class="reviews-section" id="reviews">
                 <div class="reviews-heading">
                     <div>
-                        <p class="eyebrow"><span></span> CUSTOMER NOTES</p>
-                        <h2>Reviews for <em><?= product_detail_escape($product['name']) ?>.</em></h2>
+                        <h2>Reviews for <span class="accent-text"><?= product_detail_escape($product['name']) ?>.</span></h2>
                     </div>
                     <div class="reviews-summary">
                         <?php if ($reviewCount > 0): ?>
