@@ -649,3 +649,7 @@ body.delete-modal-open{overflow:hidden}
 .feedback-modal-message{margin-top:20px;padding:18px;background:#F8F1E8;color:#625246;font-size:11px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:760px){.feedback-modal-dialog{padding:24px 19px}.feedback-modal-dialog h2{font-size:23px}}
 @media(max-width:460px){.feedback-modal-meta{grid-template-columns:1fr}.feedback-table td{height:auto}}
+
+.feedback-stat-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1050px){.feedback-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.feedback-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
