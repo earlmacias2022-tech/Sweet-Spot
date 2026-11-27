@@ -42,3 +42,35 @@ filterButtons.forEach((button) => {
 });
 
 // Customer feedback is submitted securely through the homepage PHP form.
+
+
+// Reveal customer-side content gently as it enters the viewport.
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const revealTargets = document.querySelectorAll(
+    '.hero-content, .section-heading, .product-card, .promotions-heading, ' +
+    '.customer-promotion-card, .announcements-heading, .announcement-card, ' +
+    '.story-image, .story-content, .center-heading, .value-card, ' +
+    '.contact-copy, .contact-form, .product-detail-grid, .product-poll-section, ' +
+    '.reviews-heading, .review-card, .reviews-empty, .review-form'
+);
+
+if ('IntersectionObserver' in window && !motionPreference.matches) {
+    document.body.classList.add('motion-ready');
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -35px 0px'
+    });
+
+    revealTargets.forEach((element) => {
+        element.classList.add('reveal-on-scroll');
+        revealObserver.observe(element);
+    });
+}
