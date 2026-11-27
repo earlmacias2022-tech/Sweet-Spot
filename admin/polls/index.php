@@ -92,7 +92,7 @@ $csrfToken = admin_csrf_token();
 </head>
 <body class="dashboard-page">
 <?php if ($toast): ?>
-    <div class="auth-toast is-visible <?= ($toast['type'] ?? '') === 'success' ? 'auth-toast-success' : '' ?>" role="status" aria-live="polite">
+    <div class="auth-toast is-visible <?= ($toast['type'] ?? '') === 'success' ? 'toast-success' : '' ?>" role="status" aria-live="polite">
         <span class="auth-toast-icon"><?= ($toast['type'] ?? '') === 'success' ? '✓' : '!' ?></span>
         <span><?= poll_escape($toast['message'] ?? '') ?></span>
         <button type="button" class="auth-toast-close" aria-label="Dismiss notification">×</button>
@@ -241,6 +241,7 @@ $csrfToken = admin_csrf_token();
                                             <td class="announcement-date"><?= $poll['created_at'] ? poll_escape(date('M j, Y', strtotime($poll['created_at']))) : '—' ?></td>
                                             <td>
                                                 <div class="table-actions">
+                                                    <a class="table-action-btn table-results-btn" href="<?= BASE_URL ?>/admin/polls/results.php?id=<?= (int) $poll['id'] ?>"><span>▥</span> Results</a>
                                                     <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>"><span>✎</span> Edit</a>
                                                     <button class="table-action-btn table-delete-btn" type="button" data-open-poll-delete data-poll-id="<?= (int) $poll['id'] ?>" data-poll-question="<?= poll_escape($poll['question']) ?>" data-poll-votes="<?= (int) $poll['vote_count'] ?>"><span>×</span> Delete</button>
                                                 </div>
@@ -282,6 +283,15 @@ $csrfToken = admin_csrf_token();
 </div>
 
 <script>
+document.querySelectorAll('.auth-toast').forEach((toast) => {
+    const dismissToast = () => {
+        toast.classList.add('is-dismissed');
+        window.setTimeout(() => toast.remove(), 300);
+    };
+    toast.querySelector('.auth-toast-close')?.addEventListener('click', dismissToast);
+    window.setTimeout(dismissToast, 5000);
+});
+
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
     document.querySelector('#admin-sidebar')?.classList.toggle('is-open');
