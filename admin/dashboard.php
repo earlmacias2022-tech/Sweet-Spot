@@ -128,10 +128,10 @@ function dashboard_product_image(?string $image): string
                 <?php if ($databaseError): ?><div class="form-preview-banner"><span>!</span><p><strong>Dashboard data could not be fully loaded.</strong> Please check your database connection and refresh this page.</p></div><?php endif; ?>
 
                 <div class="stat-grid">
-                    <article class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon">▧</span></div><strong id="stat-products"><?= $productCount ?></strong><small><span class="stat-neutral">↗</span> Items in your menu</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>Categories</span><span class="stat-icon">▦</span></div><strong><?= $categoryCount ?></strong><small><?= $activeCategoryCount ?> active categories</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon">☆</span></div><strong><?= $publishedReviewCount ?></strong><small>Approved customer reviews</small></article>
-                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon">✉</span></div><strong><?= $newFeedbackCount ?></strong><small><a href="<?= BASE_URL ?>/admin/feedback/index.php">Open customer inbox ↗</a></small></article>
+                    <article class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#package"></use></svg></span></div><strong id="stat-products"><?= $productCount ?></strong><small><span class="stat-neutral">↗</span> Items in your menu</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>Categories</span><span class="stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#layers"></use></svg></span></div><strong><?= $categoryCount ?></strong><small><?= $activeCategoryCount ?> active categories</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>Published reviews</span><span class="stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#star"></use></svg></span></div><strong><?= $publishedReviewCount ?></strong><small>Approved customer reviews</small></article>
+                    <article class="stat-card"><div class="stat-top"><span>New feedback</span><span class="stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#message"></use></svg></span></div><strong><?= $newFeedbackCount ?></strong><small><a href="<?= BASE_URL ?>/admin/feedback/index.php">Open customer inbox ↗</a></small></article>
                 </div>
 
                 <div class="dashboard-grid">
