@@ -138,7 +138,7 @@ unset($_SESSION['announcement_toast']);
                     <h1>Announcements<em>.</em></h1>
                     <p>Share bakery news, schedule updates, and important notices.</p>
                 </div>
-                <a href="<?= BASE_URL ?>/admin/announcements/add.php" class="admin-primary-btn">＋ Create announcement <span>↗</span></a>
+                <a href="<?= BASE_URL ?>/admin/announcements/add.php" class="admin-primary-btn"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#plus"></use></svg> Create announcement <span>↗</span></a>
             </div>
 
             <?php if ($loadError): ?>
