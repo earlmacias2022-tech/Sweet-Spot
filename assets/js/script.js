@@ -41,14 +41,4 @@ filterButtons.forEach((button) => {
     });
 });
 
-// The form is a visual preview until the backend is connected.
-const contactForm = document.querySelector('#contact-form');
-const formFeedback = document.querySelector('#form-feedback');
-
-if (contactForm && formFeedback) {
-    contactForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        formFeedback.textContent = 'Thanks! This is a preview form. Message sending will be enabled in the backend phase.';
-        contactForm.reset();
-    });
-}
+// Customer feedback is submitted securely through the homepage PHP form.
