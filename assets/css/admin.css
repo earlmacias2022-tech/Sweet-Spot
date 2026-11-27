@@ -762,7 +762,7 @@ body.delete-modal-open{overflow:hidden}
 .admin-field input,
 .admin-field select,
 .admin-field textarea {
-    font-size: 16px;
+    font-size: 11px;
 }
 
 @media (max-width: 760px) {
@@ -794,6 +794,7 @@ body.delete-modal-open{overflow:hidden}
     }
 
     .admin-topbar {
+        z-index: 60;
         gap: 10px;
     }
 
