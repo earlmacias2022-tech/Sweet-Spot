@@ -189,7 +189,7 @@ $csrfToken = admin_csrf_token();
                                                     data-subject="<?= feedback_escape($subject !== '' ? $subject : 'No subject') ?>"
                                                     data-message="<?= feedback_escape($item['message']) ?>"
                                                     data-date="<?= feedback_escape($item['created_at'] ?? '') ?>"
-                                                >View message</button>
+                                                ><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#eye"></use></svg> View message</button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
