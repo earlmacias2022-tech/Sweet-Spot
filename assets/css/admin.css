@@ -583,3 +583,35 @@ body.delete-modal-open{overflow:hidden}
 .poll-option-remove:focus-visible{outline:3px solid rgba(185,120,69,.25);outline-offset:2px}
 .poll-option-remove:disabled{border-color:#EAE3DC;background:#F7F3EE;color:#B9ADA2;cursor:not-allowed;opacity:.75}
 
+/* POLL RESULTS */
+.table-results-btn{border-color:#E8D8C5;background:#FBF5ED;color:#8B6848}
+.table-results-btn:hover{border-color:#CDAA84;background:#F5EBDD;color:#65462F}
+.poll-results-summary-card,.poll-results-card{border:1px solid #ECE4DB;background:var(--white)}
+.poll-results-summary-card{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-bottom:18px;padding:25px 28px}
+.poll-results-summary-card h2{margin-top:8px;color:var(--ink);font:500 24px/1.35 var(--display)}
+.poll-results-summary-card p{margin-top:7px;color:var(--muted);font-size:10px}
+.poll-results-total{display:flex;min-width:130px;flex-direction:column;align-items:center;justify-content:center;padding:15px;background:#F7EBDD}
+.poll-results-total strong{color:var(--cocoa);font:500 36px/1 var(--display)}
+.poll-results-total span{margin-top:7px;color:#8B7563;font-size:8px;font-weight:700;letter-spacing:1px}
+.poll-results-card{padding:25px 28px}
+.poll-results-card .card-heading{margin-bottom:22px}
+.poll-results-list{display:grid;gap:20px}
+.poll-results-row{display:grid;gap:8px}
+.poll-results-label{display:flex;align-items:center;justify-content:space-between;gap:15px;color:var(--ink);font-size:11px}
+.poll-results-label strong{overflow-wrap:anywhere}
+.poll-results-label span{flex:0 0 auto;color:var(--caramel);font-weight:700}
+.poll-results-track{height:10px;overflow:hidden;background:#F0E8DF}
+.poll-results-track span{display:block;height:100%;background:var(--caramel)}
+.poll-results-row small{color:var(--muted);font-size:9px}
+.poll-results-empty{min-height:230px}
+
+/* TOAST DISMISSAL */
+.auth-toast.is-dismissed{opacity:0;pointer-events:none;transform:translateY(-10px)}
+.toast-message{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.toast-message button{flex:0 0 auto;padding:0 2px;border:0;background:transparent;color:var(--cream);font-size:18px;line-height:1;cursor:pointer}
+.toast-message button:hover{color:#E7C7A9}
+@media(max-width:600px){
+ .poll-results-summary-card{align-items:stretch;flex-direction:column;padding:20px}
+ .poll-results-total{align-items:flex-start}
+ .poll-results-card{padding:20px}
+}
