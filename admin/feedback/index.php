@@ -107,7 +107,8 @@ $csrfToken = admin_csrf_token();
                 <article class="review-stat-card"><span class="review-stat-icon">✉</span><div><small>Total messages</small><strong><?= count($feedbackItems) ?></strong></div></article>
                 <article class="review-stat-card"><span class="review-stat-icon review-stat-pending">◷</span><div><small>New</small><strong><?= $statusCounts['new'] ?></strong></div></article>
                 <article class="review-stat-card"><span class="review-stat-icon review-stat-approved">✓</span><div><small>Read</small><strong><?= $statusCounts['read'] ?></strong></div></article>
-                <article class="review-stat-card"><span class="review-stat-icon review-stat-rejected">↗</span><div><small>Replied / Archived</small><strong><?= $statusCounts['replied'] + $statusCounts['archived'] ?></strong></div></article>
+                <article class="review-stat-card"><span class="review-stat-icon" style="background:#EAF0F4;color:#59788C">↗</span><div><small>Replied</small><strong><?= $statusCounts['replied'] ?></strong></div></article>
+                <article class="review-stat-card"><span class="review-stat-icon" style="background:#F0ECE8;color:#82766B">▣</span><div><small>Archived</small><strong><?= $statusCounts['archived'] ?></strong></div></article>
             </div>
 
             <?php if ($loadError): ?>
@@ -280,7 +281,7 @@ document.querySelectorAll('[data-feedback-view]').forEach((button) => {
         feedbackModalMessage.textContent = button.dataset.message || '';
         feedbackModal.classList.add('is-open');
         feedbackModal.setAttribute('aria-hidden', 'false');
-        feedbackModal.querySelector('[data-feedback-close]')?.focus();
+        feedbackModal.querySelector('.feedback-modal-close')?.focus();
     });
 });
 
