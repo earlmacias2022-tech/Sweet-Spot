@@ -610,6 +610,7 @@ body.delete-modal-open{overflow:hidden}
 .toast-message{display:flex;align-items:center;justify-content:space-between;gap:18px}
 .toast-message button{flex:0 0 auto;padding:0 2px;border:0;background:transparent;color:var(--cream);font-size:18px;line-height:1;cursor:pointer}
 .toast-message button:hover{color:#E7C7A9}
+.toast-message.show{pointer-events:auto}
 @media(max-width:600px){
  .poll-results-summary-card{align-items:stretch;flex-direction:column;padding:20px}
  .poll-results-total{align-items:flex-start}
