@@ -99,7 +99,7 @@ function dashboard_product_image(?string $image): string
         <div class="sidebar-bottom">
             <div class="sidebar-help"><span>✦</span><div><strong>Need a hand?</strong><small>Management guide</small></div><b>↗</b></div>
             <a href="<?= BASE_URL ?>/index.php" class="sidebar-website">↗ <span>View public website</span></a>
-            <form action="<?= BASE_URL ?>/admin/logout.php" method="POST" class="sidebar-logout-form">
+            <form action="<?= BASE_URL ?>/admin/logout.php" method="POST" class="sidebar-logout-form" id="sidebar-logout-form">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(admin_csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
                 <button type="submit" class="sidebar-logout">⇥ <span>Sign out</span></button>
             </form>
@@ -276,6 +276,60 @@ window.addEventListener("DOMContentLoaded", () => {
 
     modal.querySelectorAll('[data-close-delete-modal]').forEach((button) => button.addEventListener('click', closeModal));
     modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+})();
+</script>
+
+<div class="delete-modal-backdrop" id="signout-confirm-modal" hidden>
+    <section class="delete-modal signout-modal" role="dialog" aria-modal="true" aria-labelledby="signout-modal-title" aria-describedby="signout-modal-description">
+        <div class="delete-modal-icon signout-modal-icon" aria-hidden="true">↗</div>
+        <span class="delete-modal-eyebrow">LEAVING YOUR WORKSPACE</span>
+        <h2 id="signout-modal-title">Sign out of Sweet Spot?</h2>
+        <p id="signout-modal-description">You will be returned to the admin login page. You can sign in again whenever you need to manage the bakery website.</p>
+        <div class="delete-modal-actions">
+            <button type="button" class="delete-modal-cancel" data-close-signout-modal>Stay signed in</button>
+            <button type="button" class="signout-modal-confirm" id="confirm-signout">Yes, sign out</button>
+        </div>
+    </section>
+</div>
+<script>
+(() => {
+    const form = document.querySelector('#sidebar-logout-form');
+    const modal = document.querySelector('#signout-confirm-modal');
+    const confirmButton = document.querySelector('#confirm-signout');
+    if (!form || !modal || !confirmButton) return;
+
+    let previousFocus = null;
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.classList.remove('delete-modal-open');
+        previousFocus?.focus();
+    };
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        previousFocus = form.querySelector('button[type="submit"]');
+        modal.hidden = false;
+        document.body.classList.add('delete-modal-open');
+        modal.querySelector('[data-close-signout-modal]').focus();
+    });
+
+    modal.querySelectorAll('[data-close-signout-modal]').forEach((button) => {
+        button.addEventListener('click', closeModal);
+    });
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+    });
+
+    confirmButton.addEventListener('click', () => {
+        confirmButton.disabled = true;
+        form.submit();
+    });
+
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && !modal.hidden) closeModal();
     });
