@@ -37,7 +37,6 @@ $pageTitle = $pageTitle ?? SITE_NAME;
                 <a href="<?= BASE_URL ?>/index.php#products" class="nav-link">Menu</a>
                 <a href="<?= BASE_URL ?>/index.php#promotions" class="nav-link">Promotions</a>
                 <a href="<?= BASE_URL ?>/index.php#announcements" class="nav-link">Announcements</a>
-                <a href="<?= basename($_SERVER['PHP_SELF']) === 'product.php' ? '#reviews' : BASE_URL . '/index.php#products' ?>" class="nav-link">Reviews</a>
                 <a href="<?= BASE_URL ?>/index.php#about" class="nav-link">About</a>
                 <a href="<?= BASE_URL ?>/index.php#contact" class="nav-link">Contact</a>
                 <a href="<?= BASE_URL ?>/admin/login.php" class="btn btn-small nav-cta">Owner Login <span aria-hidden="true">↗</span></a>
