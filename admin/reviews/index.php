@@ -115,19 +115,19 @@ unset($_SESSION['review_toast']);
 
             <div class="review-stat-grid">
                 <article class="review-stat-card">
-                    <span class="review-stat-icon">☆</span>
+                    <span class="review-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#star"></use></svg></span>
                     <div><small>Total reviews</small><strong><?= count($reviews) ?></strong></div>
                 </article>
                 <article class="review-stat-card">
-                    <span class="review-stat-icon review-stat-pending">◷</span>
+                    <span class="review-stat-icon review-stat-pending"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#clock"></use></svg></span>
                     <div><small>Pending review</small><strong><?= $statusCounts['pending'] ?></strong></div>
                 </article>
                 <article class="review-stat-card">
-                    <span class="review-stat-icon review-stat-approved">✓</span>
+                    <span class="review-stat-icon review-stat-approved"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span>
                     <div><small>Approved</small><strong><?= $statusCounts['approved'] ?></strong></div>
                 </article>
                 <article class="review-stat-card">
-                    <span class="review-stat-icon review-stat-rejected">×</span>
+                    <span class="review-stat-icon review-stat-rejected"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg></span>
                     <div><small>Rejected</small><strong><?= $statusCounts['rejected'] ?></strong></div>
                 </article>
             </div>
