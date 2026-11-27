@@ -115,15 +115,15 @@ $csrfToken = admin_csrf_token();
 
             <div class="category-stat-grid">
                 <article class="category-stat-card">
-                    <span class="category-stat-icon">▦</span>
+                    <span class="category-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#layers"></use></svg></span>
                     <div><small>Total categories</small><strong><?= count($categories) ?></strong></div>
                 </article>
                 <article class="category-stat-card">
-                    <span class="category-stat-icon category-stat-active">✓</span>
+                    <span class="category-stat-icon category-stat-active"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span>
                     <div><small>Active categories</small><strong><?= $activeCount ?></strong></div>
                 </article>
                 <article class="category-stat-card">
-                    <span class="category-stat-icon category-stat-inactive">Ⅱ</span>
+                    <span class="category-stat-icon category-stat-inactive"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#pause"></use></svg></span>
                     <div><small>Inactive categories</small><strong><?= $inactiveCount ?></strong></div>
                 </article>
             </div>
