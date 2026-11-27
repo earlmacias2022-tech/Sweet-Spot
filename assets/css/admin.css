@@ -996,3 +996,5 @@ body.delete-modal-open{overflow:hidden}
 .stat-icon .admin-icon,.review-stat-icon .admin-icon,.category-stat-icon .admin-icon,.announcement-stat-icon .admin-icon,.promotion-stat-icon .admin-icon{width:16px;height:16px}
 .table-action-btn .admin-icon,.review-action-btn .admin-icon{width:12px;height:12px;margin-right:4px;vertical-align:-2px}
 .sidebar-help .admin-icon,.sidebar-website .admin-icon,.sidebar-logout .admin-icon{display:block}
+
+.admin-primary-btn>.admin-icon:first-child{width:14px;height:14px;margin-right:-10px}
