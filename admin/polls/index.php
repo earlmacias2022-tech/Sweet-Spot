@@ -241,9 +241,9 @@ $csrfToken = admin_csrf_token();
                                             <td class="announcement-date"><?= $poll['created_at'] ? poll_escape(date('M j, Y', strtotime($poll['created_at']))) : '—' ?></td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a class="table-action-btn table-results-btn" href="<?= BASE_URL ?>/admin/polls/results.php?id=<?= (int) $poll['id'] ?>"><span>▥</span> Results</a>
-                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>"><span>✎</span> Edit</a>
-                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-poll-delete data-poll-id="<?= (int) $poll['id'] ?>" data-poll-question="<?= poll_escape($poll['question']) ?>" data-poll-votes="<?= (int) $poll['vote_count'] ?>"><span>×</span> Delete</button>
+                                                    <a class="table-action-btn table-results-btn" href="<?= BASE_URL ?>/admin/polls/results.php?id=<?= (int) $poll['id'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#chart"></use></svg> Results</a>
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/polls/edit.php?id=<?= (int) $poll['id'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#edit"></use></svg> Edit</a>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-poll-delete data-poll-id="<?= (int) $poll['id'] ?>" data-poll-question="<?= poll_escape($poll['question']) ?>" data-poll-votes="<?= (int) $poll['vote_count'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
