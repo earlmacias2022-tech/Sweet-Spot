@@ -104,9 +104,9 @@ $csrfToken = admin_csrf_token();
             </div>
 
             <div class="review-stat-grid feedback-stat-grid">
-                <article class="review-stat-card"><span class="review-stat-icon">✉</span><div><small>Total messages</small><strong><?= count($feedbackItems) ?></strong></div></article>
-                <article class="review-stat-card"><span class="review-stat-icon review-stat-pending">◷</span><div><small>New</small><strong><?= $statusCounts['new'] ?></strong></div></article>
-                <article class="review-stat-card"><span class="review-stat-icon review-stat-approved">✓</span><div><small>Read</small><strong><?= $statusCounts['read'] ?></strong></div></article>
+                <article class="review-stat-card"><span class="review-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#message"></use></svg></span><div><small>Total messages</small><strong><?= count($feedbackItems) ?></strong></div></article>
+                <article class="review-stat-card"><span class="review-stat-icon review-stat-pending"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#clock"></use></svg></span><div><small>New</small><strong><?= $statusCounts['new'] ?></strong></div></article>
+                <article class="review-stat-card"><span class="review-stat-icon review-stat-approved"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span><div><small>Read</small><strong><?= $statusCounts['read'] ?></strong></div></article>
                 <article class="review-stat-card"><span class="review-stat-icon" style="background:#EAF0F4;color:#59788C">↗</span><div><small>Replied</small><strong><?= $statusCounts['replied'] ?></strong></div></article>
                 <article class="review-stat-card"><span class="review-stat-icon" style="background:#F0ECE8;color:#82766B">▣</span><div><small>Archived</small><strong><?= $statusCounts['archived'] ?></strong></div></article>
             </div>
