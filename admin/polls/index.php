@@ -157,15 +157,15 @@ $csrfToken = admin_csrf_token();
             <?php else: ?>
                 <div class="announcement-stat-grid poll-stat-grid">
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon">▤</span>
+                        <span class="announcement-stat-icon"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#chart"></use></svg></span>
                         <div><small>Total polls</small><strong><?= count($polls) ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon poll-stat-active">✓</span>
+                        <span class="announcement-stat-icon poll-stat-active"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#check"></use></svg></span>
                         <div><small>Active polls</small><strong><?= $statusCounts['active'] ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
-                        <span class="announcement-stat-icon announcement-stat-scheduled">◷</span>
+                        <span class="announcement-stat-icon announcement-stat-scheduled"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#clock"></use></svg></span>
                         <div><small>Scheduled</small><strong><?= $statusCounts['scheduled'] ?></strong></div>
                     </article>
                     <article class="announcement-stat-card">
