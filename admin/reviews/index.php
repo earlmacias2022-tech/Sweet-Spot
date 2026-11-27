@@ -305,6 +305,15 @@ document.addEventListener('keydown', (event) => {
 });
 
 
+document.querySelectorAll('.auth-toast').forEach((toast) => {
+    const dismissToast = () => {
+        toast.classList.add('is-dismissed');
+        window.setTimeout(() => toast.remove(), 300);
+    };
+    toast.querySelector('.auth-toast-close')?.addEventListener('click', dismissToast);
+    window.setTimeout(dismissToast, 5000);
+});
+
 const sidebarToggle = document.querySelector('#sidebar-toggle');
 sidebarToggle?.addEventListener('click', () => {
     document.querySelector('#admin-sidebar')?.classList.toggle('is-open');
