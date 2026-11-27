@@ -59,7 +59,10 @@ function dashboard_product_image(?string $image): string
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin.css">
 </head>
 <body class="dashboard-page">
-<div class="toast-message" id="admin-toast" role="status" aria-live="polite"></div>
+<div class="toast-message" id="admin-toast" role="status" aria-live="polite">
+    <span id="admin-toast-text"></span>
+    <button type="button" id="admin-toast-close" aria-label="Dismiss notification">×</button>
+</div>
 <div class="admin-layout">
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="sidebar-brand">
@@ -190,11 +193,17 @@ function dashboard_product_image(?string $image): string
 $productToast = $_SESSION['product_toast'] ?? null;
 unset($_SESSION['product_toast']);
 ?>
+<script>
+document.querySelector('#admin-toast-close')?.addEventListener('click', () => {
+    document.querySelector('#admin-toast')?.classList.remove('show');
+});
+</script>
+
 <?php if ($productToast): ?>
 <script>
 window.addEventListener("DOMContentLoaded", () => {
     const toast = document.querySelector("#admin-toast");
-    toast.textContent = <?= json_encode($productToast['message'] ?? 'Product updated.', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    toast.querySelector('#admin-toast-text').textContent = <?= json_encode($productToast['message'] ?? 'Product updated.', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
     toast.classList.add("show", <?= json_encode(($productToast['type'] ?? '') === 'success' ? 'toast-success' : '') ?>);
     window.setTimeout(() => toast.classList.remove("show"), 3500);
 });
@@ -205,7 +214,7 @@ window.addEventListener("DOMContentLoaded", () => {
 <script>
 window.addEventListener("DOMContentLoaded", () => {
     const toast = document.querySelector("#admin-toast");
-    toast.textContent = <?= json_encode($loginSuccess, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    toast.querySelector('#admin-toast-text').textContent = <?= json_encode($loginSuccess, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
     toast.classList.add("show", "toast-success");
     window.setTimeout(() => toast.classList.remove("show"), 3500);
 });
