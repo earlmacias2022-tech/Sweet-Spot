@@ -991,3 +991,8 @@ body.delete-modal-open{overflow:hidden}
 .sidebar-toggle .admin-icon{width:18px;height:18px}
 .topbar-icon .admin-icon{width:15px;height:15px}
 .profile-chevron .admin-icon{width:13px;height:13px}
+
+/* ADMIN ICON SIZING IN COMPACT CONTROLS */
+.stat-icon .admin-icon,.review-stat-icon .admin-icon,.category-stat-icon .admin-icon,.announcement-stat-icon .admin-icon,.promotion-stat-icon .admin-icon{width:16px;height:16px}
+.table-action-btn .admin-icon,.review-action-btn .admin-icon{width:12px;height:12px;margin-right:4px;vertical-align:-2px}
+.sidebar-help .admin-icon,.sidebar-website .admin-icon,.sidebar-logout .admin-icon{display:block}
