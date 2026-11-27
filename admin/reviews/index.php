@@ -229,7 +229,7 @@ unset($_SESSION['review_toast']);
                                                     <form action="<?= BASE_URL ?>/admin/reviews/delete.php" method="POST" class="review-delete-form" data-review-delete-form>
                                                         <input type="hidden" name="csrf_token" value="<?= review_escape($csrfToken) ?>">
                                                         <input type="hidden" name="review_id" value="<?= (int) $review['id'] ?>">
-                                                        <button type="button" class="review-action-btn review-delete-btn" data-review-delete>Delete</button>
+                                                        <button type="button" class="review-action-btn review-delete-btn" data-review-delete><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Delete</button>
                                                     </form>
                                                 </div>
                                             </td>
