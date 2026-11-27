@@ -229,8 +229,8 @@ unset($_SESSION['announcement_toast']);
                                             <td class="announcement-date"><?= announcement_escape(date('M j, Y', strtotime($announcement['created_at']))) ?></td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/announcements/edit.php?id=<?= (int) $announcement['id'] ?>"><span>✎</span> Edit</a>
-                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-announcement-delete data-announcement-id="<?= (int) $announcement['id'] ?>" data-announcement-title="<?= announcement_escape($announcement['title']) ?>"><span>×</span> Delete</button>
+                                                    <a class="table-action-btn table-edit-btn" href="<?= BASE_URL ?>/admin/announcements/edit.php?id=<?= (int) $announcement['id'] ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#edit"></use></svg> Edit</a>
+                                                    <button class="table-action-btn table-delete-btn" type="button" data-open-announcement-delete data-announcement-id="<?= (int) $announcement['id'] ?>" data-announcement-title="<?= announcement_escape($announcement['title']) ?>"><svg class="admin-icon" aria-hidden="true"><use href="<?= BASE_URL ?>/assets/images/admin-icons.svg#x"></use></svg> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
