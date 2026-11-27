@@ -3,8 +3,67 @@ $pageTitle = 'Freshly Baked Happiness';
 
 
 
-require_once __DIR__ . '/config/app.php';
+require_once __DIR__ . '/config/auth.php';
 require_once __DIR__ . '/config/database.php';
+
+$feedbackErrors = [];
+$feedbackName = '';
+$feedbackEmail = '';
+$feedbackSubject = '';
+$feedbackMessage = '';
+$feedbackFlash = $_SESSION['feedback_flash'] ?? null;
+unset($_SESSION['feedback_flash']);
+$feedbackCsrfToken = admin_csrf_token();
+
+function feedback_redirect(string $type, string $message): void
+{
+    $_SESSION['feedback_flash'] = ['type' => $type, 'message' => $message];
+    header('Location: ' . BASE_URL . '/index.php#contact');
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'feedback') {
+    $feedbackName = trim((string) ($_POST['name'] ?? ''));
+    $feedbackEmail = trim((string) ($_POST['email'] ?? ''));
+    $feedbackSubject = trim((string) ($_POST['subject'] ?? ''));
+    $feedbackMessage = trim((string) ($_POST['message'] ?? ''));
+    $submittedToken = $_POST['csrf_token'] ?? null;
+
+    if (!admin_verify_csrf_token(is_string($submittedToken) ? $submittedToken : null)) {
+        $feedbackErrors[] = 'Your session expired. Please refresh the page and try again.';
+    }
+    if ($feedbackName === '' || mb_strlen($feedbackName) > 100) {
+        $feedbackErrors[] = 'Please enter your name (up to 100 characters).';
+    }
+    if (!filter_var($feedbackEmail, FILTER_VALIDATE_EMAIL) || mb_strlen($feedbackEmail) > 150) {
+        $feedbackErrors[] = 'Please enter a valid email address (up to 150 characters).';
+    }
+    if (mb_strlen($feedbackSubject) > 180) {
+        $feedbackErrors[] = 'Your subject must be 180 characters or fewer.';
+    }
+    if ($feedbackMessage === '' || mb_strlen($feedbackMessage) > 10000) {
+        $feedbackErrors[] = 'Please enter a message of up to 10,000 characters.';
+    }
+
+    if (!$feedbackErrors) {
+        try {
+            $insertFeedback = $pdo->prepare(
+                "INSERT INTO feedback (customer_name, email, subject, message, status)
+                 VALUES (:customer_name, :email, :subject, :message, 'new')"
+            );
+            $insertFeedback->execute([
+                'customer_name' => $feedbackName,
+                'email' => $feedbackEmail,
+                'subject' => $feedbackSubject !== '' ? $feedbackSubject : null,
+                'message' => $feedbackMessage,
+            ]);
+            feedback_redirect('success', 'Thank you! Your message has been sent to Sweet Spot.');
+        } catch (PDOException $exception) {
+            error_log('Sweet Spot customer feedback submission failed: ' . $exception->getMessage());
+            $feedbackErrors[] = 'We could not send your message right now. Please try again.';
+        }
+    }
+}
 
 $products = [];
 $categories = [];
@@ -338,30 +397,40 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
 
-        <form class="contact-form" id="contact-form">
+        <form class="contact-form" id="contact-form" method="POST" action="<?= BASE_URL ?>/index.php#contact">
+            <input type="hidden" name="form_type" value="feedback">
+            <input type="hidden" name="csrf_token" value="<?= catalog_escape($feedbackCsrfToken) ?>">
             <div class="form-heading">
                 <span>WE'RE ALL EARS</span>
                 <h3>Send us a little note.</h3>
             </div>
+            <?php if ($feedbackFlash): ?>
+                <p class="form-feedback <?= ($feedbackFlash['type'] ?? '') === 'success' ? 'is-success' : 'is-error' ?>" role="status" aria-live="polite"><?= catalog_escape($feedbackFlash['message'] ?? '') ?></p>
+            <?php endif; ?>
+            <?php if ($feedbackErrors): ?>
+                <div class="form-feedback is-error" role="alert">
+                    <?php foreach ($feedbackErrors as $feedbackError): ?>
+                        <p><?= catalog_escape($feedbackError) ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
             <div class="form-row">
                 <label for="contact-name">Your name</label>
-                <input type="text" id="contact-name" name="name" placeholder="How should we call you?" required>
+                <input type="text" id="contact-name" name="name" maxlength="100" placeholder="How should we call you?" value="<?= catalog_escape($feedbackName) ?>" required>
             </div>
             <div class="form-row">
                 <label for="contact-email">Email address</label>
-                <input type="email" id="contact-email" name="email" placeholder="you@example.com" required>
+                <input type="email" id="contact-email" name="email" maxlength="150" placeholder="you@example.com" value="<?= catalog_escape($feedbackEmail) ?>" required>
             </div>
             <div class="form-row">
                 <label for="contact-subject">What is this about?</label>
-                <input type="text" id="contact-subject" name="subject" placeholder="Product inquiry, question, etc.">
+                <input type="text" id="contact-subject" name="subject" maxlength="180" placeholder="Product inquiry, question, etc." value="<?= catalog_escape($feedbackSubject) ?>">
             </div>
             <div class="form-row">
                 <label for="contact-message">Your message</label>
-                <textarea id="contact-message" name="message" rows="4" placeholder="Write your message here..." required></textarea>
+                <textarea id="contact-message" name="message" rows="4" maxlength="10000" placeholder="Write your message here..." required><?= catalog_escape($feedbackMessage) ?></textarea>
             </div>
-            <button type="submit" class="btn form-submit">Prepare message <span aria-hidden="true">↗</span></button>
-            <p class="form-note">Preview form only. Message submission will be connected during backend development.</p>
-            <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+            <button type="submit" class="btn form-submit">Send message <span aria-hidden="true">↗</span></button>
         </form>
     </div>
 </section>
