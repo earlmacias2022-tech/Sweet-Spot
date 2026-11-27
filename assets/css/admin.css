@@ -979,3 +979,15 @@ body.delete-modal-open{overflow:hidden}
         gap: 7px;
     }
 }
+
+
+/* CONSISTENT ADMIN ICONS */
+.admin-icon{display:inline-block;width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.side-icon{display:inline-flex;width:19px;height:19px;flex:0 0 19px;align-items:center;justify-content:center;color:#D5A77E}
+.side-icon .admin-icon{width:17px;height:17px}
+.sidebar-help>span,.sidebar-website>.admin-icon,.sidebar-logout>.admin-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 19px}
+.sidebar-help>span .admin-icon{width:19px;height:19px}
+.sidebar-website>.admin-icon,.sidebar-logout>.admin-icon{width:15px;height:15px}
+.sidebar-toggle .admin-icon{width:18px;height:18px}
+.topbar-icon .admin-icon{width:15px;height:15px}
+.profile-chevron .admin-icon{width:13px;height:13px}
