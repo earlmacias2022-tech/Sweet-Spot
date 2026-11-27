@@ -33,11 +33,14 @@ $pageTitle = $pageTitle ?? SITE_NAME;
             </button>
 
             <nav class="main-nav" id="main-navigation" aria-label="Main navigation">
-                <a href="<?= BASE_URL ?>/index.php" class="nav-link active">Home</a>
-                <a href="<?= BASE_URL ?>/index.php#products" class="nav-link">Our Menu</a>
-                <a href="<?= BASE_URL ?>/index.php#about" class="nav-link">Our Story</a>
+                <a href="<?= BASE_URL ?>/index.php#home" class="nav-link">Home</a>
+                <a href="<?= BASE_URL ?>/index.php#products" class="nav-link">Menu</a>
+                <a href="<?= BASE_URL ?>/index.php#promotions" class="nav-link">Promotions</a>
+                <a href="<?= BASE_URL ?>/index.php#announcements" class="nav-link">Announcements</a>
+                <a href="<?= basename($_SERVER['PHP_SELF']) === 'product.php' ? '#reviews' : BASE_URL . '/index.php#products' ?>" class="nav-link">Reviews</a>
+                <a href="<?= BASE_URL ?>/index.php#about" class="nav-link">About</a>
                 <a href="<?= BASE_URL ?>/index.php#contact" class="nav-link">Contact</a>
-                <a href="<?= BASE_URL ?>../admin/login.php" class="btn btn-small nav-cta">Login Portal <span aria-hidden="true">↗</span></a>
+                <a href="<?= BASE_URL ?>/admin/login.php" class="btn btn-small nav-cta">Owner Login <span aria-hidden="true">↗</span></a>
             </nav>
         </div>
     </header>
